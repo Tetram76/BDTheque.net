@@ -1,8 +1,7 @@
 using System.IO.Compression;
 using System.Text;
-using BDTheque.Web.Data;
 using BDTheque.Web.Middlewares;
-using BDTheque.Web.Models;
+using BDTheque.Web.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.IdentityModel.Tokens;

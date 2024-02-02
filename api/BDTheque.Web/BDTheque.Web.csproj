@@ -24,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\"/>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="GraphQL"/>
     <PackageReference Include="GraphQL.Server.Ui.Playground"/>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer"/>
@@ -47,6 +43,14 @@
 
   <ItemGroup>
     <None Remove="logs\**"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BDTheque.Data\BDTheque.Data.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="GraphQL\"/>
   </ItemGroup>
 
 </Project>
