@@ -32,6 +32,16 @@ services:
   #    volumes:
   #      - bdtheque-pgadmin:/var/lib/pgadmin
 
+  redis:
+    image: redis:6.0-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   api:
     depends_on:
       - data

@@ -1,12 +1,15 @@
 using System.IO.Compression;
 using System.Text;
+using BDTheque.Web;
 using BDTheque.Web.Middlewares;
 using BDTheque.Web.Services;
+using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Serilog;
+using Path = System.IO.Path;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -92,41 +95,59 @@ try
     );
     builder.Services
         .SetupDb(builder.Configuration)
-        .SetupGraphQL();
+        .SetupGraphQLSchema()
+        .SetupGraphQLPipeline(builder.Configuration, builder.Environment);
 
     WebApplication app = builder.Build();
 
-// Configure the HTTP request pipeline.
+    #region Configure the HTTP request pipeline.
+
     app.UseMiddleware<RequestLoggingMiddleware>();
     app.UseMiddleware<ExceptionMiddleware>();
 
     // app.UseStaticFiles();
 
-// Middleware pour les environnements de développement
     if (app.Environment.IsDevelopment())
         app.UseDeveloperExceptionPage();
 
-// Middleware de routage
     app.UseRouting();
 
-// Middleware pour l'authentification et l'autorisation
+    app.UseWebSockets(); // for GraphQL subscriptions
+    app.UseCors(policyBuilder => policyBuilder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
+    // Middleware pour l'authentification et l'autorisation
     app.UseAuthentication();
     app.UseAuthorization();
 
     app.UseResponseCompression();
 
-// Définissez vos endpoints ici
-// app.MapControllers();
-    app.MapHealthChecks("/health");
-// Définissez les endpoints GraphQL (si utilisés)
-// ...
+    #endregion
 
-    if (!app.Environment.IsDevelopment())
-    {
-        app.UseExceptionHandler("/error");
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-        app.UseHsts();
-    }
+    #region endpoints
+
+    app.MapHealthChecks(Urls.HealthCheck);
+
+    app.MapGraphQL(Urls.GraphQL).WithOptions(
+        new GraphQLServerOptions
+        {
+            Tool =
+            {
+                Enable = app.Environment.IsDevelopment(),
+                ServeMode = app.Environment.IsDevelopment() ? GraphQLToolServeMode.Latest : GraphQLToolServeMode.Embedded,
+                Title = "BDTheque GraphQL API",
+                DisableTelemetry = false
+            }
+        }
+    );
+
+    // if (!app.Environment.IsDevelopment())
+    // {
+    //     app.UseExceptionHandler("/error");
+    //     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    //     app.UseHsts();
+    // }
+
+    #endregion
 
     app.Lifetime.ApplicationStarted.Register(() => OnStarted(app));
 
@@ -147,5 +168,8 @@ return;
 static void OnStarted(WebApplication app)
 {
     foreach (string appUrl in app.Urls)
-        Log.Information("Health check on: {HealthCheckUrl}", new Uri(new Uri(appUrl), "/health"));
+    {
+        Log.Information("Health check on: {HealthCheckUrl}", new Uri(new Uri(appUrl), Urls.HealthCheck));
+        Log.Information("GraphQL on: {GraphQLUrl}", new Uri(new Uri(appUrl), Urls.GraphQL));
+    }
 }

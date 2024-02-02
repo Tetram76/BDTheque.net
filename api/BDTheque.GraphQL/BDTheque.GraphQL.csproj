@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BDTheque.Data\BDTheque.Data.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HotChocolate.AspNetCore"/>
+    <PackageReference Include="HotChocolate.Data.EntityFramework"/>
+    <PackageReference Include="HotChocolate.Subscriptions.Redis"/>
+    <PackageReference Include="HotChocolate.Types.Analyzers">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive;</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="HotChocolate.Types.Scalars"/>
+    <PackageReference Include="Serilog"/>
+  </ItemGroup>
+
+</Project>

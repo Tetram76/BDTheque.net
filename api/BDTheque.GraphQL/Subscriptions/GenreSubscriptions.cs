@@ -1,0 +1,44 @@
+namespace BDTheque.GraphQL.Subscriptions;
+
+using System.Runtime.CompilerServices;
+using BDTheque.Data.Entities;
+using BDTheque.GraphQL.Types;
+using HotChocolate.Execution;
+using HotChocolate.Subscriptions;
+
+[SubscriptionType]
+public static class GenreSubscriptions
+{
+    [Subscribe(With = nameof(GenreCreatedStream))]
+    [GraphQLType<GenreType>]
+    public static Genre GenreCreated([EventMessage] Genre genre) => genre;
+
+    [Subscribe(With = nameof(GenreUpdatedStream))]
+    [GraphQLType<GenreType>]
+    public static Genre GenreUpdated([EventMessage] Genre genre) => genre;
+
+    [Subscribe(With = nameof(GenreDeletedStream))]
+    [GraphQLType<GenreType>]
+    public static Genre GenreDeleted([EventMessage] Genre genre) => genre;
+
+    private static async IAsyncEnumerable<Genre> GenreCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        ISourceStream<Genre> sourceStream = await eventReceiver.SubscribeAsync<Genre>(nameof(GenreCreated), cancellationToken);
+        await foreach (Genre genre in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+            yield return genre;
+    }
+
+    private static async IAsyncEnumerable<Genre> GenreUpdatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        ISourceStream<Genre> sourceStream = await eventReceiver.SubscribeAsync<Genre>(nameof(GenreUpdated), cancellationToken);
+        await foreach (Genre genre in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+            yield return genre;
+    }
+
+    private static async IAsyncEnumerable<Genre> GenreDeletedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        ISourceStream<Genre> sourceStream = await eventReceiver.SubscribeAsync<Genre>(nameof(GenreDeleted), cancellationToken);
+        await foreach (Genre genre in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+            yield return genre;
+    }
+}

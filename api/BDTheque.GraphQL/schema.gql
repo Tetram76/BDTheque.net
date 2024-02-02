@@ -1,0 +1,1785 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Album implements AssociableModel & CommonModel & MaybeTitledModel & UUIDModel {
+  anneeParution: Year
+  associations: [String!]!
+  auteurs(after: UUID, before: UUID, first: NonNegativeInt, last: NonNegativeInt, orderBy: [AuteurOrderBy!], where: AuteurWhereInput): AuteursRelation!
+  createdAt: DateTime!
+  editions(after: UUID, before: UUID, first: NonNegativeInt, last: NonNegativeInt, orderBy: [EditionAlbumOrderBy!], where: EditionAlbumWhereInput): EditionsAlbumsRelation!
+  genres(after: UUID, before: UUID, first: NonNegativeInt, last: NonNegativeInt, orderBy: [GenreOrderBy!], where: GenreWhereInput): GenresRelation!
+  horsSerie: Boolean
+  id: UUID!
+  initiale: NonEmptyString
+  integrale: Boolean
+  moisParution: Month
+  notation: Option
+  notes: NonEmptyString
+  serie: Serie
+  sujet: NonEmptyString
+  titre: NonEmptyString
+  tome: NonNegativeInt
+  tomeDebut: NonNegativeInt
+  tomeFin: NonNegativeInt
+  updatedAt: DateTime!
+}
+
+input AlbumConnectNestedOneInput {
+  connect: AlbumWhereUniqueInput!
+}
+
+input AlbumCreateInput {
+  anneeParution: Year
+  associations: [String!]
+  horsSerie: Boolean
+  integrale: Boolean
+  moisParution: Month
+  notation: NotationConnectNestedOneInput
+  notes: NonEmptyString
+  serie: SerieConnectNestedOneInput
+  sujet: NonEmptyString
+  titre: NonEmptyString
+  tome: NonNegativeInt
+  tomeDebut: NonNegativeInt
+  tomeFin: NonNegativeInt
+}
+
+type AlbumEdge {
+  cursor: UUID!
+  node: Album!
+}
+
+input AlbumListRelationFilter {
+  every: AlbumWhereInput
+  none: AlbumWhereInput
+  some: AlbumWhereInput
+}
+
+input AlbumOrderBy {
+  anneeParution: SortOrder
+  associations: SortOrder
+  auteurs: OrderByRelationAggregateInput
+  createdAt: SortOrder
+  editions: OrderByRelationAggregateInput
+  genres: OrderByRelationAggregateInput
+  horsSerie: SortOrder
+  id: SortOrder
+  initiale: SortOrder
+  integrale: SortOrder
+  moisParution: SortOrder
+  notation: OptionOrderBy
+  notationId: SortOrder
+  notes: SortOrder
+  serie: SerieOrderBy
+  serieId: SortOrder
+  sujet: SortOrder
+  titre: SortOrder
+  tome: SortOrder
+  tomeDebut: SortOrder
+  tomeFin: SortOrder
+  univers: OrderByRelationAggregateInput
+  updatedAt: SortOrder
+}
+
+input AlbumUpdateInput {
+  anneeParution: Year
+  associations: [String!]
+  horsSerie: Boolean
+  id: UUID!
+  integrale: Boolean
+  moisParution: Month
+  notation: NotationUpdateNestedOneInput
+  notes: NonEmptyString
+  serie: SerieUpdateNestedOneInput
+  sujet: NonEmptyString
+  titre: NonEmptyString
+  tome: NonNegativeInt
+  tomeDebut: NonNegativeInt
+  tomeFin: NonNegativeInt
+}
+
+input AlbumWhereInput {
+  AND: [AlbumWhereInput!]
+  NOT: [AlbumWhereInput!]
+  OR: [AlbumWhereInput!]
+  anneeParution: IntFilter
+  associations: StringListFilter
+  auteurs: AuteurAlbumListRelationFilter
+  createdAt: DateTimeFilter
+  editions: EditionAlbumListRelationFilter
+  genres: GenreAlbumListRelationFilter
+  horsSerie: BoolFilter
+  id: UUIDFilter
+  initiale: StringFilter
+  integrale: BoolFilter
+  moisParution: IntFilter
+  notation: OptionWhereInput
+  notationId: IntFilter
+  notes: StringFilter
+  serie: SerieWhereInput
+  serieId: UUIDFilter
+  sujet: StringFilter
+  titre: StringFilter
+  tome: IntFilter
+  tomeDebut: IntFilter
+  tomeFin: IntFilter
+  univers: UniversAlbumListRelationFilter
+  updatedAt: DateTimeFilter
+}
+
+input AlbumWhereUniqueInput {
+  id: UUID
+}
+
+type AlbumsRelation {
+  edges: [AlbumEdge!]!
+  nodes: [Album!]!
+  pageInfo: UUIDModelPageInfo!
+}
+
+interface AssociableModel implements CommonModel & UUIDModel {
+  associations: [String!]!
+  createdAt: DateTime!
+  id: UUID!
+  updatedAt: DateTime!
+}
+
+type Auteur implements CommonModel & UUIDModel {
+  albums(after: UUID, before: UUID, first: NonNegativeInt, last: NonNegativeInt, orderBy: [AlbumOrderBy!], where: AlbumWhereInput): AlbumsRelation!
+  createdAt: DateTime!
+  id: UUID!
+  metier: Metier!
+  personne: Personne!
+  series(after: UUID, before: UUID, first: NonNegativeInt, last: NonNegativeInt, orderBy: [SerieOrderBy!], where: SerieWhereInput): SeriesRelation!
+  updatedAt: DateTime!
+}
+
+input AuteurAlbumListRelationFilter {
+  every: AuteurAlbumWhereInput
+  none: AuteurAlbumWhereInput
+  some: AuteurAlbumWhereInput
+}
+
+input AuteurAlbumWhereInput {
+  AND: AuteurAlbumWhereInput
+  NOT: AuteurAlbumWhereInput
+  OR: AuteurAlbumWhereInput
+  album: AlbumWhereInput
+  albumId: UUIDFilter
+  auteur: AuteurWhereInput
+  auteurId: UUIDFilter
+  createdAt: DateTimeFilter
+  id: UUIDFilter
+  updatedAt: DateTimeFilter
+}
+
+type AuteurEdge {
+  cursor: UUID!
+  node: Auteur!
+}
+
+input AuteurListRelationFilter {
+  every: AuteurWhereInput
+  none: AuteurWhereInput
+  some: AuteurWhereInput
+}
+
+input AuteurOrderBy {
+  albums: OrderByRelationAggregateInput
+  createdAt: SortOrder
+  id: SortOrder
+  metier: SortOrder
+  personne: PersonneOrderBy
+  personneId: SortOrder
+  series: OrderByRelationAggregateInput
+  updatedAt: SortOrder
+}
+
+input AuteurSerieListRelationFilter {
+  every: AuteurSerieWhereInput
+  none: AuteurSerieWhereInput
+  some: AuteurSerieWhereInput
+}
+
+input AuteurSerieWhereInput {
+  AND: AuteurSerieWhereInput
+  NOT: AuteurSerieWhereInput
+  OR: AuteurSerieWhereInput
+  auteur: AuteurWhereInput
+  auteurId: UUIDFilter
+  createdAt: DateTimeFilter
+  id: UUIDFilter
+  serie: SerieWhereInput
+  serieId: UUIDFilter
+  updatedAt: DateTimeFilter
+}
+
+input AuteurWhereInput {
+  AND: [AuteurWhereInput!]
+  NOT: [AuteurWhereInput!]
+  OR: [AuteurWhereInput!]
+  albums: AuteurAlbumListRelationFilter
+  createdAt: DateTimeFilter
+  id: UUIDFilter
+  metier: EnumMetierFilter
+  personne: PersonneWhereInput
+  personneId: UUIDFilter
+  series: AuteurSerieListRelationFilter
+  updatedAt: DateTimeFilter
+}
+
+type AuteursRelation {
+  edges: [AuteurEdge!]!
+  nodes: [Auteur!]!
+  pageInfo: UUIDModelPageInfo!
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: BoolFilter
+}
+
+type Collection implements AssociableModel & CommonModel & TitledModel & UUIDModel {
+  associations: [String!]!
+  createdAt: DateTime!
+  editeur: Editeur!
+  id: UUID!
+  initiale: NonEmptyString!
+  nom: NonEmptyString!
+  updatedAt: DateTime!
+}
+
+input CollectionConnectNestedOneInput {
+  connect: CollectionWhereUniqueInput!
+}
+
+input CollectionCreateInput {
+  associations: [String!]
+  editeur: EditeurConnectNestedOneInput!
+  nom: NonEmptyString!
+}
+
+type CollectionEdge {
+  cursor: UUID!
+  node: Collection!
+}
+
+input CollectionEditeurIdNomCompoundUniqueInput {
+  editeurId: UUID!
+  nom: NonEmptyString!
+}
+
+input CollectionListRelationFilter {
+  every: CollectionWhereInput
+  none: CollectionWhereInput
+  some: CollectionWhereInput
+}
+
+input CollectionOrderBy {
+  associations: SortOrder
+  createdAt: SortOrder
+  editeur: EditeurOrderBy
+  editeurId: SortOrder
+  editions: OrderByRelationAggregateInput
+  id: SortOrder
+  initiale: SortOrder
+  nom: SortOrder
+  updatedAt: SortOrder
+}
+
+input CollectionUpdateInput {
+  associations: [String!]
+  id: UUID!
+  nom: NonEmptyString
+}
+
+input CollectionUpdateNestedOneInput {
+  connect: CollectionWhereUniqueInput
+  disconnect: Boolean
+}
+
+input CollectionWhereInput {
+  AND: [CollectionWhereInput!]
+  NOT: [CollectionWhereInput!]
+  OR: [CollectionWhereInput!]
+  associations: StringListFilter
+  createdAt: DateTimeFilter
+  editeur: EditeurWhereInput
+  editeurId: UUIDFilter
+  editions: EditionAlbumListRelationFilter
+  id: UUIDFilter
+  initiale: StringFilter
+  nom: StringFilter
+  series: SerieListRelationFilter
+  updatedAt: DateTimeFilter
+}
+
+input CollectionWhereUniqueInput {
+  editeurId_nom: CollectionEditeurIdNomCompoundUniqueInput
+  id: UUID
+}
+
+type CollectionsRelation {
+  edges: [CollectionEdge!]!
+  nodes: [Collection!]!
+  pageInfo: UUIDModelPageInfo!
+}
+
+interface CommonModel {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Cote implements CommonModel & UUIDModel {
+  annee: PositiveInt!
+  createdAt: DateTime!
+  edition: EditionAlbum
+  id: UUID!
+  prix: Currency!
+  updatedAt: DateTime!
+}
+
+input CoteAlbumCreateInput {
+  annee: Year!
+  edition: EditionAlbumConnectNestedOneInput!
+  prix: Currency!
+}
+
+type CoteAlbumEdge {
+  cursor: UUID!
+  node: Cote!
+}
+
+input CoteAlbumListRelationFilter {
+  every: CoteAlbumWhereInput
+  none: CoteAlbumWhereInput
+  some: CoteAlbumWhereInput
+}
+
+input CoteAlbumOrderBy {
+  annee: SortOrder
+  createdAt: SortOrder
+  edition: EditionAlbumOrderBy
+  editionAlbumId: SortOrder
+  id: SortOrder
+  prix: SortOrder
+  updatedAt: SortOrder
+}
+
+input CoteAlbumUpdateInput {
+  annee: Year
+  edition: EditionAlbumConnectNestedOneInput
+  id: UUID!
+  prix: Currency
+}
+
+input CoteAlbumWhereInput {
+  AND: [CoteAlbumWhereInput!]
+  NOT: [CoteAlbumWhereInput!]
+  OR: [CoteAlbumWhereInput!]
+  annee: PositiveInt
+  createdAt: DateTimeFilter
+  edition: EditionAlbumWhereInput
+  editionAlbumId: UUIDFilter
+  id: UUIDFilter
+  prix: Currency
+  updatedAt: DateTimeFilter
+}
+
+type CotesRelation {
+  edges: [CoteAlbumEdge!]!
+  nodes: [Cote!]!
+  pageInfo: UUIDModelPageInfo!
+}
+
+"""
+A field whose value is a Currency: https://en.wikipedia.org/wiki/ISO_4217.
+"""
+scalar Currency @specifiedBy(url: "https://en.wikipedia.org/wiki/ISO_4217")
+
+"""
+A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+input DateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: DateTimeFilter
+  notIn: [DateTime!]
+}
+
+input DecimalFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: DecimalFilter
+  notIn: [Float!]
+}
+
+type Editeur implements AssociableModel & CommonModel & TitledModel & UUIDModel {
+  associations: [String!]!
+  collections(after: UUID, before: UUID, first: NonNegativeInt, last: NonNegativeInt, orderBy: [CollectionOrderBy!], where: CollectionWhereInput): CollectionsRelation!
+  createdAt: DateTime!
+  id: UUID!
+  initiale: NonEmptyString!
+  nom: NonEmptyString!
+  siteWeb: URL
+  updatedAt: DateTime!
+}
+
+input EditeurConnectNestedOneInput {
+  connect: EditeurWhereUniqueInput!
+}
+
+input EditeurCreateInput {
+  associations: [String!]
+  nom: NonEmptyString!
+  siteWeb: URL
+}
+
+type EditeurEdge {
+  cursor: UUID!
+  node: Editeur!
+}
+
+input EditeurOrderBy {
+  associations: SortOrder
+  collections: OrderByRelationAggregateInput
+  createdAt: SortOrder
+  editions: OrderByRelationAggregateInput
+  id: SortOrder
+  initiale: SortOrder
+  nom: SortOrder
+  siteWeb: SortOrder
+  updatedAt: SortOrder
+}
+
+input EditeurUpdateInput {
+  associations: [String!]
+  id: UUID!
+  nom: NonEmptyString
+  siteWeb: URL
+}
+
+input EditeurWhereInput {
+  AND: [EditeurWhereInput!]
+  NOT: [EditeurWhereInput!]
+  OR: [EditeurWhereInput!]
+  associations: StringListFilter
+  collections: CollectionListRelationFilter
+  createdAt: DateTimeFilter
+  editions: EditionAlbumListRelationFilter
+  id: UUIDFilter
+  initiale: StringFilter
+  nom: StringFilter
+  series: SerieListRelationFilter
+  siteWeb: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+input EditeurWhereUniqueInput {
+  id: UUID
+  nom: NonEmptyString
+}
+
+type Edition implements CommonModel & UUIDModel {
+  anneeEdition: Year
+  couleur: Boolean
+  createdAt: DateTime!
+  formatEdition: Option
+  id: UUID!
+  isbn: String
+  nombreDePages: PositiveInt
+  notes: String
+  orientation: Option
+  reliure: Option
+  sensLecture: Option
+  typeEdition: Option
+  updatedAt: DateTime!
+  vo: Boolean
+}
+
+type EditionAlbum implements CommonModel & UUIDModel {
+  album: Album
+  collection: Collection
+  cotes(after: UUID, before: UUID, first: NonNegativeInt, last: NonNegativeInt, orderBy: [CoteAlbumOrderBy!], where: CoteAlbumWhereInput): CotesRelation!
+  createdAt: DateTime!
+  dateAchat: Date
+  dedicace: Boolean
+  editeur: Editeur
+  edition: Edition
+  etat: Option
+  gratuit: Boolean
+  id: UUID!
+  images(after: UUID, before: UUID, first: NonNegativeInt, last: NonNegativeInt, orderBy: [ImageOrderBy!], where: ImageWhereInput): ImagesRelation!
+  notes: String
+  numeroPerso: String
+  occasion: Boolean
+  offert: Boolean
+  prix: Currency
+  stock: Boolean!
+  updatedAt: DateTime!
+}
+
+input EditionAlbumConnectNestedOneInput {
+  connect: EditionAlbumWhereUniqueInput!
+}
+
+input EditionAlbumCreateInput {
+  album: AlbumConnectNestedOneInput!
+  collection: CollectionConnectNestedOneInput
+  dateAchat: Date
+  dedicace: Boolean
+  editeur: EditeurConnectNestedOneInput!
+  edition: EditionCreateNestedOneInput!
+  etat: EtatConnectNestedOneInput
+  gratuit: Boolean
+  notes: NonEmptyString
+  numeroPerso: NonEmptyString
+  occasion: Boolean
+  offert: Boolean
+  prix: Currency
+  stock: Boolean
+}
+
+type EditionAlbumEdge {
+  cursor: UUID!
+  node: EditionAlbum!
+}
+
+input EditionAlbumListRelationFilter {
+  every: EditionAlbumWhereInput
+  none: EditionAlbumWhereInput
+  some: EditionAlbumWhereInput
+}
+
+input EditionAlbumOrderBy {
+  album: AlbumOrderBy
+  albumId: SortOrder
+  collection: CollectionOrderBy
+  collectionId: SortOrder
+  cotes: OrderByRelationAggregateInput
+  createdAt: SortOrder
+  dateAchat: SortOrder
+  dedicace: SortOrder
+  editeur: EditeurOrderBy
+  editeurId: SortOrder
+  edition: EditionOrderBy
+  editionId: SortOrder
+  etat: OptionOrderBy
+  etatId: SortOrder
+  gratuit: SortOrder
+  id: SortOrder
+  images: OrderByRelationAggregateInput
+  notes: SortOrder
+  numeroPerso: SortOrder
+  occasion: SortOrder
+  offert: SortOrder
+  prix: SortOrder
+  stock: SortOrder
+  updatedAt: SortOrder
+}
+
+input EditionAlbumUpdateInput {
+  album: AlbumConnectNestedOneInput
+  collection: CollectionUpdateNestedOneInput
+  dateAchat: Date
+  dedicace: Boolean
+  editeur: EditeurConnectNestedOneInput
+  edition: EditionUpdateNestedOneInput
+  etat: EtatUpdateNestedOneInput
+  gratuit: Boolean
+  id: UUID!
+  notes: NonEmptyString
+  numeroPerso: NonEmptyString
+  occasion: Boolean
+  offert: Boolean
+  prix: Currency
+  stock: Boolean
+}
+
+input EditionAlbumWhereInput {
+  AND: [EditionAlbumWhereInput!]
+  NOT: [EditionAlbumWhereInput!]
+  OR: [EditionAlbumWhereInput!]
+  album: AlbumWhereInput
+  albumId: UUIDFilter
+  collection: CollectionWhereInput
+  collectionId: UUIDFilter
+  cotes: CoteAlbumListRelationFilter
+  createdAt: DateTimeFilter
+  dateAchat: DateTimeFilter
+  dedicace: BoolFilter
+  editeur: EditeurWhereInput
+  editeurId: UUIDFilter
+  edition: EditionWhereInput
+  editionId: UUIDFilter
+  etat: OptionWhereInput
+  etatId: IntFilter
+  gratuit: BoolFilter
+  id: UUIDFilter
+  images: ImageListRelationFilter
+  notes: StringFilter
+  numeroPerso: StringFilter
+  occasion: BoolFilter
+  offert: BoolFilter
+  prix: DecimalFilter
+  stock: BoolFilter
+  updatedAt: DateTimeFilter
+}
+
+input EditionAlbumWhereUniqueInput {
+  id: UUID
+}
+
+input EditionCreateInput {
+  anneeEdition: Year
+  couleur: Boolean
+  formatEdition: FormatConnectNestedOneInput
+  isbn: ISBN
+  nombreDePages: PositiveInt
+  notes: NonEmptyString
+  orientation: OrientationConnectNestedOneInput
+  reliure: ReliureConnectNestedOneInput
+  sensLecture: SensLectureConnectNestedOneInput
+  typeEdition: TypeEditionConnectNestedOneInput
+  vo: Boolean
+}
+
+input EditionCreateNestedOneInput {
+  create: EditionCreateInput
+}
+
+type EditionEdge {
+  cursor: UUID!
+  node: Edition!
+}
+
+"""Integers that will represent a book condition."""
+scalar EditionEtat
+
+"""Integers that will represent a book edition format."""
+scalar EditionFormat
+
+input EditionListRelationFilter {
+  every: EditionWhereInput
+  none: EditionWhereInput
+  some: EditionWhereInput
+}
+
+input EditionOrderBy {
+  albums: OrderByRelationAggregateInput
+  anneeEdition: SortOrder
+  couleur: SortOrder
+  createdAt: SortOrder
+  formatEdition: OptionOrderBy
+  formatEditionId: SortOrder
+  id: SortOrder
+  isbn: SortOrder
+  nombreDePages: SortOrder
+  notes: SortOrder
+  orientation: OptionOrderBy
+  orientationId: SortOrder
+  reliure: OptionOrderBy
+  reliureId: SortOrder
+  sensLecture: OptionOrderBy
+  sensLectureId: SortOrder
+  serie: SerieOrderBy
+  typeEdition: OptionOrderBy
+  typeEditionId: SortOrder
+  updatedAt: SortOrder
+  vo: SortOrder
+}
+
+"""Integers that will represent a book edition orientation."""
+scalar EditionOrientation
+
+"""Integers that will represent a book binding."""
+scalar EditionReliure
+
+"""Integers that will represent a book reading direction."""
+scalar EditionSensLecture
+
+"""Integers that will represent a book edition kind."""
+scalar EditionType
+
+input EditionUpdateInput {
+  anneeEdition: Year
+  couleur: Boolean
+  formatEdition: FormatUpdateNestedOneInput
+  id: UUID!
+  isbn: ISBN
+  nombreDePages: PositiveInt
+  notes: NonEmptyString
+  orientation: OrientationUpdateNestedOneInput
+  reliure: ReliureUpdateNestedOneInput
+  sensLecture: SensLectureUpdateNestedOneInput
+  typeEdition: TypeEditionUpdateNestedOneInput
+  vo: Boolean
+}
+
+input EditionUpdateNestedOneInput {
+  update: EditionUpdateInput
+}
+
+input EditionWhereInput {
+  AND: [EditionWhereInput!]
+  NOT: [EditionWhereInput!]
+  OR: [EditionWhereInput!]
+  albums: EditionAlbumListRelationFilter
+  anneeEdition: IntFilter
+  couleur: BoolFilter
+  createdAt: DateTimeFilter
+  formatEdition: OptionWhereInput
+  formatEditionId: IntFilter
+  id: UUIDFilter
+  isbn: StringFilter
+  nombreDePages: IntFilter
+  notes: StringFilter
+  orientation: OptionWhereInput
+  orientationId: IntFilter
+  reliure: OptionWhereInput
+  reliureId: IntFilter
+  sensLecture: OptionWhereInput
+  sensLectureId: IntFilter
+  serie: SerieWhereInput
+  typeEdition: OptionWhereInput
+  typeEditionId: IntFilter
+  updatedAt: DateTimeFilter
+  vo: BoolFilter
+}
+
+type EditionsAlbumsRelation {
+  edges: [EditionAlbumEdge!]!
+  nodes: [EditionAlbum!]!
+  pageInfo: UUIDModelPageInfo!
+}
+
+input EnumMetierFilter {
+  equals: Metier
+  in: [Metier!]
+  not: EnumMetierFilter
+  notIn: [Metier!]
+}
+
+input EtatConnectNestedOneInput {
+  connect: OptionEtatWhereUniqueInput!
+}
+
+input EtatUpdateNestedOneInput {
+  connect: OptionEtatWhereUniqueInput
+  disconnect: Boolean
+}
+
+input FormatConnectNestedOneInput {
+  connect: OptionFormatWhereUniqueInput!
+}
+
+input FormatUpdateNestedOneInput {
+  connect: OptionFormatWhereUniqueInput
+  disconnect: Boolean
+}
+
+type Genre implements AssociableModel & CommonModel & TitledModel & UUIDModel {
+  associations: [String!]!
+  createdAt: DateTime!
+  genre: NonEmptyString!
+  id: UUID!
+  initiale: NonEmptyString!
+  updatedAt: DateTime!
+}
+
+input GenreAlbumListRelationFilter {
+  every: GenreAlbumWhereInput
+  none: GenreAlbumWhereInput
+  some: GenreAlbumWhereInput
+}
+
+input GenreAlbumWhereInput {
+  AND: [GenreAlbumWhereInput!]
+  NOT: [GenreAlbumWhereInput!]
+  OR: [GenreAlbumWhereInput!]
+  album: AlbumWhereInput
+  albumId: UUIDFilter
+  createdAt: DateTimeFilter
+  fromSerie: BoolFilter
+  genre: GenreWhereInput
+  genreId: UUIDFilter
+  id: UUIDFilter
+  updatedAt: DateTimeFilter
+}
+
+input GenreCreateInput {
+  associations: [String!]
+  genre: NonEmptyString!
+}
+
+type GenreEdge {
+  cursor: UUID!
+  node: Genre!
+}
+
+input GenreOrderBy {
+  albums: OrderByRelationAggregateInput
+  associations: SortOrder
+  createdAt: SortOrder
+  genre: SortOrder
+  id: SortOrder
+  initiale: SortOrder
+  series: OrderByRelationAggregateInput
+  updatedAt: SortOrder
+}
+
+input GenreSerieCreateManyInput {
+  genreId: UUID!
+}
+
+input GenreSerieCreateManyInputEnvelope {
+  data: GenreSerieCreateManyInput!
+}
+
+input GenreSerieCreateNestedManyInput {
+  createMany: GenreSerieCreateManyInputEnvelope
+}
+
+input GenreSerieListRelationFilter {
+  every: GenreSerieWhereInput
+  none: GenreSerieWhereInput
+  some: GenreSerieWhereInput
+}
+
+input GenreSerieScalarWhereInput {
+  genreId: UUIDFilter!
+}
+
+input GenreSerieUpdateNestedManyInput {
+  createMany: GenreSerieCreateManyInputEnvelope
+  deleteMany: GenreSerieScalarWhereInput
+}
+
+input GenreSerieWhereInput {
+  AND: [GenreSerieWhereInput!]
+  NOT: [GenreSerieWhereInput!]
+  OR: [GenreSerieWhereInput!]
+  createdAt: DateTimeFilter
+  genre: GenreWhereInput
+  genreId: UUIDFilter
+  id: UUIDFilter
+  serie: SerieWhereInput
+  serieId: UUIDFilter
+  updatedAt: DateTimeFilter
+}
+
+input GenreUpdateInput {
+  associations: [String!]
+  genre: NonEmptyString
+  id: UUID!
+}
+
+input GenreWhereInput {
+  AND: [GenreWhereInput!]
+  NOT: [GenreWhereInput!]
+  OR: [GenreWhereInput!]
+  albums: GenreAlbumListRelationFilter
+  associations: StringListFilter
+  createdAt: DateTimeFilter
+  genre: StringFilter
+  id: UUIDFilter
+  initiale: StringFilter
+  series: GenreSerieListRelationFilter
+  updatedAt: DateTimeFilter
+}
+
+type GenresRelation {
+  edges: [GenreEdge!]!
+  nodes: [Genre!]!
+  pageInfo: UUIDModelPageInfo!
+}
+
+interface IDModel implements CommonModel {
+  createdAt: DateTime!
+  id: PositiveInt!
+  updatedAt: DateTime!
+}
+
+type IDModelPageInfo {
+  endCursor: PositiveInt
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: PositiveInt
+}
+
+"""
+A field whose value is a ISBN-10 or ISBN-13 number: https://en.wikipedia.org/wiki/International_Standard_Book_Number.
+"""
+scalar ISBN
+
+type Image implements CommonModel & UUIDModel {
+  createdAt: DateTime!
+  edition: EditionAlbum!
+  id: UUID!
+  ordre: PositiveInt!
+  titre: NonEmptyString
+  typeImage: Option!
+  updatedAt: DateTime!
+}
+
+input ImageCreateInput {
+  edition: EditionAlbumConnectNestedOneInput!
+  image: Upload!
+  ordre: PositiveInt!
+  titre: NonEmptyString
+  type: TypeImageConnectNestedOneInput!
+}
+
+type ImageEdge {
+  cursor: UUID!
+  node: Image!
+}
+
+input ImageListRelationFilter {
+  every: ImageWhereInput
+  none: ImageWhereInput
+  some: ImageWhereInput
+}
+
+input ImageOrderBy {
+  createdAt: SortOrder
+  edition: EditionAlbumOrderBy
+  editionId: SortOrder
+  id: SortOrder
+  image: SortOrder
+  ordre: SortOrder
+  titre: SortOrder
+  type: OptionOrderBy
+  typeId: SortOrder
+  updatedAt: SortOrder
+}
+
+"""Integers that will represent an image kind."""
+scalar ImageType
+
+input ImageUpdateInput {
+  edition: EditionAlbumConnectNestedOneInput
+  id: UUID!
+  image: Upload
+  ordre: PositiveInt
+  titre: NonEmptyString
+  type: TypeImageConnectNestedOneInput
+}
+
+input ImageWhereInput {
+  AND: [ImageWhereInput!]
+  NOT: [ImageWhereInput!]
+  OR: [ImageWhereInput!]
+  createdAt: DateTimeFilter
+  edition: EditionAlbumWhereInput
+  editionId: UUIDFilter
+  id: UUIDFilter
+  ordre: IntFilter
+  titre: StringFilter
+  type: OptionWhereInput
+  typeId: IntFilter
+  updatedAt: DateTimeFilter
+}
+
+type ImagesRelation {
+  edges: [ImageEdge!]!
+  nodes: [Image!]!
+  pageInfo: UUIDModelPageInfo!
+}
+
+input IntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: IntFilter
+  notIn: [Int!]
+}
+
+interface MaybeTitledModel implements AssociableModel & CommonModel & UUIDModel {
+  associations: [String!]!
+  createdAt: DateTime!
+  id: UUID!
+  initiale: NonEmptyString
+  updatedAt: DateTime!
+}
+
+enum Metier {
+  coloriste
+  dessinateur
+  scenariste
+}
+
+"""Integers that will represent a month within a date."""
+scalar Month
+
+type Mutation {
+  addAlbumAuteur(albumId: UUID!, metier: Metier!, personneId: UUID!): Album!
+  addAlbumGenre(albumId: UUID!, genre: String!): Album!
+  addSerieAuteur(metier: Metier!, personneId: UUID!, serieId: UUID!): Serie!
+  addSerieGenre(genre: String!, serieId: UUID!): Serie!
+  addorupdateCote(annee: Year!, editionId: UUID!, prix: Currency!): [Cote!]!
+  createAlbum(data: AlbumCreateInput!): Album!
+  createCollection(data: CollectionCreateInput!): Collection!
+  createCoteAlbum(data: CoteAlbumCreateInput!): Cote!
+  createEditeur(data: EditeurCreateInput!): Editeur!
+  createEditionAlbum(data: EditionAlbumCreateInput!): EditionAlbum!
+  createGenre(data: GenreCreateInput!): Genre!
+  createImage(data: ImageCreateInput!): Image!
+  createPersonne(data: PersonneCreateInput!): Personne!
+  createSerie(data: SerieCreateInput!): Serie!
+  createUnivers(data: UniversCreateInput!): Univers!
+  deleteAlbum(id: UUID!): Album!
+  deleteCollection(id: UUID!): Collection!
+  deleteCoteAlbum(id: UUID!): Cote!
+  deleteEditeur(id: UUID!): Editeur!
+  deleteEditionAlbum(id: UUID!): EditionAlbum!
+  deleteGenre(id: UUID!): Genre!
+  deleteImage(id: UUID!): Image!
+  deletePersonne(id: UUID!): Personne!
+  deleteSerie(id: UUID!): Serie!
+  deleteUnivers(id: UUID!): Univers!
+  removeAlbumAuteur(albumId: UUID!, metier: Metier!, personneId: UUID!): Album!
+  removeAlbumGenre(albumId: UUID!, genre: String!): Album!
+  removeCote(annee: Year!, editionId: UUID!): [Cote!]!
+  removeSerieAuteur(metier: Metier!, personneId: UUID!, serieId: UUID!): Serie!
+  removeSerieGenre(genre: String!, serieId: UUID!): Serie!
+  updateAlbum(data: AlbumUpdateInput!): Album!
+  updateCollection(data: CollectionUpdateInput!): Collection!
+  updateCoteAlbum(data: CoteAlbumUpdateInput!): Cote!
+  updateEditeur(data: EditeurUpdateInput!): Editeur!
+  updateEditionAlbum(data: EditionAlbumUpdateInput!): EditionAlbum!
+  updateGenre(data: GenreUpdateInput!): Genre!
+  updateImage(data: ImageUpdateInput!): Image!
+  updatePersonne(data: PersonneUpdateInput!): Personne!
+  updateSerie(data: SerieUpdateInput!): Serie!
+  updateUnivers(data: UniversUpdateInput!): Univers!
+}
+
+input NestedStringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringFilter
+  notIn: [String!]
+  search: String
+  startsWith: String
+}
+
+input NestedUUIDFilter {
+  equals: UUID
+  gt: UUID
+  gte: UUID
+  in: [UUID!]
+  lt: UUID
+  lte: UUID
+  not: NestedUUIDFilter
+  notIn: [UUID!]
+  search: UUID
+}
+
+"""A string that cannot be passed as an empty value"""
+scalar NonEmptyString
+
+"""Integers that will have a value of 0 or more."""
+scalar NonNegativeInt
+
+"""Integers that will represent a notation."""
+scalar Notation
+
+input NotationConnectNestedOneInput {
+  connect: OptionNotationWhereUniqueInput!
+}
+
+input NotationUpdateNestedOneInput {
+  connect: OptionNotationWhereUniqueInput
+  disconnect: Boolean
+}
+
+type Option implements CommonModel & IDModel {
+  category: PositiveInt!
+  createdAt: DateTime!
+  defaut: Boolean!
+  id: PositiveInt!
+  libelle: NonEmptyString!
+  ordre: PositiveInt!
+  updatedAt: DateTime!
+}
+
+type OptionEdge {
+  cursor: PositiveInt!
+  node: Option!
+}
+
+input OptionEtatWhereUniqueInput {
+  id: EditionEtat!
+}
+
+input OptionFormatWhereUniqueInput {
+  id: EditionFormat!
+}
+
+input OptionNotationWhereUniqueInput {
+  id: Notation!
+}
+
+input OptionOrderBy {
+  albumsNotation: OrderByRelationAggregateInput
+  category: SortOrder
+  createdAt: SortOrder
+  defaut: SortOrder
+  editionsEtat: OrderByRelationAggregateInput
+  editionsFormat: OrderByRelationAggregateInput
+  editionsOrientation: OrderByRelationAggregateInput
+  editionsReliure: OrderByRelationAggregateInput
+  editionsSensLecture: OrderByRelationAggregateInput
+  editionsType: OrderByRelationAggregateInput
+  id: SortOrder
+  imagesType: OrderByRelationAggregateInput
+  libelle: SortOrder
+  ordre: SortOrder
+  seriesNotation: OrderByRelationAggregateInput
+  updatedAt: SortOrder
+}
+
+input OptionOrientationWhereUniqueInput {
+  id: EditionOrientation!
+}
+
+input OptionReliureWhereUniqueInput {
+  id: EditionReliure!
+}
+
+input OptionSensLectureWhereUniqueInput {
+  id: EditionSensLecture!
+}
+
+input OptionTypeEditionWhereUniqueInput {
+  id: EditionType!
+}
+
+input OptionTypeImageWhereUniqueInput {
+  id: ImageType!
+}
+
+input OptionWhereInput {
+  AND: [OptionWhereInput!]
+  NOT: [OptionWhereInput!]
+  OR: [OptionWhereInput!]
+  albumsNotation: AlbumListRelationFilter
+  category: IntFilter
+  createdAt: DateTimeFilter
+  defaut: BoolFilter
+  editionsEtat: EditionAlbumListRelationFilter
+  editionsFormat: EditionListRelationFilter
+  editionsOrientation: EditionListRelationFilter
+  editionsReliure: EditionListRelationFilter
+  editionsSensLecture: EditionListRelationFilter
+  editionsType: EditionListRelationFilter
+  id: IntFilter
+  imagesType: ImageListRelationFilter
+  libelle: StringFilter
+  ordre: IntFilter
+  seriesNotation: SerieListRelationFilter
+  updatedAt: DateTimeFilter
+}
+
+input OrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input OrientationConnectNestedOneInput {
+  connect: OptionOrientationWhereUniqueInput!
+}
+
+input OrientationUpdateNestedOneInput {
+  connect: OptionOrientationWhereUniqueInput
+  disconnect: Boolean
+}
+
+type Personne implements AssociableModel & CommonModel & TitledModel & UUIDModel {
+  associations: [String!]!
+  bibliographie(after: UUID, before: UUID, first: NonNegativeInt, last: NonNegativeInt, orderBy: [AuteurOrderBy!], where: AuteurWhereInput): AuteursRelation!
+  biographie: NonEmptyString
+  createdAt: DateTime!
+  id: UUID!
+  initiale: NonEmptyString!
+  nom: NonEmptyString!
+  siteWeb: URL
+  updatedAt: DateTime!
+}
+
+input PersonneCreateInput {
+  associations: [String!]
+  biographie: NonEmptyString
+  nom: NonEmptyString!
+  siteWeb: URL
+}
+
+type PersonneEdge {
+  cursor: UUID!
+  node: Personne!
+}
+
+input PersonneOrderBy {
+  associations: SortOrder
+  bibliographie: OrderByRelationAggregateInput
+  biographie: SortOrder
+  createdAt: SortOrder
+  id: SortOrder
+  initiale: SortOrder
+  nom: SortOrder
+  siteWeb: SortOrder
+  updatedAt: SortOrder
+}
+
+input PersonneUpdateInput {
+  associations: [String!]
+  biographie: NonEmptyString
+  id: UUID!
+  nom: NonEmptyString
+  siteWeb: URL
+}
+
+input PersonneWhereInput {
+  AND: [PersonneWhereInput!]
+  NOT: [PersonneWhereInput!]
+  OR: [PersonneWhereInput!]
+  associations: StringListFilter
+  bibliographie: AuteurListRelationFilter
+  biographie: StringFilter
+  createdAt: DateTimeFilter
+  id: UUIDFilter
+  initiale: StringFilter
+  nom: StringFilter
+  siteWeb: StringFilter
+  updatedAt: DateTimeFilter
+}
+
+"""Integers that will have a value greater than 0."""
+scalar PositiveInt
+
+type Query {
+  album(where: AlbumWhereInput!): Album
+  albumById(id: UUID!): Album
+  albumCount(where: AlbumWhereInput): NonNegativeInt!
+  albumList(orderBy: [AlbumOrderBy!], skip: NonNegativeInt = 0, take: NonNegativeInt, where: AlbumWhereInput): [Album!]!
+  editeur(where: EditeurWhereInput!): Editeur
+  editeurById(id: UUID!): Editeur
+  editeurCount(where: EditeurWhereInput): NonNegativeInt!
+  editeurList(orderBy: [EditeurOrderBy!], skip: NonNegativeInt = 0, take: NonNegativeInt, where: EditeurWhereInput): [Editeur!]!
+  editionAlbum(where: EditionAlbumWhereInput!): EditionAlbum
+  editionAlbumById(id: UUID!): EditionAlbum
+  editionAlbumCount(where: EditionAlbumWhereInput): NonNegativeInt!
+  editionAlbumList(orderBy: [EditionAlbumOrderBy!], skip: NonNegativeInt = 0, take: NonNegativeInt, where: EditionAlbumWhereInput): [EditionAlbum!]!
+  genre(where: GenreWhereInput!): Genre
+  genreById(id: UUID!): Genre
+  genreCount(where: GenreWhereInput): NonNegativeInt!
+  genreList(orderBy: [GenreOrderBy!], skip: NonNegativeInt = 0, take: NonNegativeInt, where: GenreWhereInput): [Genre!]!
+  image(id: UUID!): Image
+  optionsByCategorie(categorieId: NonNegativeInt!): [Option!]!
+  personne(where: PersonneWhereInput!): Personne
+  personneById(id: UUID!): Personne
+  personneCount(where: PersonneWhereInput): NonNegativeInt!
+  personneList(orderBy: [PersonneOrderBy!], skip: NonNegativeInt = 0, take: NonNegativeInt, where: PersonneWhereInput): [Personne!]!
+  serie(where: SerieWhereInput!): Serie
+  serieById(id: UUID!): Serie
+  serieCount(where: SerieWhereInput): NonNegativeInt!
+  serieList(orderBy: [SerieOrderBy!], skip: NonNegativeInt = 0, take: NonNegativeInt, where: SerieWhereInput): [Serie!]!
+  univers(where: UniversWhereInput!): Univers
+  universById(id: UUID!): Univers
+  universCount(where: UniversWhereInput): NonNegativeInt!
+  universList(orderBy: [UniversOrderBy!], skip: NonNegativeInt = 0, take: NonNegativeInt, where: UniversWhereInput): [Univers!]!
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input ReliureConnectNestedOneInput {
+  connect: OptionReliureWhereUniqueInput!
+}
+
+input ReliureUpdateNestedOneInput {
+  connect: OptionReliureWhereUniqueInput
+  disconnect: Boolean
+}
+
+input SensLectureConnectNestedOneInput {
+  connect: OptionSensLectureWhereUniqueInput!
+}
+
+input SensLectureUpdateNestedOneInput {
+  connect: OptionSensLectureWhereUniqueInput
+  disconnect: Boolean
+}
+
+type Serie implements AssociableModel & CommonModel & MaybeTitledModel & UUIDModel {
+  associations: [String!]!
+  auteurs(after: UUID, before: UUID, first: NonNegativeInt, last: NonNegativeInt, orderBy: [AuteurOrderBy!], where: AuteurWhereInput): AuteursRelation!
+  complete: Boolean
+  createdAt: DateTime!
+  genres(after: UUID, before: UUID, first: NonNegativeInt, last: NonNegativeInt, orderBy: [GenreOrderBy!], where: GenreWhereInput): GenresRelation!
+  id: UUID!
+  initiale: NonEmptyString
+  modeleEdition: Edition!
+  nbAlbums: PositiveInt
+  notation: Option
+  notes: NonEmptyString
+  siteWeb: URL
+  suivreManquants: Boolean
+  suivreSorties: Boolean
+  sujet: NonEmptyString
+  terminee: Boolean
+  titre: NonEmptyString
+  updatedAt: DateTime!
+}
+
+input SerieConnectNestedOneInput {
+  connect: SerieWhereUniqueInput!
+}
+
+input SerieCreateInput {
+  associations: [String!]
+  collection: CollectionConnectNestedOneInput
+  complete: Boolean
+  editeur: EditeurConnectNestedOneInput!
+  genres: GenreSerieCreateNestedManyInput
+  modeleEdition: EditionCreateNestedOneInput!
+  nbAlbums: PositiveInt
+  notation: NotationConnectNestedOneInput
+  notes: NonEmptyString
+  siteWeb: URL
+  suivreManquants: Boolean
+  suivreSorties: Boolean
+  sujet: NonEmptyString
+  terminee: Boolean
+  titre: NonEmptyString
+  univers: UniversSerieCreateNestedManyInput
+}
+
+type SerieEdge {
+  cursor: UUID!
+  node: Serie!
+}
+
+input SerieListRelationFilter {
+  every: SerieWhereInput
+  none: SerieWhereInput
+  some: SerieWhereInput
+}
+
+input SerieOrderBy {
+  albums: OrderByRelationAggregateInput
+  associations: SortOrder
+  auteurs: OrderByRelationAggregateInput
+  collection: CollectionOrderBy
+  collectionId: SortOrder
+  complete: SortOrder
+  createdAt: SortOrder
+  editeur: EditeurOrderBy
+  editeurId: SortOrder
+  genres: OrderByRelationAggregateInput
+  id: SortOrder
+  initiale: SortOrder
+  modeleEdition: EditionOrderBy
+  modeleEditionId: SortOrder
+  nbAlbums: SortOrder
+  notation: OptionOrderBy
+  notationId: SortOrder
+  notes: SortOrder
+  siteWeb: SortOrder
+  suivreManquants: SortOrder
+  suivreSorties: SortOrder
+  sujet: SortOrder
+  terminee: SortOrder
+  titre: SortOrder
+  univers: OrderByRelationAggregateInput
+  updatedAt: SortOrder
+}
+
+input SerieUpdateInput {
+  associations: [String!]
+  collection: CollectionUpdateNestedOneInput
+  complete: Boolean
+  editeur: EditeurConnectNestedOneInput
+  genres: GenreSerieUpdateNestedManyInput
+  id: UUID!
+  modeleEdition: EditionUpdateNestedOneInput
+  nbAlbums: PositiveInt
+  notation: NotationUpdateNestedOneInput
+  notes: NonEmptyString
+  siteWeb: URL
+  suivreManquants: Boolean
+  suivreSorties: Boolean
+  sujet: NonEmptyString
+  terminee: Boolean
+  titre: NonEmptyString
+  univers: UniversSerieUpdateNestedManyInput
+}
+
+input SerieUpdateNestedOneInput {
+  connect: SerieWhereUniqueInput
+  disconnect: Boolean
+}
+
+input SerieWhereInput {
+  AND: [SerieWhereInput!]
+  NOT: [SerieWhereInput!]
+  OR: [SerieWhereInput!]
+  albums: AlbumListRelationFilter
+  associations: StringListFilter
+  auteurs: AuteurSerieListRelationFilter
+  collection: CollectionWhereInput
+  collectionId: UUIDFilter
+  complete: BoolFilter
+  createdAt: DateTimeFilter
+  editeur: EditeurWhereInput
+  editeurId: UUIDFilter
+  genres: GenreSerieListRelationFilter
+  id: UUIDFilter
+  initiale: StringFilter
+  modeleEdition: EditionWhereInput
+  modeleEditionId: UUIDFilter
+  nbAlbums: IntFilter
+  notation: OptionWhereInput
+  notationId: IntFilter
+  notes: StringFilter
+  siteWeb: StringFilter
+  suivreManquants: BoolFilter
+  suivreSorties: BoolFilter
+  sujet: StringFilter
+  terminee: BoolFilter
+  titre: StringFilter
+  univers: UniversSerieListRelationFilter
+  updatedAt: DateTimeFilter
+}
+
+input SerieWhereUniqueInput {
+  id: UUID
+}
+
+type SeriesRelation {
+  edges: [SerieEdge!]!
+  nodes: [Serie!]!
+  pageInfo: UUIDModelPageInfo!
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input StringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedStringFilter
+  notIn: [String!]
+  search: String
+  startsWith: String
+}
+
+input StringListFilter {
+  equals: [String!]
+  has: String
+  hasEvery: [String!]
+  hasSome: [String!]
+  isEmpty: Boolean
+}
+
+type Subscription {
+  albumCreated: Album!
+  albumDeleted: Album!
+  albumUpdated: Album!
+  collectionCreated: Collection!
+  collectionDeleted: Collection!
+  collectionUpdated: Collection!
+  coteAlbumCreated: Cote!
+  coteAlbumDeleted: Cote!
+  coteAlbumUpdated: Cote!
+  editeurCreated: Editeur!
+  editeurDeleted: Editeur!
+  editeurUpdated: Editeur!
+  editionAlbumCreated: EditionAlbum!
+  editionAlbumDeleted: EditionAlbum!
+  editionAlbumUpdated: EditionAlbum!
+  genreCreated: Genre!
+  genreDeleted: Genre!
+  genreUpdated: Genre!
+  imageCreated: Image!
+  imageDeleted: Image!
+  imageUpdated: Image!
+  personneCreated: Personne!
+  personneDeleted: Personne!
+  personneUpdated: Personne!
+  serieCreated: Serie!
+  serieDeleted: Serie!
+  serieUpdated: Serie!
+  universCreated: Univers!
+  universDeleted: Univers!
+  universUpdated: Univers!
+}
+
+interface TitledModel implements AssociableModel & CommonModel & UUIDModel {
+  associations: [String!]!
+  createdAt: DateTime!
+  id: UUID!
+  initiale: NonEmptyString!
+  updatedAt: DateTime!
+}
+
+input TypeEditionConnectNestedOneInput {
+  connect: OptionTypeEditionWhereUniqueInput!
+}
+
+input TypeEditionUpdateNestedOneInput {
+  connect: OptionTypeEditionWhereUniqueInput
+  disconnect: Boolean
+}
+
+input TypeImageConnectNestedOneInput {
+  connect: OptionTypeImageWhereUniqueInput!
+}
+
+"""
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar URL
+
+"""
+A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier.
+"""
+scalar UUID
+
+input UUIDFilter {
+  equals: UUID
+  gt: UUID
+  gte: UUID
+  in: [UUID!]
+  lt: UUID
+  lte: UUID
+  mode: QueryMode
+  not: NestedUUIDFilter
+  notIn: [UUID!]
+  search: UUID
+}
+
+interface UUIDModel implements CommonModel {
+  createdAt: DateTime!
+  id: UUID!
+  updatedAt: DateTime!
+}
+
+type UUIDModelPageInfo {
+  endCursor: UUID
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: UUID
+}
+
+type Univers implements AssociableModel & CommonModel & TitledModel & UUIDModel {
+  arbre(after: UUID, before: UUID, first: NonNegativeInt, last: NonNegativeInt, orderBy: [UniversOrderBy!], where: UniversWhereInput): UniversRelation!
+  associations: [String!]!
+  branches: [Univers!]!
+  createdAt: DateTime!
+  description: NonEmptyString
+  enfants(after: UUID, before: UUID, first: NonNegativeInt, last: NonNegativeInt, orderBy: [UniversOrderBy!], where: UniversWhereInput): UniversRelation!
+  id: UUID!
+  initiale: NonEmptyString!
+  nom: NonEmptyString!
+  parent: Univers
+  racine: Univers!
+  siteWeb: URL
+  updatedAt: DateTime!
+}
+
+input UniversAlbumListRelationFilter {
+  every: UniversAlbumWhereInput
+  none: UniversAlbumWhereInput
+  some: UniversAlbumWhereInput
+}
+
+input UniversAlbumWhereInput {
+  AND: [UniversAlbumWhereInput!]
+  NOT: [UniversAlbumWhereInput!]
+  OR: [UniversAlbumWhereInput!]
+  album: AlbumWhereInput
+  albumId: UUIDFilter
+  createdAt: DateTimeFilter
+  fromSerie: BoolFilter
+  id: UUIDFilter
+  univers: UniversWhereInput
+  universId: UUIDFilter
+  updatedAt: DateTimeFilter
+}
+
+input UniversConnectNestedOneInput {
+  connect: UniversWhereUniqueInput!
+}
+
+input UniversCreateInput {
+  associations: [String!]
+  description: NonEmptyString
+  nom: NonEmptyString!
+  siteWeb: URL
+  universParent: UniversConnectNestedOneInput
+  universRacine: UniversConnectNestedOneInput!
+}
+
+type UniversEdge {
+  cursor: UUID!
+  node: Univers!
+}
+
+input UniversListRelationFilter {
+  every: UniversWhereInput
+  none: UniversWhereInput
+  some: UniversWhereInput
+}
+
+input UniversOrderBy {
+  albums: OrderByRelationAggregateInput
+  associations: SortOrder
+  createdAt: SortOrder
+  description: SortOrder
+  id: SortOrder
+  initiale: SortOrder
+  nom: SortOrder
+  series: OrderByRelationAggregateInput
+  siteWeb: SortOrder
+  universBranches: SortOrder
+  universEnfants: OrderByRelationAggregateInput
+  universFeuilles: OrderByRelationAggregateInput
+  universParent: UniversOrderBy
+  universParentId: SortOrder
+  universRacine: UniversOrderBy
+  universRacineId: SortOrder
+  updatedAt: SortOrder
+}
+
+type UniversRelation {
+  edges: [UniversEdge!]!
+  nodes: [Univers!]!
+  pageInfo: UUIDModelPageInfo!
+}
+
+input UniversSerieCreateManyInput {
+  universId: UUID!
+}
+
+input UniversSerieCreateManyInputEnvelope {
+  data: UniversSerieCreateManyInput!
+}
+
+input UniversSerieCreateNestedManyInput {
+  createMany: UniversSerieCreateManyInputEnvelope
+}
+
+input UniversSerieListRelationFilter {
+  every: UniversSerieWhereInput
+  none: UniversSerieWhereInput
+  some: UniversSerieWhereInput
+}
+
+input UniversSerieScalarWhereInput {
+  universId: UUIDFilter!
+}
+
+input UniversSerieUpdateNestedManyInput {
+  createMany: UniversSerieCreateManyInputEnvelope
+  deleteMany: UniversSerieScalarWhereInput
+}
+
+input UniversSerieWhereInput {
+  AND: [UniversSerieWhereInput!]
+  NOT: [UniversSerieWhereInput!]
+  OR: [UniversSerieWhereInput!]
+  createdAt: DateTimeFilter
+  id: UUIDFilter
+  serie: SerieWhereInput
+  serieId: UUIDFilter
+  univers: UniversWhereInput
+  universId: UUIDFilter
+  updatedAt: DateTimeFilter
+}
+
+input UniversUpdateInput {
+  associations: [String!]
+  description: NonEmptyString
+  id: UUID!
+  nom: NonEmptyString
+  siteWeb: URL
+  universParent: UniversUpdateNestedOneInput
+  universRacine: UniversConnectNestedOneInput
+}
+
+input UniversUpdateNestedOneInput {
+  connect: UniversWhereUniqueInput
+  disconnect: Boolean
+}
+
+input UniversWhereInput {
+  AND: [UniversWhereInput!]
+  NOT: [UniversWhereInput!]
+  OR: [UniversWhereInput!]
+  albums: UniversAlbumListRelationFilter
+  associations: StringListFilter
+  createdAt: DateTimeFilter
+  description: StringFilter
+  id: UUIDFilter
+  initiale: StringFilter
+  nom: StringFilter
+  series: UniversSerieListRelationFilter
+  siteWeb: StringFilter
+  universBranches: StringListFilter
+  universEnfants: UniversListRelationFilter
+  universFeuilles: UniversListRelationFilter
+  universParent: UniversWhereInput
+  universParentId: UUIDFilter
+  universRacine: UniversWhereInput
+  universRacineId: UUIDFilter
+  updatedAt: DateTimeFilter
+}
+
+input UniversWhereUniqueInput {
+  id: UUID
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+"""
+Integers that will represent a year within a date (limited to a value between 1900 and 2200).
+"""
+scalar Year
