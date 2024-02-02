@@ -1,0 +1,40 @@
+[
+  {"Id": 100, "Category": 1, "Ordre": 1, "Defaut": false, "Libelle": "Très mauvais"},
+  {"Id": 103, "Category": 1, "Ordre": 2, "Defaut": false, "Libelle": "Mauvais"},
+  {"Id": 105, "Category": 1, "Ordre": 3, "Defaut": false, "Libelle": "Bon"},
+  {"Id": 108, "Category": 1, "Ordre": 4, "Defaut": false, "Libelle": "Très bon"},
+  {"Id": 110, "Category": 1, "Ordre": 5, "Defaut": true, "Libelle": "Excellent (neuf)"},
+
+  {"Id": 200, "Category": 2, "Ordre": 1, "Defaut": true, "Libelle": "Cartonné"},
+  {"Id": 201, "Category": 2, "Ordre": 2, "Defaut": false, "Libelle": "Broché"},
+
+  {"Id": 301, "Category": 3, "Ordre": 1, "Defaut": false, "Libelle": "Première édition"},
+  {"Id": 302, "Category": 3, "Ordre": 2, "Defaut": false, "Libelle": "Edition spéciale"},
+  {"Id": 303, "Category": 3, "Ordre": 3, "Defaut": false, "Libelle": "Tirage de tête"},
+
+  {"Id": 401, "Category": 4, "Ordre": 1, "Defaut": true, "Libelle": "Portrait"},
+  {"Id": 402, "Category": 4, "Ordre": 2, "Defaut": false, "Libelle": "Italienne"},
+
+  {"Id": 501, "Category": 5, "Ordre": 1, "Defaut": false, "Libelle": "Poche"},
+  {"Id": 503, "Category": 5, "Ordre": 2, "Defaut": false, "Libelle": "Moyen (A5)"},
+  {"Id": 504, "Category": 5, "Ordre": 3, "Defaut": true, "Libelle": "Normal (A4)"},
+  {"Id": 505, "Category": 5, "Ordre": 4, "Defaut": false, "Libelle": "Grand (A3)"},
+  {"Id": 506, "Category": 5, "Ordre": 5, "Defaut": false, "Libelle": "Très grand (A2)"},
+  {"Id": 510, "Category": 5, "Ordre": 6, "Defaut": false, "Libelle": "Spécial"},
+
+  {"Id": 600, "Category": 6, "Ordre": 1, "Defaut": true, "Libelle": "Couverture"},
+  {"Id": 603, "Category": 6, "Ordre": 3, "Defaut": false, "Libelle": "Page de garde"},
+  {"Id": 601, "Category": 6, "Ordre": 4, "Defaut": false, "Libelle": "Planche"},
+  {"Id": 602, "Category": 6, "Ordre": 5, "Defaut": false, "Libelle": "4ème de couverture"},
+  {"Id": 604, "Category": 6, "Ordre": 10, "Defaut": false, "Libelle": "Dédicace"},
+
+  {"Id": 801, "Category": 8, "Ordre": 1, "Defaut": true, "Libelle": "Gauche à droite"},
+  {"Id": 802, "Category": 8, "Ordre": 2, "Defaut": false, "Libelle": "Droite à gauche"},
+
+  {"Id": 900, "Category": 9, "Ordre": 1, "Defaut": true, "Libelle": "Pas noté"},
+  {"Id": 901, "Category": 9, "Ordre": 2, "Defaut": false, "Libelle": "Très mauvais"},
+  {"Id": 902, "Category": 9, "Ordre": 3, "Defaut": false, "Libelle": "Mauvais"},
+  {"Id": 903, "Category": 9, "Ordre": 4, "Defaut": false, "Libelle": "Moyen"},
+  {"Id": 904, "Category": 9, "Ordre": 5, "Defaut": false, "Libelle": "Bien"},
+  {"Id": 905, "Category": 9, "Ordre": 6, "Defaut": false, "Libelle": "Très bien"}
+]
