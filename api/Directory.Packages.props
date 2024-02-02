@@ -1,16 +1,19 @@
 <Project>
-
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <AspNetVersion>8.0.1</AspNetVersion>
     <EfVersion>8.0.1</EfVersion>
     <DevExpressVersion>23.1.7</DevExpressVersion>
     <MicrosoftExtensionsVersion>8.0.1</MicrosoftExtensionsVersion>
+    <HotChocolateVersion>13.8.1</HotChocolateVersion>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageVersion Include="GraphQL" Version="7.7.2" />
-    <PackageVersion Include="GraphQL.Server.Ui.Playground" Version="7.6.0" />
+    <PackageVersion Include="HotChocolate.AspNetCore" Version="$(HotChocolateVersion)" />
+    <PackageVersion Include="HotChocolate.Data.EntityFramework" Version="$(HotChocolateVersion)" />
+    <PackageVersion Include="HotChocolate.Subscriptions.Redis" Version="$(HotChocolateVersion)" />
+    <PackageVersion Include="HotChocolate.Types.Analyzers" Version="$(HotChocolateVersion)" />
+    <PackageVersion Include="HotChocolate.Types.Scalars" Version="$(HotChocolateVersion)" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(AspNetVersion)" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="$(AspNetVersion)" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
@@ -18,6 +21,7 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EfVersion)" />
     <PackageVersion Include="Quartz" Version="3.8.0" />
     <PackageVersion Include="Quartz.Extensions.Hosting" Version="3.8.0" />
+    <PackageVersion Include="Serilog" Version="3.1.1" />
     <PackageVersion Include="Serilog.AspNetCore" Version="$(AspNetVersion)" />
     <!-- Tests -->
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />
@@ -32,5 +36,4 @@
     <PackageVersion Include="xunit" Version="2.6.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.4" />
   </ItemGroup>
-
 </Project>
