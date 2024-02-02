@@ -1,0 +1,48 @@
+name: CI Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+
+    env:
+      solution-path: ./BDTheque.net.sln
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ vars.DOTNET_VERSION }} 
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.solution-path }}
+
+    - name: Build
+      run: dotnet build ${{ env.solution-path }} --no-restore
+
+    - name: Run tests
+      run: dotnet test ${{ env.solution-path }} --no-build --verbosity normal
+
+  frontend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ vars.NODEJS_VERSION }} 
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test

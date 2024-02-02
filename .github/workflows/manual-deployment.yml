@@ -1,0 +1,61 @@
+name: Manual Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.environment == 'production' }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ vars.DOTNET_VERSION }} # Votre version de .NET
+
+    - name: Build project
+      run: dotnet build
+
+    - name: Build and push Docker image
+      run: |
+        docker build -t monapp-backend .
+        docker push monapp-backend
+      # Ajoutez ici les étapes nécessaires pour l'authentification auprès du registre d'images
+
+    - name: Deploy to hosting service
+      # Ajoutez ici les commandes pour déployer sur le serveur ou service d'hébergement
+      # run: 
+
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.environment == 'production' }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ vars.NODEJS_VERSION }} # Votre version de Node.js
+
+    - name: Build project
+      run: npm install && npm build
+
+    - name: Build and push Docker image
+      run: |
+        docker build -t monapp-frontend .
+        docker push monapp-frontend
+      # Ajoutez ici les étapes nécessaires pour l'authentification auprès du registre d'images
+
+    - name: Deploy to hosting service
+      # Ajoutez ici les commandes pour déployer sur le serveur ou service d'hébergement
+      # run: 
+      

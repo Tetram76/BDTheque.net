@@ -1,0 +1,97 @@
+{
+	"root": true,
+	"parser": "@typescript-eslint/parser",
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended-requiring-type-checking",
+		"plugin:@typescript-eslint/strict",
+		"plugin:@angular-eslint/recommended",
+		"plugin:@angular-eslint/template/process-inline-templates"
+	],
+	"plugins": [
+		"@typescript-eslint/eslint-plugin",
+		"@angular-eslint/eslint-plugin",
+		"@angular-eslint/eslint-plugin-template",
+		"html"
+	],
+	"ignorePatterns": [
+		"!**/*"
+	],
+	"rules": {
+		"strict": "error",
+		"quotes": "error",
+		"semi": "error",
+		"no-extra-semi": "off",
+		"@typescript-eslint/no-extra-semi": "error",
+		"semi-spacing": [
+			"error",
+			{
+				"before": false,
+				"after": true
+			}
+		],
+		"curly": [
+			"error",
+			"multi-or-nest",
+			"consistent"
+		],
+		"no-useless-return": "error",
+		//		"@typescript-eslint/no-explicit-any": [
+		//			"error",
+		//			{
+		//				"fixToUnknown": true
+		//			}
+		//		],
+		"@typescript-eslint/adjacent-overload-signatures": "error",
+		"@typescript-eslint/consistent-type-exports": "error",
+		"@typescript-eslint/consistent-type-imports": "error",
+		"@typescript-eslint/explicit-function-return-type": "error",
+		"@typescript-eslint/explicit-member-accessibility": "error",
+		"@typescript-eslint/member-delimiter-style": "error",
+		"@typescript-eslint/member-ordering": [
+			"error",
+			{
+				"default": [
+					"signature",
+					"static-initialization",
+					"field",
+					"constructor",
+					[
+						"get",
+						"set"
+					],
+					"method"
+				]
+			}
+		],
+		"@typescript-eslint/naming-convention": "warn",
+		"no-array-constructor": "off",
+		"@typescript-eslint/no-array-constructor": "error",
+		"@typescript-eslint/no-base-to-string": "warn",
+		"@typescript-eslint/no-extra-non-null-assertion": "error",
+		"@typescript-eslint/no-confusing-void-expression": "error",
+		"no-dupe-class-members": "off",
+		"@typescript-eslint/no-dupe-class-members": "error",
+		"@typescript-eslint/no-duplicate-enum-values": "warn",
+		"no-empty-function": "off",
+		"@typescript-eslint/no-empty-function": "warn",
+		"@angular-eslint/directive-selector": [
+			"error",
+			{
+				"type": "attribute",
+				"prefix": "app",
+				"style": "camelCase"
+			}
+		],
+		"@angular-eslint/component-selector": [
+			"error",
+			{
+				"type": "element",
+				"prefix": "app",
+				"style": "kebab-case"
+			}
+		]
+	}
+}
