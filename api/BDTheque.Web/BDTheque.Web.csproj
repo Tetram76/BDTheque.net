@@ -11,6 +11,9 @@
     <Content Include="..\..\docker-compose.yaml">
       <Link>.docker\docker-compose.yaml</Link>
     </Content>
+    <Content Include="..\Directory.Packages.props">
+      <Link>Directory.Packages.props</Link>
+    </Content>
     <Content Include="..\Dockerfile">
       <Link>.docker\api\Dockerfile</Link>
     </Content>
@@ -27,7 +30,6 @@
     <PackageReference Include="HotChocolate.AspNetCore"/>
     <PackageReference Include="HotChocolate.Data.EntityFramework"/>
     <PackageReference Include="HotChocolate.Subscriptions.Redis"/>
-    <PackageReference Include="HotChocolate.Types.Scalars"/>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer"/>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore"/>

@@ -2,20 +2,17 @@ namespace BDTheque.Web.Services;
 
 using BDTheque.Data.Context;
 using BDTheque.GraphQL.Listeners;
-using BDTheque.GraphQL.Mutations;
-using BDTheque.GraphQL.Queries;
-using BDTheque.GraphQL.Subscriptions;
 using HotChocolate.Execution.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using StackExchange.Redis;
 
 public static class ConfigureServices
 {
-    private static string? GetConnectionString(this IConfiguration configurationManager) => configurationManager.GetConnectionString("BDThequeDatabase");
+    private static string? GetConnectionString(this IConfiguration configurationManager)
+        => configurationManager.GetConnectionString("BDThequeDatabase");
 
-    private static ConfigurationOptions RedisConfiguration(this IConfiguration configurationManager) =>
-        new()
+    private static ConfigurationOptions RedisConfiguration(this IConfiguration _)
+        => new()
         {
             EndPoints =
             {
@@ -36,9 +33,16 @@ public static class ConfigureServices
         return services;
     }
 
-    public static IRequestExecutorBuilder SetupGraphQLSchema(this IServiceCollection services) =>
-        services
+    public static IRequestExecutorBuilder SetupGraphQLSchema(this IServiceCollection services)
+        => services
             .AddGraphQLServer()
+            .ModifyOptions(
+                options =>
+                {
+                    // options.StrictValidation = false;
+                    options.EnableTrueNullability = true;
+                }
+            )
             .RegisterDbContext<BDThequeContext>()
             .AddBDThequeGraphQL()
             .AddMutationConventions()
@@ -46,14 +50,15 @@ public static class ConfigureServices
             .AddFiltering() // Pour les filtres
             .AddSorting(); // Pour le tri
 
-    public static IRequestExecutorBuilder SetupGraphQLPipeline(this IRequestExecutorBuilder builder, ConfigurationManager configuration, IWebHostEnvironment environment) =>
-        builder
+    public static IRequestExecutorBuilder SetupGraphQLPipeline(this IRequestExecutorBuilder builder, ConfigurationManager configuration, IWebHostEnvironment environment)
+        => builder
             .AddHttpRequestInterceptor<CustomRequestInterceptor>()
             .ModifyRequestOptions(options => options.IncludeExceptionDetails = environment.IsDevelopment())
-            .RegisterDbContext<BDThequeContext>()
             .AddDefaultTransactionScopeHandler()
             .AddRedisSubscriptions(_ => ConnectionMultiplexer.Connect(configuration.RedisConfiguration()))
             .AddMaxExecutionDepthRule(10, true, true)
+            .AddTypeConverter<DateTimeOffset, DateTime>(t => t.UtcDateTime)
+            .AddTypeConverter<DateTime, DateTimeOffset>(t => t.Kind is DateTimeKind.Unspecified ? DateTime.SpecifyKind(t, DateTimeKind.Utc) : t)
             .AddDiagnosticEventListener<ServerEventListener>()
             .AddDiagnosticEventListener<ExecutionEventListener>()
             .AddDiagnosticEventListener<DataLoaderEventListener>();

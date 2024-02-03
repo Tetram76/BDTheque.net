@@ -1568,6 +1568,8 @@ enum SyntaxKind {
   SCHEMA_COORDINATE
 }
 
+directive @nullBubbling(enable: Boolean! = true) on QUERY | MUTATION | SUBSCRIPTION
+
 "The `Byte` scalar type represents non-fractional whole numeric values. Byte can represent values between 0 and 255."
 scalar Byte
 

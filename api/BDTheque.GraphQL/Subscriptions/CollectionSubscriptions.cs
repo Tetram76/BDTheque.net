@@ -7,7 +7,7 @@ using HotChocolate.Execution;
 using HotChocolate.Subscriptions;
 
 [SubscriptionType]
-public static partial class CollectionSubscriptions
+public static class CollectionSubscriptions
 {
     [Subscribe(With = nameof(CollectionCreatedStream))]
     [GraphQLType<CollectionType>]

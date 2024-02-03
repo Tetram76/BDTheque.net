@@ -34,9 +34,9 @@ public static class TestServices
         var requestBuilder = new QueryRequestBuilder();
         requestBuilder.SetServices(scope.ServiceProvider);
         configureRequest(requestBuilder);
-        IQueryRequest? request = requestBuilder.Create();
+        IQueryRequest request = requestBuilder.Create();
 
-        await using IExecutionResult? result = await Executor.ExecuteAsync(request, cancellationToken);
+        await using IExecutionResult result = await Executor.ExecuteAsync(request, cancellationToken);
 
         result.ExpectQueryResult();
 
@@ -52,9 +52,9 @@ public static class TestServices
         var requestBuilder = new QueryRequestBuilder();
         requestBuilder.SetServices(scope.ServiceProvider);
         configureRequest(requestBuilder);
-        IQueryRequest? request = requestBuilder.Create();
+        IQueryRequest request = requestBuilder.Create();
 
-        await using IExecutionResult? result = await Executor.ExecuteAsync(request, cancellationToken);
+        await using IExecutionResult result = await Executor.ExecuteAsync(request, cancellationToken);
 
         await foreach (IQueryResult? element in result.ExpectResponseStream().ReadResultsAsync().WithCancellation(cancellationToken))
             await using (element)

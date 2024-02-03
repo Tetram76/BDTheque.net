@@ -7,7 +7,7 @@ using HotChocolate.Execution;
 using HotChocolate.Subscriptions;
 
 [SubscriptionType]
-public static partial class EditeurSubscriptions
+public static class EditeurSubscriptions
 {
     [Subscribe(With = nameof(EditeurCreatedStream))]
     [GraphQLType<EditeurType>]
