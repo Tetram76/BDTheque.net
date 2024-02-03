@@ -2,7 +2,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Data.Context;
-using BDTheque.Extensions;
+using BDTheque.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

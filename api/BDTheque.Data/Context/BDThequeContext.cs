@@ -1,8 +1,8 @@
 ﻿namespace BDTheque.Data.Context;
 
 using BDTheque.Data.Entities;
+using BDTheque.Data.Extensions;
 using BDTheque.Data.Seeders;
-using BDTheque.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;

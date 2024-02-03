@@ -1,4 +1,4 @@
-﻿namespace BDTheque.Extensions;
+﻿namespace BDTheque.Data.Extensions;
 
 using System.Text;
 

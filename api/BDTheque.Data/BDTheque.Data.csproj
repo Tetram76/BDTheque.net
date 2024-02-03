@@ -12,10 +12,6 @@
     </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BDTheque.Extensions\BDTheque.Extensions.csproj"/>
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="Seeders/*.json"/>
   </ItemGroup>
 
