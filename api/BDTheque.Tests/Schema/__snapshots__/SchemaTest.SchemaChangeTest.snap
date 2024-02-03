@@ -1,0 +1,1596 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+interface Associable implements Versioning & UniqueId {
+  id: ID!
+  associations: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+interface Error {
+  message: String!
+}
+
+interface MandatoryLabel implements Versioning & UniqueId & Associable {
+  id: ID!
+  initiale: String!
+  associations: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+interface OptionalLabel implements Versioning & UniqueId & Associable {
+  id: ID!
+  initiale: String
+  associations: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+interface SimpleId implements Versioning {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+interface UniqueId implements Versioning {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+interface Versioning {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Album implements Versioning & UniqueId & Associable & OptionalLabel {
+  id: ID!
+  initiale: String
+  tome: UnsignedShort
+  tomeDebut: UnsignedShort
+  tomeFin: UnsignedShort
+  moisParution: Month
+  anneeParution: Year
+  serie: Serie
+  notation: Option
+  auteurs("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AuteurTypeFilterInput order: [AuteurTypeSortInput!]): AuteursConnection
+  editionsAlbums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionAlbumTypeFilterInput order: [EditionAlbumTypeSortInput!]): EditionsAlbumsConnection
+  genres("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: GenreTypeFilterInput order: [GenreTypeSortInput!]): GenresConnection
+  univers("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: UniversTypeFilterInput order: [UniversTypeSortInput!]): UniversConnection
+  titre: String
+  sujet: String
+  notes: String
+  horsSerie: Boolean
+  integrale: Boolean
+  associations: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"A connection to a list of items."
+type AlbumsConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [AlbumsEdge!]
+  "A flattened list of the nodes."
+  nodes: [Album]
+}
+
+"An edge in a connection."
+type AlbumsEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Album
+}
+
+type AlreadyExistsError implements Error {
+  message: String!
+}
+
+type Auteur implements Versioning & UniqueId {
+  id: ID!
+  personne: Personne
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
+  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
+  metier: Metier!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"A connection to a list of items."
+type AuteursConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [AuteursEdge!]
+  "A flattened list of the nodes."
+  nodes: [Auteur]
+}
+
+"An edge in a connection."
+type AuteursEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Auteur
+}
+
+type Collection implements Versioning & UniqueId & Associable & MandatoryLabel {
+  id: ID!
+  initiale: String!
+  editeur: Editeur
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionAlbumTypeFilterInput order: [EditionAlbumTypeSortInput!]): AlbumsConnection
+  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
+  nom: String!
+  associations: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"A connection to a list of items."
+type CollectionsConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [CollectionsEdge!]
+  "A flattened list of the nodes."
+  nodes: [Collection]
+}
+
+"An edge in a connection."
+type CollectionsEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Collection
+}
+
+type CoteAlbum implements Versioning & UniqueId {
+  id: ID!
+  editionAlbum: EditionAlbum
+  annee: Year
+  prix: EuroCurrency
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"A connection to a list of items."
+type CotesConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [CotesEdge!]
+  "A flattened list of the nodes."
+  nodes: [CoteAlbum]
+}
+
+"An edge in a connection."
+type CotesEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: CoteAlbum
+}
+
+type CreateGenrePayload {
+  genre: Genre
+  errors: [CreateGenreError!]
+}
+
+type DeleteAlbumPayload {
+  album: Album
+  errors: [DeleteAlbumError!]
+}
+
+type DeleteCollectionPayload {
+  collection: Collection
+  errors: [DeleteCollectionError!]
+}
+
+type DeleteEditeurPayload {
+  editeur: Editeur
+  errors: [DeleteEditeurError!]
+}
+
+type DeleteEditionPayload {
+  edition: Edition
+  errors: [DeleteEditionError!]
+}
+
+type DeleteGenrePayload {
+  genre: Genre
+  errors: [DeleteGenreError!]
+}
+
+type DeleteImagePayload {
+  image: Image
+  errors: [DeleteImageError!]
+}
+
+type DeletePersonnePayload {
+  personne: Personne
+  errors: [DeletePersonneError!]
+}
+
+type DeleteSeriePayload {
+  serie: Serie
+  errors: [DeleteSerieError!]
+}
+
+type DeleteUniversPayload {
+  univers: Univers
+  errors: [DeleteUniversError!]
+}
+
+type Editeur implements Versioning & UniqueId & Associable & MandatoryLabel {
+  id: ID!
+  initiale: String!
+  siteWeb: URL
+  collections("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: CollectionTypeFilterInput order: [CollectionTypeSortInput!]): CollectionsConnection
+  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
+  editionsAlbums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionAlbumTypeFilterInput order: [EditionAlbumTypeSortInput!]): EditionsAlbumsConnection
+  nom: String!
+  associations: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"A connection to a list of items."
+type EditeursConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [EditeursEdge!]
+  "A flattened list of the nodes."
+  nodes: [Editeur]
+}
+
+"An edge in a connection."
+type EditeursEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Editeur
+}
+
+type Edition implements Versioning & UniqueId {
+  id: ID!
+  anneeEdition: UnsignedShort
+  isbn: Isbn
+  nombreDePages: UnsignedShort
+  reliure: Option
+  formatEdition: Option
+  typeEdition: Option
+  orientation: Option
+  sensLecture: Option
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionAlbumTypeFilterInput order: [EditionAlbumTypeSortInput!]): AlbumsConnection
+  serie: Serie
+  notes: String
+  couleur: Boolean
+  vo: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type EditionAlbum implements Versioning & UniqueId {
+  id: ID!
+  edition: Edition
+  album: Album
+  editeur: Editeur
+  collection: Collection
+  etat: Option
+  prix: EuroCurrency
+  cotes("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: CoteAlbumTypeFilterInput order: [CoteAlbumTypeSortInput!]): CotesConnection
+  images("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: ImageTypeFilterInput order: [ImageTypeSortInput!]): ImagesConnection
+  stock: Boolean!
+  offert: Boolean
+  occasion: Boolean
+  gratuit: Boolean
+  dateAchat: Date
+  dedicace: Boolean
+  numeroPerso: String
+  notes: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"A connection to a list of items."
+type EditionFormatEditionsConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [EditionFormatEditionsEdge!]
+  "A flattened list of the nodes."
+  nodes: [Edition]
+}
+
+"An edge in a connection."
+type EditionFormatEditionsEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Edition
+}
+
+"A connection to a list of items."
+type EditionOrientationsConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [EditionOrientationsEdge!]
+  "A flattened list of the nodes."
+  nodes: [Edition]
+}
+
+"An edge in a connection."
+type EditionOrientationsEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Edition
+}
+
+"A connection to a list of items."
+type EditionReliuresConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [EditionReliuresEdge!]
+  "A flattened list of the nodes."
+  nodes: [Edition]
+}
+
+"An edge in a connection."
+type EditionReliuresEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Edition
+}
+
+"A connection to a list of items."
+type EditionSensLecturesConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [EditionSensLecturesEdge!]
+  "A flattened list of the nodes."
+  nodes: [Edition]
+}
+
+"An edge in a connection."
+type EditionSensLecturesEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Edition
+}
+
+"A connection to a list of items."
+type EditionTypeEditionsConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [EditionTypeEditionsEdge!]
+  "A flattened list of the nodes."
+  nodes: [Edition]
+}
+
+"An edge in a connection."
+type EditionTypeEditionsEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Edition
+}
+
+"A connection to a list of items."
+type EditionsAlbumsConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [EditionsAlbumsEdge!]
+  "A flattened list of the nodes."
+  nodes: [EditionAlbum]
+}
+
+"An edge in a connection."
+type EditionsAlbumsEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: EditionAlbum
+}
+
+type Genre implements Versioning & UniqueId & Associable & MandatoryLabel {
+  id: ID!
+  initiale: String!
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
+  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
+  nom: String!
+  associations: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"A connection to a list of items."
+type GenresConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [GenresEdge!]
+  "A flattened list of the nodes."
+  nodes: [Genre]
+}
+
+"An edge in a connection."
+type GenresEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Genre
+}
+
+type Image implements Versioning & UniqueId {
+  id: ID!
+  ordre: UnsignedShort
+  type: Option
+  edition: EditionAlbum
+  titre: String
+  bytes: [Byte!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"A connection to a list of items."
+type ImagesConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [ImagesEdge!]
+  "A flattened list of the nodes."
+  nodes: [Image]
+}
+
+"An edge in a connection."
+type ImagesEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Image
+}
+
+type Mutation {
+  deleteAlbum(input: DeleteAlbumInput!): DeleteAlbumPayload!
+  deleteCollection(input: DeleteCollectionInput!): DeleteCollectionPayload!
+  deleteEditeur(input: DeleteEditeurInput!): DeleteEditeurPayload!
+  deleteEdition(input: DeleteEditionInput!): DeleteEditionPayload!
+  createGenre(input: CreateGenreInput!): CreateGenrePayload!
+  updateGenre(input: UpdateGenreInput!): UpdateGenrePayload!
+  deleteGenre(input: DeleteGenreInput!): DeleteGenrePayload!
+  deleteImage(input: DeleteImageInput!): DeleteImagePayload!
+  deletePersonne(input: DeletePersonneInput!): DeletePersonnePayload!
+  deleteSerie(input: DeleteSerieInput!): DeleteSeriePayload!
+  deleteUnivers(input: DeleteUniversInput!): DeleteUniversPayload!
+}
+
+type NotFoundIdError implements Error {
+  message: String!
+}
+
+type Option implements Versioning & SimpleId {
+  id: ID!
+  category: UnsignedShort
+  ordre: UnsignedShort
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
+  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
+  editionFormatEditions("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionTypeFilterInput order: [EditionTypeSortInput!]): EditionFormatEditionsConnection
+  editionOrientations("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionTypeFilterInput order: [EditionTypeSortInput!]): EditionOrientationsConnection
+  editionReliures("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionTypeFilterInput order: [EditionTypeSortInput!]): EditionReliuresConnection
+  editionSensLectures("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionTypeFilterInput order: [EditionTypeSortInput!]): EditionSensLecturesConnection
+  editionTypeEditions("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionTypeFilterInput order: [EditionTypeSortInput!]): EditionTypeEditionsConnection
+  editionsAlbums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionAlbumTypeFilterInput order: [EditionAlbumTypeSortInput!]): EditionsAlbumsConnection
+  images("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: ImageTypeFilterInput order: [ImageTypeSortInput!]): ImagesConnection
+  libelle: String!
+  defaut: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"A connection to a list of items."
+type OptionsConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [OptionsEdge!]
+  "A flattened list of the nodes."
+  nodes: [Option]
+}
+
+"An edge in a connection."
+type OptionsEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Option
+}
+
+"Information about pagination in a connection."
+type PageInfo {
+  "Indicates whether more edges exist following the set defined by the clients arguments."
+  hasNextPage: Boolean!
+  "Indicates whether more edges exist prior the set defined by the clients arguments."
+  hasPreviousPage: Boolean!
+  "When paginating backwards, the cursor to continue."
+  startCursor: String
+  "When paginating forwards, the cursor to continue."
+  endCursor: String
+}
+
+type Personne implements Versioning & UniqueId & Associable & MandatoryLabel {
+  id: ID!
+  initiale: String!
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
+  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
+  nom: String!
+  nomRaw: String!
+  biographie: String
+  biographieRaw: String
+  siteWeb: String
+  associations: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"A connection to a list of items."
+type PersonnesConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [PersonnesEdge!]
+  "A flattened list of the nodes."
+  nodes: [Personne]
+}
+
+"An edge in a connection."
+type PersonnesEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Personne
+}
+
+type Query {
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
+  albumById(id: ID!): Album
+  collections("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: CollectionTypeFilterInput order: [CollectionTypeSortInput!]): CollectionsConnection
+  editeurs("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditeurTypeFilterInput order: [EditeurTypeSortInput!]): EditeursConnection
+  genres("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: GenreTypeFilterInput order: [GenreTypeSortInput!]): GenresConnection
+  genreById(id: ID!): Genre
+  genreByNom(nom: String!): [Genre]
+  options("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: OptionTypeFilterInput order: [OptionTypeSortInput!]): OptionsConnection
+  personnes("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: PersonneTypeFilterInput order: [PersonneTypeSortInput!]): PersonnesConnection
+  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
+  univers("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: UniversTypeFilterInput order: [UniversTypeSortInput!]): UniversConnection
+}
+
+type Serie implements Versioning & UniqueId & Associable & OptionalLabel {
+  id: ID!
+  initiale: String
+  siteWeb: URL
+  nbAlbums: UnsignedShort
+  editeur: Editeur
+  collection: Collection
+  modeleEdition: Edition
+  notation: Option
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AuteurTypeFilterInput order: [AuteurTypeSortInput!]): AlbumsConnection
+  auteurs("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AuteurTypeFilterInput order: [AuteurTypeSortInput!]): AuteursConnection
+  genres("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: GenreTypeFilterInput order: [GenreTypeSortInput!]): GenresConnection
+  univers("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: UniversTypeFilterInput order: [UniversTypeSortInput!]): UniversConnection
+  titre: String
+  sujet: String
+  notes: String
+  terminee: Boolean
+  complete: Boolean
+  suivreSorties: Boolean
+  suivreManquants: Boolean
+  associations: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"A connection to a list of items."
+type SeriesConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [SeriesEdge!]
+  "A flattened list of the nodes."
+  nodes: [Serie]
+}
+
+"An edge in a connection."
+type SeriesEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Serie
+}
+
+type Subscription {
+  albumCreated: Album
+  albumUpdated: Album
+  albumDeleted: Album
+  coteAlbumCreated: CoteAlbum
+  coteAlbumUpdated: CoteAlbum
+  coteAlbumDeleted: CoteAlbum
+  collectionCreated: Collection
+  collectionUpdated: Collection
+  collectionDeleted: Collection
+  editeurCreated: Editeur
+  editeurUpdated: Editeur
+  editeurDeleted: Editeur
+  editionCreated: Edition
+  editionUpdated: Edition
+  editionDeleted: Edition
+  genreCreated: Genre
+  genreUpdated: Genre
+  genreDeleted: Genre
+  imageCreated: Image
+  imageUpdated: Image
+  imageDeleted: Image
+  personneCreated: Personne
+  personneUpdated: Personne
+  personneDeleted: Personne
+  serieCreated: Serie
+  serieUpdated: Serie
+  serieDeleted: Serie
+  universCreated: Univers
+  universUpdated: Univers
+  universDeleted: Univers
+}
+
+type Univers implements Versioning & UniqueId & Associable & MandatoryLabel {
+  id: ID!
+  initiale: String!
+  siteWeb: URL
+  universRacine: Univers
+  universParent: Univers
+  branche: [UUID!]
+  racines: [Univers]
+  parents: [Univers]
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
+  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
+  nom: String!
+  description: String
+  associations: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"A connection to a list of items."
+type UniversConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [UniversEdge!]
+  "A flattened list of the nodes."
+  nodes: [Univers]
+}
+
+"An edge in a connection."
+type UniversEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Univers
+}
+
+type UpdateGenrePayload {
+  genre: Genre
+  errors: [UpdateGenreError!]
+}
+
+union CreateGenreError = AlreadyExistsError
+
+union DeleteAlbumError = NotFoundIdError
+
+union DeleteCollectionError = NotFoundIdError
+
+union DeleteEditeurError = NotFoundIdError
+
+union DeleteEditionError = NotFoundIdError
+
+union DeleteGenreError = NotFoundIdError
+
+union DeleteImageError = NotFoundIdError
+
+union DeletePersonneError = NotFoundIdError
+
+union DeleteSerieError = NotFoundIdError
+
+union DeleteUniversError = NotFoundIdError
+
+union UpdateGenreError = AlreadyExistsError | NotFoundIdError
+
+input AlbumTypeFilterInput {
+  and: [AlbumTypeFilterInput!]
+  or: [AlbumTypeFilterInput!]
+  kind: TypeKindOperationFilterInput
+  syntaxNode: ObjectTypeDefinitionNodeFilterInput
+  implements: ListFilterInputTypeOfInterfaceTypeFilterInput
+  fields: ListFilterInputTypeOfObjectFieldFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+  scope: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+}
+
+input AlbumTypeSortInput {
+  kind: SortEnumType
+  syntaxNode: ObjectTypeDefinitionNodeSortInput
+  scope: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+}
+
+input ArgumentFilterInput {
+  and: [ArgumentFilterInput!]
+  or: [ArgumentFilterInput!]
+  syntaxNode: InputValueDefinitionNodeFilterInput
+  isDeprecated: BooleanOperationFilterInput
+  deprecationReason: StringOperationFilterInput
+  defaultValue: IValueNodeFilterInput
+  formatter: IInputValueFormatterFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+  coordinate: FieldCoordinateFilterInput
+  index: IntOperationFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+}
+
+input ArgumentNodeFilterInput {
+  and: [ArgumentNodeFilterInput!]
+  or: [ArgumentNodeFilterInput!]
+  kind: SyntaxKindOperationFilterInput
+  location: LocationFilterInput
+  name: NameNodeFilterInput
+  value: IValueNodeFilterInput
+}
+
+input AuteurTypeFilterInput {
+  and: [AuteurTypeFilterInput!]
+  or: [AuteurTypeFilterInput!]
+  kind: TypeKindOperationFilterInput
+  syntaxNode: ObjectTypeDefinitionNodeFilterInput
+  implements: ListFilterInputTypeOfInterfaceTypeFilterInput
+  fields: ListFilterInputTypeOfObjectFieldFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+  scope: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+}
+
+input AuteurTypeSortInput {
+  kind: SortEnumType
+  syntaxNode: ObjectTypeDefinitionNodeSortInput
+  scope: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+}
+
+input BooleanOperationFilterInput {
+  eq: Boolean
+  neq: Boolean
+}
+
+input CollectionTypeFilterInput {
+  and: [CollectionTypeFilterInput!]
+  or: [CollectionTypeFilterInput!]
+  kind: TypeKindOperationFilterInput
+  syntaxNode: ObjectTypeDefinitionNodeFilterInput
+  implements: ListFilterInputTypeOfInterfaceTypeFilterInput
+  fields: ListFilterInputTypeOfObjectFieldFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+  scope: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+}
+
+input CollectionTypeSortInput {
+  kind: SortEnumType
+  syntaxNode: ObjectTypeDefinitionNodeSortInput
+  scope: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+}
+
+input CoteAlbumTypeFilterInput {
+  and: [CoteAlbumTypeFilterInput!]
+  or: [CoteAlbumTypeFilterInput!]
+  kind: TypeKindOperationFilterInput
+  syntaxNode: ObjectTypeDefinitionNodeFilterInput
+  implements: ListFilterInputTypeOfInterfaceTypeFilterInput
+  fields: ListFilterInputTypeOfObjectFieldFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+  scope: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+}
+
+input CoteAlbumTypeSortInput {
+  kind: SortEnumType
+  syntaxNode: ObjectTypeDefinitionNodeSortInput
+  scope: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+}
+
+input CreateGenreInput {
+  nom: String!
+}
+
+input DeleteAlbumInput {
+  id: ID!
+}
+
+input DeleteCollectionInput {
+  id: ID!
+}
+
+input DeleteEditeurInput {
+  id: ID!
+}
+
+input DeleteEditionInput {
+  id: ID!
+}
+
+input DeleteGenreInput {
+  id: ID!
+}
+
+input DeleteImageInput {
+  id: ID!
+}
+
+input DeletePersonneInput {
+  id: ID!
+}
+
+input DeleteSerieInput {
+  id: ID!
+}
+
+input DeleteUniversInput {
+  id: ID!
+}
+
+input DirectiveFilterInput {
+  and: [DirectiveFilterInput!]
+  or: [DirectiveFilterInput!]
+}
+
+input DirectiveNodeFilterInput {
+  and: [DirectiveNodeFilterInput!]
+  or: [DirectiveNodeFilterInput!]
+  kind: SyntaxKindOperationFilterInput
+  location: LocationFilterInput
+  name: NameNodeFilterInput
+  arguments: ListFilterInputTypeOfArgumentNodeFilterInput
+}
+
+input EditeurTypeFilterInput {
+  and: [EditeurTypeFilterInput!]
+  or: [EditeurTypeFilterInput!]
+  kind: TypeKindOperationFilterInput
+  syntaxNode: ObjectTypeDefinitionNodeFilterInput
+  implements: ListFilterInputTypeOfInterfaceTypeFilterInput
+  fields: ListFilterInputTypeOfObjectFieldFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+  scope: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+}
+
+input EditeurTypeSortInput {
+  kind: SortEnumType
+  syntaxNode: ObjectTypeDefinitionNodeSortInput
+  scope: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+}
+
+input EditionAlbumTypeFilterInput {
+  and: [EditionAlbumTypeFilterInput!]
+  or: [EditionAlbumTypeFilterInput!]
+  kind: TypeKindOperationFilterInput
+  syntaxNode: ObjectTypeDefinitionNodeFilterInput
+  implements: ListFilterInputTypeOfInterfaceTypeFilterInput
+  fields: ListFilterInputTypeOfObjectFieldFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+  scope: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+}
+
+input EditionAlbumTypeSortInput {
+  kind: SortEnumType
+  syntaxNode: ObjectTypeDefinitionNodeSortInput
+  scope: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+}
+
+input EditionTypeFilterInput {
+  and: [EditionTypeFilterInput!]
+  or: [EditionTypeFilterInput!]
+  kind: TypeKindOperationFilterInput
+  syntaxNode: ObjectTypeDefinitionNodeFilterInput
+  implements: ListFilterInputTypeOfInterfaceTypeFilterInput
+  fields: ListFilterInputTypeOfObjectFieldFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+  scope: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+}
+
+input EditionTypeSortInput {
+  kind: SortEnumType
+  syntaxNode: ObjectTypeDefinitionNodeSortInput
+  scope: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+}
+
+input ExpressionFilterInput {
+  and: [ExpressionFilterInput!]
+  or: [ExpressionFilterInput!]
+  nodeType: ExpressionTypeOperationFilterInput
+  canReduce: BooleanOperationFilterInput
+}
+
+input ExpressionTypeOperationFilterInput {
+  eq: ExpressionType
+  neq: ExpressionType
+  in: [ExpressionType!]
+  nin: [ExpressionType!]
+}
+
+input FieldCoordinateFilterInput {
+  and: [FieldCoordinateFilterInput!]
+  or: [FieldCoordinateFilterInput!]
+  hasValue: BooleanOperationFilterInput
+  typeName: StringOperationFilterInput
+  fieldName: StringOperationFilterInput
+  argumentName: StringOperationFilterInput
+}
+
+input FieldDefinitionNodeFilterInput {
+  and: [FieldDefinitionNodeFilterInput!]
+  or: [FieldDefinitionNodeFilterInput!]
+  kind: SyntaxKindOperationFilterInput
+  description: StringValueNodeFilterInput
+  arguments: ListFilterInputTypeOfInputValueDefinitionNodeFilterInput
+  type: ITypeNodeFilterInput
+  location: LocationFilterInput
+  name: NameNodeFilterInput
+  directives: ListFilterInputTypeOfDirectiveNodeFilterInput
+}
+
+input GenreTypeFilterInput {
+  and: [GenreTypeFilterInput!]
+  or: [GenreTypeFilterInput!]
+  kind: TypeKindOperationFilterInput
+  syntaxNode: ObjectTypeDefinitionNodeFilterInput
+  implements: ListFilterInputTypeOfInterfaceTypeFilterInput
+  fields: ListFilterInputTypeOfObjectFieldFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+  scope: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+}
+
+input GenreTypeSortInput {
+  kind: SortEnumType
+  syntaxNode: ObjectTypeDefinitionNodeSortInput
+  scope: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+}
+
+input IInputValueFormatterFilterInput {
+  and: [IInputValueFormatterFilterInput!]
+  or: [IInputValueFormatterFilterInput!]
+}
+
+input ITypeNodeFilterInput {
+  and: [ITypeNodeFilterInput!]
+  or: [ITypeNodeFilterInput!]
+}
+
+input IValueNodeFilterInput {
+  and: [IValueNodeFilterInput!]
+  or: [IValueNodeFilterInput!]
+}
+
+input ImageTypeFilterInput {
+  and: [ImageTypeFilterInput!]
+  or: [ImageTypeFilterInput!]
+  kind: TypeKindOperationFilterInput
+  syntaxNode: ObjectTypeDefinitionNodeFilterInput
+  implements: ListFilterInputTypeOfInterfaceTypeFilterInput
+  fields: ListFilterInputTypeOfObjectFieldFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+  scope: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+}
+
+input ImageTypeSortInput {
+  kind: SortEnumType
+  syntaxNode: ObjectTypeDefinitionNodeSortInput
+  scope: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+}
+
+input InputValueDefinitionNodeFilterInput {
+  and: [InputValueDefinitionNodeFilterInput!]
+  or: [InputValueDefinitionNodeFilterInput!]
+  kind: SyntaxKindOperationFilterInput
+  description: StringValueNodeFilterInput
+  type: ITypeNodeFilterInput
+  defaultValue: IValueNodeFilterInput
+  location: LocationFilterInput
+  name: NameNodeFilterInput
+  directives: ListFilterInputTypeOfDirectiveNodeFilterInput
+}
+
+input IntOperationFilterInput {
+  eq: Int
+  neq: Int
+  in: [Int]
+  nin: [Int]
+  gt: Int
+  ngt: Int
+  gte: Int
+  ngte: Int
+  lt: Int
+  nlt: Int
+  lte: Int
+  nlte: Int
+}
+
+input InterfaceFieldFilterInput {
+  and: [InterfaceFieldFilterInput!]
+  or: [InterfaceFieldFilterInput!]
+  syntaxNode: FieldDefinitionNodeFilterInput
+  arguments: ListFilterInputTypeOfArgumentFilterInput
+  isIntrospectionField: BooleanOperationFilterInput
+  isDeprecated: BooleanOperationFilterInput
+  deprecationReason: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+  coordinate: FieldCoordinateFilterInput
+  index: IntOperationFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+}
+
+input InterfaceTypeDefinitionNodeFilterInput {
+  and: [InterfaceTypeDefinitionNodeFilterInput!]
+  or: [InterfaceTypeDefinitionNodeFilterInput!]
+  kind: SyntaxKindOperationFilterInput
+  description: StringValueNodeFilterInput
+  interfaces: ListFilterInputTypeOfNamedTypeNodeFilterInput
+  fields: ListFilterInputTypeOfFieldDefinitionNodeFilterInput
+  location: LocationFilterInput
+  name: NameNodeFilterInput
+  directives: ListFilterInputTypeOfDirectiveNodeFilterInput
+}
+
+input InterfaceTypeFilterInput {
+  and: [InterfaceTypeFilterInput!]
+  or: [InterfaceTypeFilterInput!]
+  kind: TypeKindOperationFilterInput
+  syntaxNode: InterfaceTypeDefinitionNodeFilterInput
+  implements: ListFilterInputTypeOfInterfaceTypeFilterInput
+  fields: ListFilterInputTypeOfInterfaceFieldFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+  scope: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+}
+
+input KeyValuePairOfStringAndObjectFilterInput {
+  and: [KeyValuePairOfStringAndObjectFilterInput!]
+  or: [KeyValuePairOfStringAndObjectFilterInput!]
+  key: StringOperationFilterInput
+}
+
+input ListFilterInputTypeOfArgumentFilterInput {
+  all: ArgumentFilterInput
+  none: ArgumentFilterInput
+  some: ArgumentFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfArgumentNodeFilterInput {
+  all: ArgumentNodeFilterInput
+  none: ArgumentNodeFilterInput
+  some: ArgumentNodeFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfDirectiveFilterInput {
+  all: DirectiveFilterInput
+  none: DirectiveFilterInput
+  some: DirectiveFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfDirectiveNodeFilterInput {
+  all: DirectiveNodeFilterInput
+  none: DirectiveNodeFilterInput
+  some: DirectiveNodeFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfFieldDefinitionNodeFilterInput {
+  all: FieldDefinitionNodeFilterInput
+  none: FieldDefinitionNodeFilterInput
+  some: FieldDefinitionNodeFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfInputValueDefinitionNodeFilterInput {
+  all: InputValueDefinitionNodeFilterInput
+  none: InputValueDefinitionNodeFilterInput
+  some: InputValueDefinitionNodeFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfInterfaceFieldFilterInput {
+  all: InterfaceFieldFilterInput
+  none: InterfaceFieldFilterInput
+  some: InterfaceFieldFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfInterfaceTypeFilterInput {
+  all: InterfaceTypeFilterInput
+  none: InterfaceTypeFilterInput
+  some: InterfaceTypeFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput {
+  all: KeyValuePairOfStringAndObjectFilterInput
+  none: KeyValuePairOfStringAndObjectFilterInput
+  some: KeyValuePairOfStringAndObjectFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfNamedTypeNodeFilterInput {
+  all: NamedTypeNodeFilterInput
+  none: NamedTypeNodeFilterInput
+  some: NamedTypeNodeFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfObjectFieldFilterInput {
+  all: ObjectFieldFilterInput
+  none: ObjectFieldFilterInput
+  some: ObjectFieldFilterInput
+  any: Boolean
+}
+
+input LocationFilterInput {
+  and: [LocationFilterInput!]
+  or: [LocationFilterInput!]
+  start: IntOperationFilterInput
+  end: IntOperationFilterInput
+  line: IntOperationFilterInput
+  column: IntOperationFilterInput
+}
+
+input LocationSortInput {
+  start: SortEnumType
+  end: SortEnumType
+  line: SortEnumType
+  column: SortEnumType
+}
+
+input NameNodeFilterInput {
+  and: [NameNodeFilterInput!]
+  or: [NameNodeFilterInput!]
+  kind: SyntaxKindOperationFilterInput
+  location: LocationFilterInput
+  value: StringOperationFilterInput
+}
+
+input NameNodeSortInput {
+  kind: SortEnumType
+  location: LocationSortInput
+  value: SortEnumType
+}
+
+input NamedTypeNodeFilterInput {
+  and: [NamedTypeNodeFilterInput!]
+  or: [NamedTypeNodeFilterInput!]
+  kind: SyntaxKindOperationFilterInput
+  location: LocationFilterInput
+  name: NameNodeFilterInput
+}
+
+input ObjectFieldFilterInput {
+  and: [ObjectFieldFilterInput!]
+  or: [ObjectFieldFilterInput!]
+  isParallelExecutable: BooleanOperationFilterInput
+  hasStreamResult: BooleanOperationFilterInput
+  expression: ExpressionFilterInput
+  resolverExpression: ExpressionFilterInput
+  syntaxNode: FieldDefinitionNodeFilterInput
+  arguments: ListFilterInputTypeOfArgumentFilterInput
+  isIntrospectionField: BooleanOperationFilterInput
+  isDeprecated: BooleanOperationFilterInput
+  deprecationReason: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+  coordinate: FieldCoordinateFilterInput
+  index: IntOperationFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+}
+
+input ObjectTypeDefinitionNodeFilterInput {
+  and: [ObjectTypeDefinitionNodeFilterInput!]
+  or: [ObjectTypeDefinitionNodeFilterInput!]
+  kind: SyntaxKindOperationFilterInput
+  description: StringValueNodeFilterInput
+  interfaces: ListFilterInputTypeOfNamedTypeNodeFilterInput
+  fields: ListFilterInputTypeOfFieldDefinitionNodeFilterInput
+  location: LocationFilterInput
+  name: NameNodeFilterInput
+  directives: ListFilterInputTypeOfDirectiveNodeFilterInput
+}
+
+input ObjectTypeDefinitionNodeSortInput {
+  kind: SortEnumType
+  description: StringValueNodeSortInput
+  location: LocationSortInput
+  name: NameNodeSortInput
+}
+
+input OptionTypeFilterInput {
+  and: [OptionTypeFilterInput!]
+  or: [OptionTypeFilterInput!]
+  kind: TypeKindOperationFilterInput
+  syntaxNode: ObjectTypeDefinitionNodeFilterInput
+  implements: ListFilterInputTypeOfInterfaceTypeFilterInput
+  fields: ListFilterInputTypeOfObjectFieldFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+  scope: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+}
+
+input OptionTypeSortInput {
+  kind: SortEnumType
+  syntaxNode: ObjectTypeDefinitionNodeSortInput
+  scope: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+}
+
+input PersonneTypeFilterInput {
+  and: [PersonneTypeFilterInput!]
+  or: [PersonneTypeFilterInput!]
+  kind: TypeKindOperationFilterInput
+  syntaxNode: ObjectTypeDefinitionNodeFilterInput
+  implements: ListFilterInputTypeOfInterfaceTypeFilterInput
+  fields: ListFilterInputTypeOfObjectFieldFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+  scope: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+}
+
+input PersonneTypeSortInput {
+  kind: SortEnumType
+  syntaxNode: ObjectTypeDefinitionNodeSortInput
+  scope: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+}
+
+input SerieTypeFilterInput {
+  and: [SerieTypeFilterInput!]
+  or: [SerieTypeFilterInput!]
+  kind: TypeKindOperationFilterInput
+  syntaxNode: ObjectTypeDefinitionNodeFilterInput
+  implements: ListFilterInputTypeOfInterfaceTypeFilterInput
+  fields: ListFilterInputTypeOfObjectFieldFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+  scope: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+}
+
+input SerieTypeSortInput {
+  kind: SortEnumType
+  syntaxNode: ObjectTypeDefinitionNodeSortInput
+  scope: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+}
+
+input StringOperationFilterInput {
+  and: [StringOperationFilterInput!]
+  or: [StringOperationFilterInput!]
+  eq: String
+  neq: String
+  contains: String
+  ncontains: String
+  in: [String]
+  nin: [String]
+  startsWith: String
+  nstartsWith: String
+  endsWith: String
+  nendsWith: String
+}
+
+input StringValueNodeFilterInput {
+  and: [StringValueNodeFilterInput!]
+  or: [StringValueNodeFilterInput!]
+  kind: SyntaxKindOperationFilterInput
+  location: LocationFilterInput
+  value: StringOperationFilterInput
+  block: BooleanOperationFilterInput
+}
+
+input StringValueNodeSortInput {
+  kind: SortEnumType
+  location: LocationSortInput
+  value: SortEnumType
+  block: SortEnumType
+}
+
+input SyntaxKindOperationFilterInput {
+  eq: SyntaxKind
+  neq: SyntaxKind
+  in: [SyntaxKind!]
+  nin: [SyntaxKind!]
+}
+
+input TypeKindOperationFilterInput {
+  eq: __TypeKind
+  neq: __TypeKind
+  in: [__TypeKind!]
+  nin: [__TypeKind!]
+}
+
+input UniversTypeFilterInput {
+  and: [UniversTypeFilterInput!]
+  or: [UniversTypeFilterInput!]
+  kind: TypeKindOperationFilterInput
+  syntaxNode: ObjectTypeDefinitionNodeFilterInput
+  implements: ListFilterInputTypeOfInterfaceTypeFilterInput
+  fields: ListFilterInputTypeOfObjectFieldFilterInput
+  directives: ListFilterInputTypeOfDirectiveFilterInput
+  contextData: ListFilterInputTypeOfKeyValuePairOfStringAndObjectFilterInput
+  scope: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+}
+
+input UniversTypeSortInput {
+  kind: SortEnumType
+  syntaxNode: ObjectTypeDefinitionNodeSortInput
+  scope: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+}
+
+input UpdateGenreInput {
+  id: ID!
+  nom: String!
+}
+
+enum ExpressionType {
+  ADD
+  ADD_CHECKED
+  AND
+  AND_ALSO
+  ARRAY_LENGTH
+  ARRAY_INDEX
+  CALL
+  COALESCE
+  CONDITIONAL
+  CONSTANT
+  CONVERT
+  CONVERT_CHECKED
+  DIVIDE
+  EQUAL
+  EXCLUSIVE_OR
+  GREATER_THAN
+  GREATER_THAN_OR_EQUAL
+  INVOKE
+  LAMBDA
+  LEFT_SHIFT
+  LESS_THAN
+  LESS_THAN_OR_EQUAL
+  LIST_INIT
+  MEMBER_ACCESS
+  MEMBER_INIT
+  MODULO
+  MULTIPLY
+  MULTIPLY_CHECKED
+  NEGATE
+  UNARY_PLUS
+  NEGATE_CHECKED
+  NEW
+  NEW_ARRAY_INIT
+  NEW_ARRAY_BOUNDS
+  NOT
+  NOT_EQUAL
+  OR
+  OR_ELSE
+  PARAMETER
+  POWER
+  QUOTE
+  RIGHT_SHIFT
+  SUBTRACT
+  SUBTRACT_CHECKED
+  TYPE_AS
+  TYPE_IS
+  ASSIGN
+  BLOCK
+  DEBUG_INFO
+  DECREMENT
+  DYNAMIC
+  DEFAULT
+  EXTENSION
+  GOTO
+  INCREMENT
+  INDEX
+  LABEL
+  RUNTIME_VARIABLES
+  LOOP
+  SWITCH
+  THROW
+  TRY
+  UNBOX
+  ADD_ASSIGN
+  AND_ASSIGN
+  DIVIDE_ASSIGN
+  EXCLUSIVE_OR_ASSIGN
+  LEFT_SHIFT_ASSIGN
+  MODULO_ASSIGN
+  MULTIPLY_ASSIGN
+  OR_ASSIGN
+  POWER_ASSIGN
+  RIGHT_SHIFT_ASSIGN
+  SUBTRACT_ASSIGN
+  ADD_ASSIGN_CHECKED
+  MULTIPLY_ASSIGN_CHECKED
+  SUBTRACT_ASSIGN_CHECKED
+  PRE_INCREMENT_ASSIGN
+  PRE_DECREMENT_ASSIGN
+  POST_INCREMENT_ASSIGN
+  POST_DECREMENT_ASSIGN
+  TYPE_EQUAL
+  ONES_COMPLEMENT
+  IS_TRUE
+  IS_FALSE
+}
+
+enum Metier {
+  SCENARISTE
+  DESSINATEUR
+  COLORISTE
+}
+
+enum SortEnumType {
+  ASC
+  DESC
+}
+
+enum SyntaxKind {
+  NAME
+  DOCUMENT
+  OPERATION_DEFINITION
+  VARIABLE_DEFINITION
+  VARIABLE
+  SELECTION_SET
+  FIELD
+  ARGUMENT
+  FRAGMENT_SPREAD
+  INLINE_FRAGMENT
+  FRAGMENT_DEFINITION
+  INT_VALUE
+  STRING_VALUE
+  BOOLEAN_VALUE
+  NULL_VALUE
+  ENUM_VALUE
+  LIST_VALUE
+  OBJECT_VALUE
+  OBJECT_FIELD
+  DIRECTIVE
+  NAMED_TYPE
+  LIST_TYPE
+  NON_NULL_TYPE
+  SCHEMA_DEFINITION
+  OPERATION_TYPE_DEFINITION
+  SCALAR_TYPE_DEFINITION
+  OBJECT_TYPE_DEFINITION
+  FIELD_DEFINITION
+  INPUT_VALUE_DEFINITION
+  INTERFACE_TYPE_DEFINITION
+  UNION_TYPE_DEFINITION
+  ENUM_TYPE_DEFINITION
+  ENUM_VALUE_DEFINITION
+  INPUT_OBJECT_TYPE_DEFINITION
+  SCHEMA_EXTENSION
+  SCALAR_TYPE_EXTENSION
+  OBJECT_TYPE_EXTENSION
+  INTERFACE_TYPE_EXTENSION
+  UNION_TYPE_EXTENSION
+  ENUM_TYPE_EXTENSION
+  INPUT_OBJECT_TYPE_EXTENSION
+  DIRECTIVE_DEFINITION
+  FLOAT_VALUE
+  LIST_NULLABILITY
+  REQUIRED_MODIFIER
+  OPTIONAL_MODIFIER
+  SCHEMA_COORDINATE
+}
+
+"The `Byte` scalar type represents non-fractional whole numeric values. Byte can represent values between 0 and 255."
+scalar Byte
+
+"The `Date` scalar represents an ISO-8601 compliant date type."
+scalar Date
+
+"The `DateTime` scalar represents an ISO-8601 compliant date time type."
+scalar DateTime @specifiedBy(url: "https:\/\/www.graphql-scalars.com\/date-time")
+
+scalar EuroCurrency
+
+"The ISBN scalar type is a ISBN-10 or ISBN-13 number: https:\/\/en.wikipedia.org\/wiki\/International_Standard_Book_Number."
+scalar Isbn
+
+"Value between 1 and 12"
+scalar Month
+
+scalar URL @specifiedBy(url: "https:\/\/tools.ietf.org\/html\/rfc3986")
+
+scalar UUID @specifiedBy(url: "https:\/\/tools.ietf.org\/html\/rfc4122")
+
+"The UnsignedShort scalar type represents a unsigned 16-bit numeric non-fractional value greater than or equal to 0."
+scalar UnsignedShort
+
+"Value between 1900 and 2999"
+scalar Year
