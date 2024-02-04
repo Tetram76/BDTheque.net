@@ -1,13 +1,13 @@
 namespace BDTheque.GraphQL.Mutations;
 
 using BDTheque.Data.Context;
-using BDTheque.Data.Entities;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
-using BDTheque.GraphQL.Types;
 using HotChocolate.Subscriptions;
 using Microsoft.EntityFrameworkCore;
+using Path = System.IO.Path;
 
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
 public static class ImageMutations
 {
@@ -25,5 +25,19 @@ public static class ImageMutations
         await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(ImageSubscriptions.ImageDeleted), image, cancellationToken);
         return image;
+    }
+
+    public const string ImageDirectory = "./wwwroot/images";
+
+    [GraphQLType<ImageType>]
+    public static async Task<Image> UploadImagePicture([ID] Guid id, [GraphQLType<UploadType>] IFile file, CancellationToken cancellationToken)
+    {
+        await using FileStream stream = File.Create(Path.Combine(ImageDirectory, $"{id}.png"));
+        await file.CopyToAsync(stream, cancellationToken);
+        return new Image
+        {
+            Id = id,
+            Titre = "Jon Skeet"
+        };
     }
 }

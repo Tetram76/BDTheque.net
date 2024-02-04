@@ -1,14 +1,12 @@
-namespace BDTheque.GraphQL.Types;
+namespace BDTheque.GraphQL.Types.Interfaces;
 
-using BDTheque.Data.Entities;
+using BDTheque.Model.Interfaces;
 
-public class UniqueIdInterface<T> : BaseInterface<T>
-    where T : EntityWithUniqueId
+public class UniqueIdInterface : InterfaceType<IUniqueId>
 {
-    protected override void Configure(IInterfaceTypeDescriptor<T> descriptor)
+    protected override void Configure(IInterfaceTypeDescriptor<IUniqueId> descriptor)
     {
         base.Configure(descriptor);
-        descriptor.Name("UniqueId");
         descriptor.Field(e => e.Id).ID();
     }
 }

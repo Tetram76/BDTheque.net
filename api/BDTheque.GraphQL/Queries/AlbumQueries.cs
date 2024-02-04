@@ -1,10 +1,9 @@
 namespace BDTheque.GraphQL.Queries;
 
 using BDTheque.Data.Context;
-using BDTheque.Data.Entities;
 using BDTheque.GraphQL.DataLoaders;
-using BDTheque.GraphQL.Types;
 
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 [QueryType]
 public static class AlbumQueries
 {

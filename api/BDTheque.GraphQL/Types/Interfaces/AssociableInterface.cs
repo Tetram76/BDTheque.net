@@ -1,13 +1,5 @@
-namespace BDTheque.GraphQL.Types;
+namespace BDTheque.GraphQL.Types.Interfaces;
 
-using BDTheque.Data.Entities;
+using BDTheque.Model.Interfaces;
 
-public class AssociableInterface<T> : UniqueIdInterface<T>
-    where T : AssociableEntity
-{
-    protected override void Configure(IInterfaceTypeDescriptor<T> descriptor)
-    {
-        base.Configure(descriptor);
-        descriptor.Name("Associable");
-    }
-}
+public class AssociableInterface : InterfaceType<IAssociable>;

@@ -1,9 +1,8 @@
 namespace BDTheque.GraphQL.Queries;
 
 using BDTheque.Data.Context;
-using BDTheque.Data.Entities;
-using BDTheque.GraphQL.Types;
 
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 [QueryType]
 public static class UniversQueries
 {
@@ -12,6 +11,6 @@ public static class UniversQueries
     [UseFiltering<UniversType>]
     [UseSorting<UniversType>]
     [GraphQLType<ListType<UniversType>>]
-    public static IQueryable<Univers> GetUnivers(BDThequeContext dbContext, CancellationToken cancellationToken)
+    public static IQueryable<Univers> GetUnivers(BDThequeContext dbContext)
         => dbContext.Univers;
 }

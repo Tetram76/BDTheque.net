@@ -1,7 +1,7 @@
 namespace BDTheque.Data.Services;
 
 using BDTheque.Data.Context;
-using BDTheque.Data.Entities;
+using BDTheque.Model.Entities;
 
 public class PersonneService(BDThequeContext context)
 {

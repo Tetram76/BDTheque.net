@@ -1,14 +1,12 @@
 namespace BDTheque.GraphQL.DataLoaders;
 
-using System.Diagnostics.CodeAnalysis;
 using BDTheque.Data.Context;
-using BDTheque.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 public class AlbumLoaders
 {
     [DataLoader]
-    internal static async Task<Album?> GetAlbumByIdAsync([ID(nameof(Album))] Guid id, BDThequeContext context, CancellationToken cancellationToken)
+    internal static async Task<Album?> GetAlbumByIdAsync([ID] Guid id, BDThequeContext context, CancellationToken cancellationToken)
         => await context.Albums.FirstOrDefaultAsync(album => album.Id == id, cancellationToken);
 
     [DataLoader]

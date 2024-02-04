@@ -1,16 +1,14 @@
 namespace BDTheque.GraphQL.Types;
 
-using BDTheque.Data.Entities;
+using BDTheque.GraphQL.Types.Interfaces;
+using BDTheque.Model.Entities.Abstract;
 
-public abstract class SimpleIdType<T> : BaseType<T>
-    where T : EntityWithId
+public abstract class SimpleIdType<T> : VersioningType<T>
+    where T : SimpleIdEntity
 {
     protected override void Configure(IObjectTypeDescriptor<T> descriptor)
     {
+        descriptor.Implements<SimpleIdInterface>();
         base.Configure(descriptor);
-
-        descriptor.Implements<SimpleIdInterface<EntityWithId>>();
-
-        descriptor.Field(e => e.Id).ID();
     }
 }

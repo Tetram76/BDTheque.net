@@ -4,11 +4,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDTheque.Web", "BDTheque.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDTheque.Data", "BDTheque.Data\BDTheque.Data.csproj", "{23AAF74C-B756-41DC-9407-9E02C242AABD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDTheque.Extensions", "BDTheque.Extensions\BDTheque.Extensions.csproj", "{C8F5BA19-BA32-4E09-9254-74EA2DD18591}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDTheque.GraphQL", "BDTheque.GraphQL\BDTheque.GraphQL.csproj", "{A5C824CB-094C-4F10-9FF3-2DA8FC7C3221}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDTheque.Tests", "BDTheque.Tests\BDTheque.Tests.csproj", "{3670D464-029B-4D99-9122-F1DA54103C94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDTheque.Model", "BDTheque.Model\BDTheque.Model.csproj", "{8FF6DFD0-9ECC-41FB-9391-DC242B7158E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,10 +24,6 @@ Global
 		{23AAF74C-B756-41DC-9407-9E02C242AABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23AAF74C-B756-41DC-9407-9E02C242AABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23AAF74C-B756-41DC-9407-9E02C242AABD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C8F5BA19-BA32-4E09-9254-74EA2DD18591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8F5BA19-BA32-4E09-9254-74EA2DD18591}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C8F5BA19-BA32-4E09-9254-74EA2DD18591}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C8F5BA19-BA32-4E09-9254-74EA2DD18591}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A5C824CB-094C-4F10-9FF3-2DA8FC7C3221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A5C824CB-094C-4F10-9FF3-2DA8FC7C3221}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5C824CB-094C-4F10-9FF3-2DA8FC7C3221}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -36,5 +32,9 @@ Global
 		{3670D464-029B-4D99-9122-F1DA54103C94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3670D464-029B-4D99-9122-F1DA54103C94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3670D464-029B-4D99-9122-F1DA54103C94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FF6DFD0-9ECC-41FB-9391-DC242B7158E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FF6DFD0-9ECC-41FB-9391-DC242B7158E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FF6DFD0-9ECC-41FB-9391-DC242B7158E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FF6DFD0-9ECC-41FB-9391-DC242B7158E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

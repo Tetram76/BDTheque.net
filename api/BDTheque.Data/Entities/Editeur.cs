@@ -1,35 +1,16 @@
 ﻿namespace BDTheque.Data.Entities;
 
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using BDTheque.Data.Context;
-using BDTheque.Extensions;
+using BDTheque.Data.Extensions;
+using BDTheque.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-[SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
-[SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
-[SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
-public class Editeur : EntityWithLabel
-{
-    public string Nom { get; set; } = null!;
-    public string NomRaw { get; set; } = null!;
-
-    [Url]
-    public string? SiteWeb { get; set; }
-
-    public virtual ICollection<Collection> Collections { get; set; } = new List<Collection>();
-
-    public virtual ICollection<Serie> Series { get; set; } = new List<Serie>();
-
-    public virtual ICollection<EditionAlbum> EditionsAlbums { get; set; } = new List<EditionAlbum>();
-}
 
 public static partial class ModelBuilderExtensions
 {
     public static void ApplyEntityConfiguration(this EntityTypeBuilder<Editeur> entity)
     {
-        entity.ToTable("Editeurs");
+        entity.ToTable("editeurs");
 
         SetupVersioning(entity);
         SetupUniqueIdPrimaryKey(entity);

@@ -1,9 +1,8 @@
 namespace BDTheque.GraphQL.Queries;
 
 using BDTheque.Data.Context;
-using BDTheque.Data.Entities;
-using BDTheque.GraphQL.Types;
 
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 [QueryType]
 public static class EditeurQueries
 {
@@ -12,6 +11,6 @@ public static class EditeurQueries
     [UseFiltering<EditeurType>]
     [UseSorting<EditeurType>]
     [GraphQLType<ListType<EditeurType>>]
-    public static IQueryable<Editeur> GetEditeurs(BDThequeContext dbContext, CancellationToken cancellationToken)
+    public static IQueryable<Editeur> GetEditeurs(BDThequeContext dbContext)
         => dbContext.Editeurs;
 }

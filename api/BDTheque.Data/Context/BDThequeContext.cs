@@ -1,8 +1,11 @@
-﻿namespace BDTheque.Data.Context;
+namespace BDTheque.Data.Context;
 
 using BDTheque.Data.Entities;
+using BDTheque.Data.Enums;
+using BDTheque.Data.Extensions;
 using BDTheque.Data.Seeders;
-using BDTheque.Extensions;
+using BDTheque.Model.Entities;
+using BDTheque.Model.Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -16,7 +19,7 @@ public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbCont
     public virtual DbSet<AuteurAlbum> AuteursAlbums { get; init; } = null!;
     public virtual DbSet<AuteurSerie> AuteursSeries { get; init; } = null!;
     public virtual DbSet<Collection> Collections { get; init; } = null!;
-    public virtual DbSet<CoteAlbum> CotesAlbums { get; init; } = null!;
+    public virtual DbSet<CoteEdition> CotesAlbums { get; init; } = null!;
     public virtual DbSet<Editeur> Editeurs { get; init; } = null!;
     public virtual DbSet<Edition> Editions { get; init; } = null!;
     public virtual DbSet<EditionAlbum> EditionsAlbums { get; init; } = null!;
@@ -34,14 +37,14 @@ public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbCont
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .HasPostgresEnum("Metier".ToSnakeCase(), ["Scenariste", "Dessinateur", "Coloriste"])
+            .RegisterEnums()
             .HasPostgresExtension("pgcrypto")
             .HasAnnotation(
                 $"Npgsql:CollationDefinition:public.{FrenchCollation}", "fr_fr-u-ks-level1,fr_fr-u-ks-level1,icu,False"
             );
 
         modelBuilder.Entity<Album>().ApplyEntityConfiguration();
-        modelBuilder.Entity<CoteAlbum>().ApplyEntityConfiguration();
+        modelBuilder.Entity<CoteEdition>().ApplyEntityConfiguration();
 
         modelBuilder.Entity<Serie>().ApplyEntityConfiguration();
 
@@ -93,16 +96,16 @@ public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbCont
     private void UpdateTimestamps()
     {
         IEnumerable<EntityEntry> entities = ChangeTracker.Entries().Where(
-            x => x is { Entity: BaseEntity, State: EntityState.Added or EntityState.Modified }
+            x => x is { Entity: VersioningEntity, State: EntityState.Added or EntityState.Modified }
         );
 
         DateTime now = DateTime.UtcNow;
         foreach (EntityEntry entity in entities)
         {
             if (entity.State == EntityState.Added)
-                ((BaseEntity) entity.Entity).CreatedAt = now;
+                ((VersioningEntity) entity.Entity).CreatedAt = now;
 
-            ((BaseEntity) entity.Entity).UpdatedAt = now;
+            ((VersioningEntity) entity.Entity).UpdatedAt = now;
         }
     }
 }

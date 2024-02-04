@@ -1,8 +1,6 @@
 namespace BDTheque.GraphQL.Subscriptions;
 
 using System.Runtime.CompilerServices;
-using BDTheque.Data.Entities;
-using BDTheque.GraphQL.Types;
 using HotChocolate.Execution;
 using HotChocolate.Subscriptions;
 
@@ -10,15 +8,15 @@ using HotChocolate.Subscriptions;
 public static class EditionSubscriptions
 {
     [Subscribe(With = nameof(EditionCreatedStream))]
-    [GraphQLType<EditionType>]
+    [GraphQLType<EditionAlbumType>]
     public static EditionAlbum EditionCreated([EventMessage] EditionAlbum edition) => edition;
 
     [Subscribe(With = nameof(EditionUpdatedStream))]
-    [GraphQLType<EditionType>]
+    [GraphQLType<EditionAlbumType>]
     public static EditionAlbum EditionUpdated([EventMessage] EditionAlbum edition) => edition;
 
     [Subscribe(With = nameof(EditionDeletedStream))]
-    [GraphQLType<EditionType>]
+    [GraphQLType<EditionAlbumType>]
     public static EditionAlbum EditionDeleted([EventMessage] EditionAlbum edition) => edition;
 
     private static async IAsyncEnumerable<EditionAlbum> EditionCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)

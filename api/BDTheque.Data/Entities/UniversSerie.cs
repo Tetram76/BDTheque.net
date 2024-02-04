@@ -1,26 +1,14 @@
 ﻿namespace BDTheque.Data.Entities;
 
-using System.Diagnostics.CodeAnalysis;
+using BDTheque.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-[SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
-[SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
-[SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
-public class UniversSerie : EntityWithUniqueId
-{
-    public Guid UniversId { get; set; }
-    public virtual Univers Univers { get; set; } = null!;
-
-    public Guid SerieId { get; set; }
-    public virtual Serie Serie { get; set; } = null!;
-}
 
 public static partial class ModelBuilderExtensions
 {
     public static void ApplyEntityConfiguration(this EntityTypeBuilder<UniversSerie> entity)
     {
-        entity.ToTable("UniversSeries");
+        entity.ToTable("univers_series");
 
         SetupVersioning(entity);
         SetupUniqueIdPrimaryKey(entity);
