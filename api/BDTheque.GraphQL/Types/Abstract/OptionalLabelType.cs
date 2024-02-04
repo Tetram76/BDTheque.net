@@ -1,6 +1,8 @@
 namespace BDTheque.GraphQL.Types;
 
-using BDTheque.Data.Entities;
+using BDTheque.GraphQL.Types.Interfaces;
+using BDTheque.Model.Entities.Abstract;
+using BDTheque.Model.Interfaces;
 
 public abstract class OptionalLabelType<T> : AssociableType<T>
     where T : EntityWithOptionalLabel
@@ -9,7 +11,7 @@ public abstract class OptionalLabelType<T> : AssociableType<T>
     {
         base.Configure(descriptor);
 
-        descriptor.Implements<OptionalLabelInterface<EntityWithOptionalLabel>>();
+        descriptor.Implements<OptionalLabelInterface<IEntityWithOptionalLabel>>();
 
         descriptor.Field(e => e.Initiale).Type<StringType>();
     }

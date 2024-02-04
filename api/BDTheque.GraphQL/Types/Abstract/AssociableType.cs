@@ -1,6 +1,8 @@
 namespace BDTheque.GraphQL.Types;
 
-using BDTheque.Data.Entities;
+using BDTheque.GraphQL.Types.Interfaces;
+using BDTheque.Model.Entities.Abstract;
+using BDTheque.Model.Interfaces;
 
 public abstract class AssociableType<T> : UniqueIdType<T>
     where T : AssociableEntity
@@ -9,6 +11,6 @@ public abstract class AssociableType<T> : UniqueIdType<T>
     {
         base.Configure(descriptor);
 
-        descriptor.Implements<AssociableInterface<AssociableEntity>>();
+        descriptor.Implements<AssociableInterface<IAssociableEntity>>();
     }
 }

@@ -1,24 +1,19 @@
 namespace BDTheque.GraphQL.Subscriptions;
 
 using System.Runtime.CompilerServices;
-using BDTheque.Data.Entities;
-using BDTheque.GraphQL.Types;
 using HotChocolate.Execution;
 using HotChocolate.Subscriptions;
 
-[SubscriptionType]
+// [SubscriptionType]
 public static class ImageSubscriptions
 {
     [Subscribe(With = nameof(ImageCreatedStream))]
-    [GraphQLType<ImageType>]
     public static Image ImageCreated([EventMessage] Image image) => image;
 
     [Subscribe(With = nameof(ImageUpdatedStream))]
-    [GraphQLType<ImageType>]
     public static Image ImageUpdated([EventMessage] Image image) => image;
 
     [Subscribe(With = nameof(ImageDeletedStream))]
-    [GraphQLType<ImageType>]
     public static Image ImageDeleted([EventMessage] Image image) => image;
 
     private static async IAsyncEnumerable<Image> ImageCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)

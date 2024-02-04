@@ -1,12 +1,8 @@
 namespace BDTheque.Data.Entities;
 
+using BDTheque.Model.Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-public abstract class EntityWithUniqueId : BaseEntity
-{
-    public Guid Id { get; set; }
-}
 
 public static partial class ModelBuilderExtensions
 {

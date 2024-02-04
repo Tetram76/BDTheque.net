@@ -1,9 +1,9 @@
-namespace BDTheque.GraphQL.Types;
+namespace BDTheque.GraphQL.Types.Interfaces;
 
-using BDTheque.Data.Entities;
+using BDTheque.Model.Interfaces;
 
 public class MandatoryLabelInterface<T> : AssociableInterface<T>
-    where T : EntityWithLabel
+    where T : IEntityWithLabel
 {
     protected override void Configure(IInterfaceTypeDescriptor<T> descriptor)
     {

@@ -1,6 +1,5 @@
 namespace BDTheque.GraphQL.Types;
 
-using BDTheque.Data.Entities;
 using BDTheque.GraphQL.Scalars;
 
 public class CoteAlbumType : UniqueIdType<CoteAlbum>

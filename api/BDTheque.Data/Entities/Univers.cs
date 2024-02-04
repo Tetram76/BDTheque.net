@@ -1,39 +1,10 @@
-﻿namespace BDTheque.Data.Entities;
+namespace BDTheque.Data.Entities;
 
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using BDTheque.Data.Context;
 using BDTheque.Data.Extensions;
+using BDTheque.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-[SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
-[SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
-[SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
-public class Univers : EntityWithLabel
-{
-    public string Nom { get; set; } = null!;
-    public string NomRaw { get; set; } = null!;
-
-    public string? Description { get; set; }
-    public string? DescriptionRaw { get; set; }
-
-    [Url]
-    public string? SiteWeb { get; set; }
-
-    public Guid UniversRacineId { get; set; }
-    public virtual Univers UniversRacine { get; set; } = null!;
-    public Guid? UniversParentId { get; set; }
-    public virtual Univers? UniversParent { get; set; }
-
-    public List<Guid>? UniversBranches { get; set; }
-
-    public virtual ICollection<Univers> UniversParents { get; set; } = new List<Univers>();
-    public virtual ICollection<Univers> UniversRacines { get; set; } = new List<Univers>();
-
-    public virtual ICollection<UniversAlbum> UniversAlbums { get; set; } = new List<UniversAlbum>();
-    public virtual ICollection<UniversSerie> UniversSeries { get; set; } = new List<UniversSerie>();
-}
 
 public static partial class ModelBuilderExtensions
 {

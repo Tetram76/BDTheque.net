@@ -1,14 +1,9 @@
 namespace BDTheque.Data.Entities;
 
 using System.Linq.Expressions;
+using BDTheque.Model.Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-public abstract class BaseEntity
-{
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-}
 
 public static partial class ModelBuilderExtensions
 {

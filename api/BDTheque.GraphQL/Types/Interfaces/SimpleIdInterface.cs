@@ -1,9 +1,9 @@
-namespace BDTheque.GraphQL.Types;
+namespace BDTheque.GraphQL.Types.Interfaces;
 
-using BDTheque.Data.Entities;
+using BDTheque.Model.Interfaces;
 
 public class SimpleIdInterface<T> : BaseInterface<T>
-    where T : EntityWithId
+    where T : IEntityWithId
 {
     protected override void Configure(IInterfaceTypeDescriptor<T> descriptor)
     {

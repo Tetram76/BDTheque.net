@@ -1,6 +1,5 @@
 namespace BDTheque.GraphQL.Types;
 
-using BDTheque.Data.Entities;
 using BDTheque.GraphQL.Scalars;
 
 public class EditionAlbumType : UniqueIdType<EditionAlbum>
@@ -19,10 +18,8 @@ public class EditionAlbumType : UniqueIdType<EditionAlbum>
 
         descriptor.Field(e => e.Prix).Type<EuroCurrencyType>();
 
-        descriptor.Field(e => e.CotesAlbums).Name("cotes").Type<ListType<CoteAlbumType>>()
-            .UsePaging<CoteAlbumType>().UseProjection<CoteAlbumType>().UseFiltering<CoteAlbumType>().UseSorting<CoteAlbumType>();
-
-        descriptor.Field(e => e.Images).Type<ListType<ImageType>>()
-            .UsePaging<ImageType>().UseProjection<ImageType>().UseFiltering<ImageType>().UseSorting<ImageType>();
+        descriptor
+            .Ignore(e => e.CotesAlbums)
+            .Ignore(e => e.Images);
     }
 }

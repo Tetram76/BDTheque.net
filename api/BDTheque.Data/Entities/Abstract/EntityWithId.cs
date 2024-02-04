@@ -1,11 +1,7 @@
 namespace BDTheque.Data.Entities;
 
+using BDTheque.Model.Entities.Abstract;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-public abstract class EntityWithId : BaseEntity
-{
-    public ushort Id { get; set; }
-}
 
 public static partial class ModelBuilderExtensions
 {

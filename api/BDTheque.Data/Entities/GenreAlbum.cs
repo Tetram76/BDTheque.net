@@ -1,22 +1,8 @@
 ﻿namespace BDTheque.Data.Entities;
 
-using System.Diagnostics.CodeAnalysis;
+using BDTheque.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-[SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
-[SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
-[SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
-public class GenreAlbum : EntityWithUniqueId
-{
-    public Guid GenreId { get; set; }
-    public virtual Genre Genre { get; set; } = null!;
-
-    public Guid AlbumId { get; set; }
-    public virtual Album Album { get; set; } = null!;
-
-    public bool FromSerie { get; set; } = false;
-}
 
 public static partial class ModelBuilderExtensions
 {

@@ -1,17 +1,17 @@
 namespace BDTheque.GraphQL.Queries;
 
 using BDTheque.Data.Context;
-using BDTheque.Data.Entities;
-using BDTheque.GraphQL.Types;
 
-[QueryType]
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+
+// [QueryType]
 public static class PersonneQueries
 {
     [UsePaging]
     [UseProjection]
-    [UseFiltering<PersonneType>]
-    [UseSorting<PersonneType>]
+    [UseFiltering]
+    [UseSorting]
     [GraphQLType<ListType<PersonneType>>]
-    public static IQueryable<Personne> GetPersonnes(BDThequeContext dbContext, CancellationToken cancellationToken)
+    public static IQueryable<Personne> GetPersonnes(BDThequeContext dbContext)
         => dbContext.Personnes;
 }

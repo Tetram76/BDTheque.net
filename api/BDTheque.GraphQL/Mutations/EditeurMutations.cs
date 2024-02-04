@@ -1,14 +1,14 @@
 namespace BDTheque.GraphQL.Mutations;
 
 using BDTheque.Data.Context;
-using BDTheque.Data.Entities;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
-using BDTheque.GraphQL.Types;
 using HotChocolate.Subscriptions;
 using Microsoft.EntityFrameworkCore;
 
-[MutationType]
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+
+// [MutationType]
 public static class EditeurMutations
 {
     // createEditeur(data: EditeurCreateInput!): Editeur!

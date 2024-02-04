@@ -2,7 +2,8 @@ namespace BDTheque.Data.Seeders;
 
 using System.Reflection;
 using System.Text.Json;
-using BDTheque.Data.Entities;
+using BDTheque.Model.Entities;
+using BDTheque.Model.Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
 
 public static class JsonSeeder

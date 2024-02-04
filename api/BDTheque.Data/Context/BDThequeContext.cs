@@ -1,8 +1,10 @@
-﻿namespace BDTheque.Data.Context;
+namespace BDTheque.Data.Context;
 
 using BDTheque.Data.Entities;
 using BDTheque.Data.Extensions;
 using BDTheque.Data.Seeders;
+using BDTheque.Model.Entities;
+using BDTheque.Model.Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -34,7 +36,7 @@ public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbCont
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .HasPostgresEnum("Metier".ToSnakeCase(), ["Scenariste", "Dessinateur", "Coloriste"])
+            .RegisterEnums()
             .HasPostgresExtension("pgcrypto")
             .HasAnnotation(
                 $"Npgsql:CollationDefinition:public.{FrenchCollation}", "fr_fr-u-ks-level1,fr_fr-u-ks-level1,icu,False"

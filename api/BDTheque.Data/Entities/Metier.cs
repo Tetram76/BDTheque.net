@@ -1,6 +1,10 @@
 namespace BDTheque.Data.Entities;
 
-public enum Metier
+using BDTheque.Data.Extensions;
+using Microsoft.EntityFrameworkCore;
+
+public static partial class ModelBuilderExtensions
 {
-    Scenariste, Dessinateur, Coloriste
+    public static ModelBuilder RegisterEnums(this ModelBuilder builder)
+        => builder.HasPostgresEnum("Metier".ToSnakeCase(), ["Scenariste", "Dessinateur", "Coloriste"]);
 }

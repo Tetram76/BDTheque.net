@@ -1,7 +1,5 @@
 namespace BDTheque.GraphQL.Types;
 
-using BDTheque.Data.Entities;
-
 public class EditionType : UniqueIdType<Edition>
 {
     protected override void Configure(IObjectTypeDescriptor<Edition> descriptor)
@@ -20,8 +18,7 @@ public class EditionType : UniqueIdType<Edition>
         descriptor.Ignore(e => e.OrientationId).Field(o => o.Orientation).Type<OptionType>();
         descriptor.Ignore(e => e.SensLectureId).Field(o => o.SensLecture).Type<OptionType>();
 
-        descriptor.Field(e => e.EditionsAlbums).Name("albums").Type<ListType<EditionAlbumType>>()
-            .UsePaging<EditionAlbumType>().UseProjection<EditionAlbumType>().UseFiltering<EditionAlbumType>().UseSorting<EditionAlbumType>();
+        descriptor.Ignore(e => e.EditionsAlbums);
 
         descriptor.Field(o => o.Serie).Type<SerieType>();
     }

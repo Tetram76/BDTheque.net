@@ -1,19 +1,19 @@
 namespace BDTheque.GraphQL.Queries;
 
 using BDTheque.Data.Context;
-using BDTheque.Data.Entities;
 using BDTheque.GraphQL.DataLoaders;
-using BDTheque.GraphQL.Types;
+
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 
 [QueryType]
 public static class GenreQueries
 {
     [UsePaging]
     [UseProjection]
-    [UseFiltering<GenreType>]
-    [UseSorting<GenreType>]
+    [UseFiltering]
+    [UseSorting]
     [GraphQLType<ListType<GenreType>>]
-    public static IQueryable<Genre> GetGenres(BDThequeContext dbContext, CancellationToken cancellationToken)
+    public static IQueryable<Genre> GetGenres(BDThequeContext dbContext)
         => dbContext.Genres;
 
     [GraphQLType<GenreType>]

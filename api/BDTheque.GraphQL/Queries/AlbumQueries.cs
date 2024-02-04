@@ -1,17 +1,17 @@
 namespace BDTheque.GraphQL.Queries;
 
 using BDTheque.Data.Context;
-using BDTheque.Data.Entities;
 using BDTheque.GraphQL.DataLoaders;
-using BDTheque.GraphQL.Types;
 
-[QueryType]
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+
+// [QueryType]
 public static class AlbumQueries
 {
     [UsePaging]
     [UseProjection]
-    [UseFiltering<AlbumType>]
-    [UseSorting<AlbumType>]
+    [UseFiltering]
+    [UseSorting]
     [GraphQLType<ListType<AlbumType>>]
     public static IQueryable<Album> GetAlbums(BDThequeContext dbContext, CancellationToken cancellationToken)
         => dbContext.Albums;

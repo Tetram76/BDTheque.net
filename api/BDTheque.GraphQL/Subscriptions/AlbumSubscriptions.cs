@@ -1,36 +1,28 @@
 namespace BDTheque.GraphQL.Subscriptions;
 
 using System.Runtime.CompilerServices;
-using BDTheque.Data.Entities;
-using BDTheque.GraphQL.Types;
 using HotChocolate.Execution;
 using HotChocolate.Subscriptions;
 
-[SubscriptionType]
+// [SubscriptionType]
 public static class AlbumSubscriptions
 {
     [Subscribe(With = nameof(AlbumCreatedStream))]
-    [GraphQLType<AlbumType>]
     public static Album AlbumCreated([EventMessage] Album album) => album;
 
     [Subscribe(With = nameof(AlbumUpdatedStream))]
-    [GraphQLType<AlbumType>]
     public static Album AlbumUpdated([EventMessage] Album album) => album;
 
     [Subscribe(With = nameof(AlbumDeletedStream))]
-    [GraphQLType<AlbumType>]
     public static Album AlbumDeleted([EventMessage] Album album) => album;
 
     [Subscribe(With = nameof(CoteAlbumCreatedStream))]
-    [GraphQLType<CoteAlbumType>]
     public static CoteAlbum CoteAlbumCreated([EventMessage] CoteAlbum coteAlbum) => coteAlbum;
 
     [Subscribe(With = nameof(CoteAlbumUpdatedStream))]
-    [GraphQLType<CoteAlbumType>]
     public static CoteAlbum CoteAlbumUpdated([EventMessage] CoteAlbum coteAlbum) => coteAlbum;
 
     [Subscribe(With = nameof(CoteAlbumDeletedStream))]
-    [GraphQLType<CoteAlbumType>]
     public static CoteAlbum CoteAlbumDeleted([EventMessage] CoteAlbum coteAlbum) => coteAlbum;
 
     private static async IAsyncEnumerable<Album> AlbumCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)

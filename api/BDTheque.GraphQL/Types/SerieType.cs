@@ -1,7 +1,5 @@
 namespace BDTheque.GraphQL.Types;
 
-using BDTheque.Data.Entities;
-
 public class SerieType : OptionalLabelType<Serie>
 {
     protected override void Configure(IObjectTypeDescriptor<Serie> descriptor)
@@ -24,22 +22,10 @@ public class SerieType : OptionalLabelType<Serie>
 
         descriptor.Ignore(e => e.NotationId).Field(e => e.Notation).Type<OptionType>();
 
-        descriptor.Field(e => e.Albums).Type<ListType<AlbumType>>()
-            .UsePaging<AuteurType>().UseProjection<AuteurType>().UseFiltering<AuteurType>().UseSorting<AuteurType>();
-
-        descriptor.Ignore(e => e.AuteursSeries)
-            .Field("auteurs").Type<ListType<AuteurType>>()
-            .Resolve(context => context.Parent<Serie>().AuteursSeries.Select(auteurSerie => auteurSerie.Auteur))
-            .UsePaging<AuteurType>().UseProjection<AuteurType>().UseFiltering<AuteurType>().UseSorting<AuteurType>();
-
-        descriptor.Ignore(e => e.GenresSeries)
-            .Field("genres").Type<ListType<GenreType>>()
-            .Resolve(context => context.Parent<Serie>().GenresSeries.Select(auteurSerie => auteurSerie.Genre))
-            .UsePaging<GenreType>().UseProjection<GenreType>().UseFiltering<GenreType>().UseSorting<GenreType>();
-
-        descriptor.Ignore(e => e.UniversSeries)
-            .Field("univers").Type<ListType<UniversType>>()
-            .Resolve(context => context.Parent<Serie>().UniversSeries.Select(universSerie => universSerie.Univers))
-            .UsePaging<UniversType>().UseProjection<UniversType>().UseFiltering<UniversType>().UseSorting<UniversType>();
+        descriptor
+            .Ignore(e => e.Albums)
+            .Ignore(e => e.AuteursSeries)
+            .Ignore(e => e.GenresSeries)
+            .Ignore(e => e.UniversSeries);
     }
 }

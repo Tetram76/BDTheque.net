@@ -1,7 +1,5 @@
 namespace BDTheque.GraphQL.Types;
 
-using BDTheque.Data.Entities;
-
 public class ImageType : UniqueIdType<Image>
 {
     protected override void Configure(IObjectTypeDescriptor<Image> descriptor)

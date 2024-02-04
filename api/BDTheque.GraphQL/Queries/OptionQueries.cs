@@ -1,17 +1,17 @@
 namespace BDTheque.GraphQL.Queries;
 
 using BDTheque.Data.Context;
-using BDTheque.Data.Entities;
-using BDTheque.GraphQL.Types;
 
-[QueryType]
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
+
+// [QueryType]
 public static class OptionQueries
 {
     [UsePaging]
     [UseProjection]
-    [UseFiltering<OptionType>]
-    [UseSorting<OptionType>]
+    [UseFiltering]
+    [UseSorting]
     [GraphQLType<ListType<OptionType>>]
-    public static IQueryable<Option> GetOptions(BDThequeContext dbContext, CancellationToken cancellationToken)
+    public static IQueryable<Option> GetOptions(BDThequeContext dbContext)
         => dbContext.Options;
 }
