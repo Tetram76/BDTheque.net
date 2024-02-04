@@ -19,7 +19,7 @@ public class EditionAlbumType : UniqueIdType<EditionAlbum>
         descriptor.Field(e => e.Prix).Type<EuroCurrencyType>();
 
         descriptor
-            .Ignore(e => e.CotesAlbums)
+            .Ignore(e => e.CotesEditions)
             .Ignore(e => e.Images);
     }
 }

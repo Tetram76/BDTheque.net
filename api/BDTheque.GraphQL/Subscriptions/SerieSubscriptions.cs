@@ -4,16 +4,19 @@ using System.Runtime.CompilerServices;
 using HotChocolate.Execution;
 using HotChocolate.Subscriptions;
 
-// [SubscriptionType]
+[SubscriptionType]
 public static class SerieSubscriptions
 {
     [Subscribe(With = nameof(SerieCreatedStream))]
+    [GraphQLType<SerieType>]
     public static Serie SerieCreated([EventMessage] Serie serie) => serie;
 
     [Subscribe(With = nameof(SerieUpdatedStream))]
+    [GraphQLType<SerieType>]
     public static Serie SerieUpdated([EventMessage] Serie serie) => serie;
 
     [Subscribe(With = nameof(SerieDeletedStream))]
+    [GraphQLType<SerieType>]
     public static Serie SerieDeleted([EventMessage] Serie serie) => serie;
 
     private static async IAsyncEnumerable<Serie> SerieCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)

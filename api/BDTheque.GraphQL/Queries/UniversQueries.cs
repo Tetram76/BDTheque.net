@@ -3,14 +3,13 @@ namespace BDTheque.GraphQL.Queries;
 using BDTheque.Data.Context;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
-
-// [QueryType]
+[QueryType]
 public static class UniversQueries
 {
     [UsePaging]
     [UseProjection]
-    [UseFiltering]
-    [UseSorting]
+    [UseFiltering<UniversType>]
+    [UseSorting<UniversType>]
     [GraphQLType<ListType<UniversType>>]
     public static IQueryable<Univers> GetUnivers(BDThequeContext dbContext)
         => dbContext.Univers;

@@ -3,14 +3,13 @@ namespace BDTheque.GraphQL.Queries;
 using BDTheque.Data.Context;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
-
-// [QueryType]
+[QueryType]
 public static class SerieQueries
 {
     [UsePaging]
     [UseProjection]
-    [UseFiltering]
-    [UseSorting]
+    [UseFiltering<SerieType>]
+    [UseSorting<SerieType>]
     [GraphQLType<ListType<SerieType>>]
     public static IQueryable<Serie> GetSeries(BDThequeContext dbContext)
         => dbContext.Series;

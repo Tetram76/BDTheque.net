@@ -8,8 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Path = System.IO.Path;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
-
-// [MutationType]
+[MutationType]
 public static class ImageMutations
 {
     // createImage(data: ImageCreateInput!): Image!

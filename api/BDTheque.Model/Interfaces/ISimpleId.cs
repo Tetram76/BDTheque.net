@@ -1,6 +1,6 @@
 namespace BDTheque.Model.Interfaces;
 
-public interface IEntityWithId : IBaseEntity
+public interface ISimpleId
 {
     public ushort Id { get; set; }
 }

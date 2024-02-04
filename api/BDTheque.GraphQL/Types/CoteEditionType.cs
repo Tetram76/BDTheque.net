@@ -2,11 +2,13 @@ namespace BDTheque.GraphQL.Types;
 
 using BDTheque.GraphQL.Scalars;
 
-public class CoteAlbumType : UniqueIdType<CoteAlbum>
+public class CoteEditionType : UniqueIdType<CoteEdition>
 {
-    protected override void Configure(IObjectTypeDescriptor<CoteAlbum> descriptor)
+    protected override void Configure(IObjectTypeDescriptor<CoteEdition> descriptor)
     {
         base.Configure(descriptor);
+
+        descriptor.Name("Cote");
 
         descriptor.Ignore(e => e.EditionAlbumId).Field(e => e.EditionAlbum).Type<EditionAlbumType>();
 

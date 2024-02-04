@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 public static partial class ModelBuilderExtensions
 {
-    public static void ApplyEntityConfiguration(this EntityTypeBuilder<CoteAlbum> entity)
+    public static void ApplyEntityConfiguration(this EntityTypeBuilder<CoteEdition> entity)
     {
-        entity.ToTable("CotesAlbums");
+        entity.ToTable("CotesEditions");
 
         SetupVersioning(entity);
         SetupUniqueIdPrimaryKey(entity);
@@ -23,6 +23,6 @@ public static partial class ModelBuilderExtensions
 
         entity.Property(e => e.Prix).HasPrecision(8, 3);
 
-        entity.HasOne(d => d.EditionAlbum).WithMany(p => p.CotesAlbums).HasForeignKey(d => d.EditionAlbumId);
+        entity.HasOne(d => d.EditionAlbum).WithMany(p => p.CotesEditions).HasForeignKey(d => d.EditionAlbumId);
     }
 }

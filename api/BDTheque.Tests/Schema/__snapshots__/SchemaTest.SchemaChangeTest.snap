@@ -4,51 +4,36 @@
   subscription: Subscription
 }
 
-interface Associable implements Versioning & UniqueId {
-  id: ID!
-  associations: [String!]
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
 interface Error {
   message: String!
 }
 
-interface MandatoryLabel implements Versioning & UniqueId & Associable {
-  id: ID!
+interface IAssociable {
+  associations: [String!]
+}
+
+interface IMandatoryLabel {
   initiale: String!
-  associations: [String!]
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
-interface OptionalLabel implements Versioning & UniqueId & Associable {
-  id: ID!
+interface IOptionalLabel {
   initiale: String
-  associations: [String!]
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
-interface SimpleId implements Versioning {
+interface ISimpleId {
   id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
-interface UniqueId implements Versioning {
+interface IUniqueId {
   id: ID!
+}
+
+interface IVersioning {
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
-interface Versioning {
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type Album implements Versioning & UniqueId & Associable & OptionalLabel {
+type Album implements IVersioning & IUniqueId & IAssociable & IOptionalLabel {
   id: ID!
   initiale: String
   tome: UnsignedShort
@@ -58,10 +43,6 @@ type Album implements Versioning & UniqueId & Associable & OptionalLabel {
   anneeParution: Year
   serie: Serie
   notation: Option
-  auteurs("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AuteurTypeFilterInput order: [AuteurTypeSortInput!]): AuteursConnection
-  editionsAlbums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionAlbumTypeFilterInput order: [EditionAlbumTypeSortInput!]): EditionsAlbumsConnection
-  genres("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: GenreTypeFilterInput order: [GenreTypeSortInput!]): GenresConnection
-  univers("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: UniversTypeFilterInput order: [UniversTypeSortInput!]): UniversConnection
   titre: String
   sujet: String
   notes: String
@@ -70,6 +51,10 @@ type Album implements Versioning & UniqueId & Associable & OptionalLabel {
   associations: [String!]
   createdAt: DateTime!
   updatedAt: DateTime!
+  auteurs("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AuteurTypeFilterInput order: [AuteurTypeSortInput!]): AuteursConnection
+  editions("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionAlbumTypeFilterInput order: [EditionAlbumTypeSortInput!]): EditionsConnection
+  genres("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: GenreTypeFilterInput order: [GenreTypeSortInput!]): GenresConnection
+  univers("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: UniversTypeFilterInput order: [UniversTypeSortInput!]): UniversConnection
 }
 
 "A connection to a list of items."
@@ -94,14 +79,14 @@ type AlreadyExistsError implements Error {
   message: String!
 }
 
-type Auteur implements Versioning & UniqueId {
+type Auteur implements IVersioning & IUniqueId {
   id: ID!
   personne: Personne
-  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
-  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
   metier: Metier!
   createdAt: DateTime!
   updatedAt: DateTime!
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
+  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
 }
 
 "A connection to a list of items."
@@ -122,16 +107,16 @@ type AuteursEdge {
   node: Auteur
 }
 
-type Collection implements Versioning & UniqueId & Associable & MandatoryLabel {
+type Collection implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   id: ID!
   initiale: String!
   editeur: Editeur
-  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionAlbumTypeFilterInput order: [EditionAlbumTypeSortInput!]): AlbumsConnection
-  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
   nom: String!
   associations: [String!]
   createdAt: DateTime!
   updatedAt: DateTime!
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionAlbumTypeFilterInput order: [EditionAlbumTypeSortInput!]): AlbumsConnection
+  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
 }
 
 "A connection to a list of items."
@@ -152,7 +137,7 @@ type CollectionsEdge {
   node: Collection
 }
 
-type CoteAlbum implements Versioning & UniqueId {
+type Cote implements IVersioning & IUniqueId {
   id: ID!
   editionAlbum: EditionAlbum
   annee: Year
@@ -168,7 +153,7 @@ type CotesConnection {
   "A list of edges."
   edges: [CotesEdge!]
   "A flattened list of the nodes."
-  nodes: [CoteAlbum]
+  nodes: [Cote]
 }
 
 "An edge in a connection."
@@ -176,7 +161,7 @@ type CotesEdge {
   "A cursor for use in pagination."
   cursor: String!
   "The item at the end of the edge."
-  node: CoteAlbum
+  node: Cote
 }
 
 type CreateGenrePayload {
@@ -229,17 +214,18 @@ type DeleteUniversPayload {
   errors: [DeleteUniversError!]
 }
 
-type Editeur implements Versioning & UniqueId & Associable & MandatoryLabel {
+type Editeur implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   id: ID!
   initiale: String!
   siteWeb: URL
-  collections("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: CollectionTypeFilterInput order: [CollectionTypeSortInput!]): CollectionsConnection
-  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
-  editionsAlbums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionAlbumTypeFilterInput order: [EditionAlbumTypeSortInput!]): EditionsAlbumsConnection
   nom: String!
   associations: [String!]
   createdAt: DateTime!
   updatedAt: DateTime!
+  collections("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: CollectionTypeFilterInput order: [CollectionTypeSortInput!]): CollectionsConnection
+  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
+  editions("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionAlbumTypeFilterInput order: [EditionAlbumTypeSortInput!]): EditionsConnection
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
 }
 
 "A connection to a list of items."
@@ -260,7 +246,7 @@ type EditeursEdge {
   node: Editeur
 }
 
-type Edition implements Versioning & UniqueId {
+type Edition implements IVersioning & IUniqueId {
   id: ID!
   anneeEdition: UnsignedShort
   isbn: Isbn
@@ -270,16 +256,16 @@ type Edition implements Versioning & UniqueId {
   typeEdition: Option
   orientation: Option
   sensLecture: Option
-  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionAlbumTypeFilterInput order: [EditionAlbumTypeSortInput!]): AlbumsConnection
   serie: Serie
   notes: String
   couleur: Boolean
   vo: Boolean
   createdAt: DateTime!
   updatedAt: DateTime!
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionAlbumTypeFilterInput order: [EditionAlbumTypeSortInput!]): AlbumsConnection
 }
 
-type EditionAlbum implements Versioning & UniqueId {
+type EditionAlbum implements IVersioning & IUniqueId {
   id: ID!
   edition: Edition
   album: Album
@@ -287,8 +273,6 @@ type EditionAlbum implements Versioning & UniqueId {
   collection: Collection
   etat: Option
   prix: EuroCurrency
-  cotes("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: CoteAlbumTypeFilterInput order: [CoteAlbumTypeSortInput!]): CotesConnection
-  images("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: ImageTypeFilterInput order: [ImageTypeSortInput!]): ImagesConnection
   stock: Boolean!
   offert: Boolean
   occasion: Boolean
@@ -299,6 +283,8 @@ type EditionAlbum implements Versioning & UniqueId {
   notes: String
   createdAt: DateTime!
   updatedAt: DateTime!
+  cotes("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: CoteEditionTypeFilterInput order: [CoteEditionTypeSortInput!]): CotesConnection
+  images("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: ImageTypeFilterInput order: [ImageTypeSortInput!]): ImagesConnection
 }
 
 "A connection to a list of items."
@@ -409,15 +395,33 @@ type EditionsAlbumsEdge {
   node: EditionAlbum
 }
 
-type Genre implements Versioning & UniqueId & Associable & MandatoryLabel {
+"A connection to a list of items."
+type EditionsConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [EditionsEdge!]
+  "A flattened list of the nodes."
+  nodes: [EditionAlbum]
+}
+
+"An edge in a connection."
+type EditionsEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: EditionAlbum
+}
+
+type Genre implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   id: ID!
   initiale: String!
-  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
-  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
   nom: String!
   associations: [String!]
   createdAt: DateTime!
   updatedAt: DateTime!
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
+  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
 }
 
 "A connection to a list of items."
@@ -438,7 +442,7 @@ type GenresEdge {
   node: Genre
 }
 
-type Image implements Versioning & UniqueId {
+type Image implements IVersioning & IUniqueId {
   id: ID!
   ordre: UnsignedShort
   type: Option
@@ -447,6 +451,7 @@ type Image implements Versioning & UniqueId {
   bytes: [Byte!]!
   createdAt: DateTime!
   updatedAt: DateTime!
+  url: URL
 }
 
 "A connection to a list of items."
@@ -476,6 +481,7 @@ type Mutation {
   updateGenre(input: UpdateGenreInput!): UpdateGenrePayload!
   deleteGenre(input: DeleteGenreInput!): DeleteGenrePayload!
   deleteImage(input: DeleteImageInput!): DeleteImagePayload!
+  uploadImagePicture(input: UploadImagePictureInput!): UploadImagePicturePayload!
   deletePersonne(input: DeletePersonneInput!): DeletePersonnePayload!
   deleteSerie(input: DeleteSerieInput!): DeleteSeriePayload!
   deleteUnivers(input: DeleteUniversInput!): DeleteUniversPayload!
@@ -485,10 +491,14 @@ type NotFoundIdError implements Error {
   message: String!
 }
 
-type Option implements Versioning & SimpleId {
+type Option implements IVersioning & ISimpleId {
   id: ID!
   category: UnsignedShort
   ordre: UnsignedShort
+  libelle: String!
+  defaut: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
   series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
   editionFormatEditions("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionTypeFilterInput order: [EditionTypeSortInput!]): EditionFormatEditionsConnection
@@ -498,10 +508,6 @@ type Option implements Versioning & SimpleId {
   editionTypeEditions("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionTypeFilterInput order: [EditionTypeSortInput!]): EditionTypeEditionsConnection
   editionsAlbums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: EditionAlbumTypeFilterInput order: [EditionAlbumTypeSortInput!]): EditionsAlbumsConnection
   images("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: ImageTypeFilterInput order: [ImageTypeSortInput!]): ImagesConnection
-  libelle: String!
-  defaut: Boolean!
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
 "A connection to a list of items."
@@ -534,11 +540,27 @@ type PageInfo {
   endCursor: String
 }
 
-type Personne implements Versioning & UniqueId & Associable & MandatoryLabel {
+"A connection to a list of items."
+type ParentsConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [ParentsEdge!]
+  "A flattened list of the nodes."
+  nodes: [Univers]
+}
+
+"An edge in a connection."
+type ParentsEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Univers
+}
+
+type Personne implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   id: ID!
   initiale: String!
-  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
-  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
   nom: String!
   nomRaw: String!
   biographie: String
@@ -547,6 +569,8 @@ type Personne implements Versioning & UniqueId & Associable & MandatoryLabel {
   associations: [String!]
   createdAt: DateTime!
   updatedAt: DateTime!
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
+  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
 }
 
 "A connection to a list of items."
@@ -581,7 +605,25 @@ type Query {
   univers("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: UniversTypeFilterInput order: [UniversTypeSortInput!]): UniversConnection
 }
 
-type Serie implements Versioning & UniqueId & Associable & OptionalLabel {
+"A connection to a list of items."
+type RacinesConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [RacinesEdge!]
+  "A flattened list of the nodes."
+  nodes: [Univers]
+}
+
+"An edge in a connection."
+type RacinesEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Univers
+}
+
+type Serie implements IVersioning & IUniqueId & IAssociable & IOptionalLabel {
   id: ID!
   initiale: String
   siteWeb: URL
@@ -590,10 +632,6 @@ type Serie implements Versioning & UniqueId & Associable & OptionalLabel {
   collection: Collection
   modeleEdition: Edition
   notation: Option
-  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AuteurTypeFilterInput order: [AuteurTypeSortInput!]): AlbumsConnection
-  auteurs("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AuteurTypeFilterInput order: [AuteurTypeSortInput!]): AuteursConnection
-  genres("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: GenreTypeFilterInput order: [GenreTypeSortInput!]): GenresConnection
-  univers("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: UniversTypeFilterInput order: [UniversTypeSortInput!]): UniversConnection
   titre: String
   sujet: String
   notes: String
@@ -604,6 +642,10 @@ type Serie implements Versioning & UniqueId & Associable & OptionalLabel {
   associations: [String!]
   createdAt: DateTime!
   updatedAt: DateTime!
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
+  auteurs("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AuteurTypeFilterInput order: [AuteurTypeSortInput!]): AuteursConnection
+  genres("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: GenreTypeFilterInput order: [GenreTypeSortInput!]): GenresConnection
+  univers("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: UniversTypeFilterInput order: [UniversTypeSortInput!]): UniversConnection
 }
 
 "A connection to a list of items."
@@ -628,18 +670,18 @@ type Subscription {
   albumCreated: Album
   albumUpdated: Album
   albumDeleted: Album
-  coteAlbumCreated: CoteAlbum
-  coteAlbumUpdated: CoteAlbum
-  coteAlbumDeleted: CoteAlbum
+  coteAlbumCreated: Cote
+  coteAlbumUpdated: Cote
+  coteAlbumDeleted: Cote
   collectionCreated: Collection
   collectionUpdated: Collection
   collectionDeleted: Collection
   editeurCreated: Editeur
   editeurUpdated: Editeur
   editeurDeleted: Editeur
-  editionCreated: Edition
-  editionUpdated: Edition
-  editionDeleted: Edition
+  editionCreated: EditionAlbum
+  editionUpdated: EditionAlbum
+  editionDeleted: EditionAlbum
   genreCreated: Genre
   genreUpdated: Genre
   genreDeleted: Genre
@@ -657,22 +699,22 @@ type Subscription {
   universDeleted: Univers
 }
 
-type Univers implements Versioning & UniqueId & Associable & MandatoryLabel {
+type Univers implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   id: ID!
   initiale: String!
   siteWeb: URL
   universRacine: Univers
   universParent: Univers
   branche: [UUID!]
-  racines: [Univers]
-  parents: [Univers]
-  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
-  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
   nom: String!
   description: String
   associations: [String!]
   createdAt: DateTime!
   updatedAt: DateTime!
+  racines("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: UniversTypeFilterInput order: [UniversTypeSortInput!]): RacinesConnection
+  parents("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: UniversTypeFilterInput order: [UniversTypeSortInput!]): ParentsConnection
+  albums("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AlbumTypeFilterInput order: [AlbumTypeSortInput!]): AlbumsConnection
+  series("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: SerieTypeFilterInput order: [SerieTypeSortInput!]): SeriesConnection
 }
 
 "A connection to a list of items."
@@ -696,6 +738,10 @@ type UniversEdge {
 type UpdateGenrePayload {
   genre: Genre
   errors: [UpdateGenreError!]
+}
+
+type UploadImagePicturePayload {
+  image: Image
 }
 
 union CreateGenreError = AlreadyExistsError
@@ -816,9 +862,9 @@ input CollectionTypeSortInput {
   description: SortEnumType
 }
 
-input CoteAlbumTypeFilterInput {
-  and: [CoteAlbumTypeFilterInput!]
-  or: [CoteAlbumTypeFilterInput!]
+input CoteEditionTypeFilterInput {
+  and: [CoteEditionTypeFilterInput!]
+  or: [CoteEditionTypeFilterInput!]
   kind: TypeKindOperationFilterInput
   syntaxNode: ObjectTypeDefinitionNodeFilterInput
   implements: ListFilterInputTypeOfInterfaceTypeFilterInput
@@ -830,7 +876,7 @@ input CoteAlbumTypeFilterInput {
   description: StringOperationFilterInput
 }
 
-input CoteAlbumTypeSortInput {
+input CoteEditionTypeSortInput {
   kind: SortEnumType
   syntaxNode: ObjectTypeDefinitionNodeSortInput
   scope: SortEnumType
@@ -1419,6 +1465,11 @@ input UpdateGenreInput {
   nom: String!
 }
 
+input UploadImagePictureInput {
+  id: ID!
+  file: Upload
+}
+
 enum ExpressionType {
   ADD
   ADD_CHECKED
@@ -1593,6 +1644,9 @@ scalar UUID @specifiedBy(url: "https:\/\/tools.ietf.org\/html\/rfc4122")
 
 "The UnsignedShort scalar type represents a unsigned 16-bit numeric non-fractional value greater than or equal to 0."
 scalar UnsignedShort
+
+"The `Upload` scalar type represents a file upload."
+scalar Upload
 
 "Value between 1900 and 2999"
 scalar Year

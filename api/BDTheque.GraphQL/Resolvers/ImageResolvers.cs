@@ -3,8 +3,7 @@ namespace BDTheque.GraphQL.Resolvers;
 using Path = System.IO.Path;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
-
-// [ExtendObjectType<ImageType>]
+[ExtendObjectType<ImageType>]
 public static class ImageResolvers
 {
     public const string ImageDirectory = "./wwwroot/images";

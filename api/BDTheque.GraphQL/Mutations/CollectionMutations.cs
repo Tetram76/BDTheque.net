@@ -7,8 +7,7 @@ using HotChocolate.Subscriptions;
 using Microsoft.EntityFrameworkCore;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
-
-// [MutationType]
+[MutationType]
 public static class CollectionMutations
 {
     // createCollection(data: CollectionCreateInput!): Collection!

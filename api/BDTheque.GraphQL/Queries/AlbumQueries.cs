@@ -4,14 +4,13 @@ using BDTheque.Data.Context;
 using BDTheque.GraphQL.DataLoaders;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
-
-// [QueryType]
+[QueryType]
 public static class AlbumQueries
 {
     [UsePaging]
     [UseProjection]
-    [UseFiltering]
-    [UseSorting]
+    [UseFiltering<AlbumType>]
+    [UseSorting<AlbumType>]
     [GraphQLType<ListType<AlbumType>>]
     public static IQueryable<Album> GetAlbums(BDThequeContext dbContext, CancellationToken cancellationToken)
         => dbContext.Albums;

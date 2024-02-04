@@ -2,13 +2,11 @@ namespace BDTheque.GraphQL.Types.Interfaces;
 
 using BDTheque.Model.Interfaces;
 
-public class OptionalLabelInterface<T> : AssociableInterface<T>
-    where T : IEntityWithOptionalLabel
+public class OptionalLabelInterface : InterfaceType<IOptionalLabel>
 {
-    protected override void Configure(IInterfaceTypeDescriptor<T> descriptor)
+    protected override void Configure(IInterfaceTypeDescriptor<IOptionalLabel> descriptor)
     {
         base.Configure(descriptor);
-        descriptor.Name("OptionalLabel");
         descriptor.Field(e => e.Initiale).Type<StringType>();
     }
 }

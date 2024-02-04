@@ -4,16 +4,19 @@ using System.Runtime.CompilerServices;
 using HotChocolate.Execution;
 using HotChocolate.Subscriptions;
 
-// [SubscriptionType]
+[SubscriptionType]
 public static class EditionSubscriptions
 {
     [Subscribe(With = nameof(EditionCreatedStream))]
+    [GraphQLType<EditionAlbumType>]
     public static EditionAlbum EditionCreated([EventMessage] EditionAlbum edition) => edition;
 
     [Subscribe(With = nameof(EditionUpdatedStream))]
+    [GraphQLType<EditionAlbumType>]
     public static EditionAlbum EditionUpdated([EventMessage] EditionAlbum edition) => edition;
 
     [Subscribe(With = nameof(EditionDeletedStream))]
+    [GraphQLType<EditionAlbumType>]
     public static EditionAlbum EditionDeleted([EventMessage] EditionAlbum edition) => edition;
 
     private static async IAsyncEnumerable<EditionAlbum> EditionCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)

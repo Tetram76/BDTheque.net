@@ -547,7 +547,7 @@ namespace BDTheque.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "cotes_albums",
+                name: "cotes_editions",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
@@ -559,9 +559,9 @@ namespace BDTheque.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_cotes_albums", x => x.id);
+                    table.PrimaryKey("PK_cotes_editions", x => x.id);
                     table.ForeignKey(
-                        name: "FK_cotes_albums_editions_albums_edition_album_id",
+                        name: "FK_cotes_editions_editions_albums_edition_album_id",
                         column: x => x.edition_album_id,
                         principalTable: "editions_albums",
                         principalColumn: "id",
@@ -748,8 +748,8 @@ namespace BDTheque.Data.Migrations
                 column: "nom_raw");
 
             migrationBuilder.CreateIndex(
-                name: "IX_cotes_albums_edition_album_id_annee",
-                table: "cotes_albums",
+                name: "IX_cotes_editions_edition_album_id_annee",
+                table: "cotes_editions",
                 columns: new[] { "edition_album_id", "annee" },
                 unique: true);
 
@@ -962,7 +962,7 @@ namespace BDTheque.Data.Migrations
                 name: "auteurs_series");
 
             migrationBuilder.DropTable(
-                name: "cotes_albums");
+                name: "cotes_editions");
 
             migrationBuilder.DropTable(
                 name: "genres_albums");

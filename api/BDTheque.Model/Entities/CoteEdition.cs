@@ -7,7 +7,7 @@ using BDTheque.Model.Entities.Abstract;
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
-public class CoteAlbum : EntityWithUniqueId
+public class CoteEdition : EntityWithUniqueId
 {
     public Guid EditionAlbumId { get; set; }
     public virtual EditionAlbum EditionAlbum { get; set; } = null!;

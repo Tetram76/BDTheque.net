@@ -1,6 +1,6 @@
 namespace BDTheque.Model.Interfaces;
 
-public interface IEntityWithOptionalLabel : IAssociableEntity
+public interface IOptionalLabel
 {
     public char? Initiale { get; set; }
 }
