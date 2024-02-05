@@ -5,14 +5,14 @@ using BDTheque.GraphQL.Scalars;
 
 public static class ObjectTypeDescriptorExtensions
 {
-    private static readonly IEnumerable<Func<PropertyInfo, bool>> IgnoredProperties =
+    public static readonly IEnumerable<Func<PropertyInfo, bool>> IgnoredProperties =
     [
         property => property.DeclaringType!.GetProperties().Any(info => property.Name == info.Name + "Raw"),
         property => property.DeclaringType!.GetProperties().Any(info => property.Name == info.Name + "Id"),
         property => !property.Name.Equals("Associations", StringComparison.InvariantCultureIgnoreCase) && IsGenericEnumerable(property.PropertyType)
     ];
 
-    private static readonly IEnumerable<(string keyword, Type fieldType)> TypeMappings =
+    public static readonly IEnumerable<(string keyword, Type fieldType)> TypeMappings =
     [
         ("prix", typeof(EuroCurrencyType)),
         ("annee", typeof(YearType)),
