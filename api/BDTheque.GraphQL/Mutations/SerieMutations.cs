@@ -14,7 +14,6 @@ public static class SerieMutations
     // updateSerie(data: SerieUpdateInput!): Serie!
 
     [Error<NotFoundIdException>]
-    [GraphQLType<SerieType>]
     public static async Task<Serie> DeleteSerie([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         Serie? serie = await dbContext.Series.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);

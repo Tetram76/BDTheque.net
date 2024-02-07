@@ -8,15 +8,12 @@ using HotChocolate.Subscriptions;
 public static class EditeurSubscriptions
 {
     [Subscribe(With = nameof(EditeurCreatedStream))]
-    [GraphQLType<EditeurType>]
     public static Editeur EditeurCreated([EventMessage] Editeur editeur) => editeur;
 
     [Subscribe(With = nameof(EditeurUpdatedStream))]
-    [GraphQLType<EditeurType>]
     public static Editeur EditeurUpdated([EventMessage] Editeur editeur) => editeur;
 
     [Subscribe(With = nameof(EditeurDeletedStream))]
-    [GraphQLType<EditeurType>]
     public static Editeur EditeurDeleted([EventMessage] Editeur editeur) => editeur;
 
     private static async IAsyncEnumerable<Editeur> EditeurCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)

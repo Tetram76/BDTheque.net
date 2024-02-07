@@ -15,7 +15,6 @@ public static class ImageMutations
     // updateImage(data: ImageUpdateInput!): Image!
 
     [Error<NotFoundIdException>]
-    [GraphQLType<ImageType>]
     public static async Task<Image> DeleteImage([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         Image? image = await dbContext.Images.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
@@ -29,7 +28,6 @@ public static class ImageMutations
 
     public const string ImageDirectory = "./wwwroot/images";
 
-    [GraphQLType<ImageType>]
     public static async Task<Image> UploadImagePicture([ID] Guid id, [GraphQLType<UploadType>] IFile file, CancellationToken cancellationToken)
     {
         await using FileStream stream = File.Create(Path.Combine(ImageDirectory, $"{id}.png"));

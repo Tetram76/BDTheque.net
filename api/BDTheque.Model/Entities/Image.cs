@@ -6,10 +6,12 @@ using BDTheque.Model.Entities.Abstract;
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
+[ObjectType]
 public class Image : UniqueIdEntity
 {
     public string? Titre { get; set; }
 
+    [GraphQLIgnore]
     public byte[] Bytes { get; set; } = null!;
 
     public ushort Ordre { get; set; }

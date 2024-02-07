@@ -1,4 +1,4 @@
-namespace BDTheque.GraphQL.Scalars;
+namespace BDTheque.Model.Scalars;
 
 using HotChocolate.Language;
 

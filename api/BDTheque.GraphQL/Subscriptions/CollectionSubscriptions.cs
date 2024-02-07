@@ -8,15 +8,12 @@ using HotChocolate.Subscriptions;
 public static class CollectionSubscriptions
 {
     [Subscribe(With = nameof(CollectionCreatedStream))]
-    [GraphQLType<CollectionType>]
     public static Collection CollectionCreated([EventMessage] Collection collection) => collection;
 
     [Subscribe(With = nameof(CollectionUpdatedStream))]
-    [GraphQLType<CollectionType>]
     public static Collection CollectionUpdated([EventMessage] Collection collection) => collection;
 
     [Subscribe(With = nameof(CollectionDeletedStream))]
-    [GraphQLType<CollectionType>]
     public static Collection CollectionDeleted([EventMessage] Collection collection) => collection;
 
     private static async IAsyncEnumerable<Collection> CollectionCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)

@@ -14,7 +14,6 @@ public static class EditionMutations
     // updateEditionAlbum(data: EditionAlbumUpdateInput!): EditionAlbum!
 
     [Error<NotFoundIdException>]
-    [GraphQLType<EditionType>]
     public static async Task<Edition> DeleteEdition([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         Edition? edition = await dbContext.Editions.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);

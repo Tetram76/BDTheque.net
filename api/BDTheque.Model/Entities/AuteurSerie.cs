@@ -6,6 +6,7 @@ using BDTheque.Model.Entities.Abstract;
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
+[ObjectType]
 public class AuteurSerie : UniqueIdEntity
 {
     public Guid AuteurId { get; set; }

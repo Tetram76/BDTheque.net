@@ -3,13 +3,13 @@ namespace BDTheque.GraphQL.Resolvers;
 using Path = System.IO.Path;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
-[ExtendObjectType<ImageType>]
+[ExtendObjectType<Image>]
 public static class ImageResolvers
 {
     public const string ImageDirectory = "./wwwroot/images";
     public const string ImageRoot = "http://localhost:5000/images";
 
     [GraphQLType<UrlType>]
-    public static Uri? GetUrl([GraphQLType<ImageType>][Parent] Image image)
+    public static Uri? GetUrl([Parent] Image image)
         => File.Exists(Path.Combine(ImageDirectory, $"{image.Id}.png")) ? new Uri($"{ImageRoot}/{image.Id}.png") : null;
 }

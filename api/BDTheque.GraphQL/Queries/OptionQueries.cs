@@ -8,9 +8,8 @@ public static class OptionQueries
 {
     [UsePaging]
     [UseProjection]
-    [UseFiltering<OptionType>]
-    [UseSorting<OptionType>]
-    [GraphQLType<ListType<OptionType>>]
+    [UseFiltering]
+    [UseSorting]
     public static IQueryable<Option> GetOptions(BDThequeContext dbContext)
         => dbContext.Options;
 }

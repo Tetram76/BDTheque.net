@@ -8,9 +8,8 @@ public static class CollectionQueries
 {
     [UsePaging]
     [UseProjection]
-    [UseFiltering<CollectionType>]
-    [UseSorting<CollectionType>]
-    [GraphQLType<ListType<CollectionType>>]
+    [UseFiltering]
+    [UseSorting]
     public static IQueryable<Collection> GetCollections(BDThequeContext dbContext)
         => dbContext.Collections;
 }

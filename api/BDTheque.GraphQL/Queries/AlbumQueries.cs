@@ -9,13 +9,11 @@ public static class AlbumQueries
 {
     [UsePaging]
     [UseProjection]
-    [UseFiltering<AlbumType>]
-    [UseSorting<AlbumType>]
-    [GraphQLType<ListType<AlbumType>>]
+    [UseFiltering]
+    [UseSorting]
     public static IQueryable<Album> GetAlbums(BDThequeContext dbContext, CancellationToken cancellationToken)
         => dbContext.Albums;
 
-    [GraphQLType<AlbumType>]
     public static Task<Album> GetAlbumById([ID] Guid id, IAlbumByIdDataLoader dataLoader, CancellationToken cancellationToken)
         => dataLoader.LoadAsync(id, cancellationToken);
 }

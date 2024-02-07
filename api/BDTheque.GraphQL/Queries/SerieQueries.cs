@@ -8,9 +8,8 @@ public static class SerieQueries
 {
     [UsePaging]
     [UseProjection]
-    [UseFiltering<SerieType>]
-    [UseSorting<SerieType>]
-    [GraphQLType<ListType<SerieType>>]
+    [UseFiltering]
+    [UseSorting]
     public static IQueryable<Serie> GetSeries(BDThequeContext dbContext)
         => dbContext.Series;
 }

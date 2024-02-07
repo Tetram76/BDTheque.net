@@ -14,7 +14,6 @@ public static class UniversMutations
     // updateUnivers(data: UniversUpdateInput!): Univers!
 
     [Error<NotFoundIdException>]
-    [GraphQLType<UniversType>]
     public static async Task<Univers> DeleteUnivers([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         Univers? univers = await dbContext.Univers.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);

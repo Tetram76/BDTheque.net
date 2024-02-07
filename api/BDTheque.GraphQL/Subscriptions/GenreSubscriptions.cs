@@ -8,15 +8,12 @@ using HotChocolate.Subscriptions;
 public static class GenreSubscriptions
 {
     [Subscribe(With = nameof(GenreCreatedStream))]
-    [GraphQLType<GenreType>]
     public static Genre GenreCreated([EventMessage] Genre genre) => genre;
 
     [Subscribe(With = nameof(GenreUpdatedStream))]
-    [GraphQLType<GenreType>]
     public static Genre GenreUpdated([EventMessage] Genre genre) => genre;
 
     [Subscribe(With = nameof(GenreDeletedStream))]
-    [GraphQLType<GenreType>]
     public static Genre GenreDeleted([EventMessage] Genre genre) => genre;
 
     private static async IAsyncEnumerable<Genre> GenreCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)

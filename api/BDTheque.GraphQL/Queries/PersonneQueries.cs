@@ -8,9 +8,8 @@ public static class PersonneQueries
 {
     [UsePaging]
     [UseProjection]
-    [UseFiltering<PersonneType>]
-    [UseSorting<PersonneType>]
-    [GraphQLType<ListType<PersonneType>>]
+    [UseFiltering]
+    [UseSorting]
     public static IQueryable<Personne> GetPersonnes(BDThequeContext dbContext)
         => dbContext.Personnes;
 }

@@ -14,7 +14,6 @@ public static class AlbumMutations
     // updateAlbum(data: AlbumUpdateInput!): Album!
 
     [Error<NotFoundIdException>]
-    [GraphQLType<AlbumType>]
     public static async Task<Album> DeleteAlbum([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         Album? album = await dbContext.Albums.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);

@@ -7,6 +7,7 @@ using BDTheque.Model.Entities.Abstract;
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
+[ObjectType]
 public class Edition : UniqueIdEntity
 {
     [Range(0, 2999)]
@@ -15,6 +16,7 @@ public class Edition : UniqueIdEntity
     public string? Notes { get; set; }
     public string? NotesRaw { get; set; }
 
+    [GraphQLType<IsbnType>]
     public string? Isbn { get; set; }
 
     public ushort? NombreDePages { get; set; }

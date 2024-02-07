@@ -2,7 +2,6 @@ namespace BDTheque.GraphQL.Mutations;
 
 using BDTheque.Data.Context;
 using BDTheque.GraphQL.Exceptions;
-using BDTheque.GraphQL.Inputs;
 using BDTheque.GraphQL.Subscriptions;
 using HotChocolate.Subscriptions;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +11,7 @@ using Microsoft.EntityFrameworkCore;
 public static class GenreMutations
 {
     [Error<AlreadyExistsException>]
-    [GraphQLType<GenreType>]
-    public static async Task<Genre> CreateGenre([GraphQLType<GenreInputType>] Genre genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    public static async Task<Genre> CreateGenre(Genre genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         if (await dbContext.Genres.AnyAsync(g => g.Nom == genre.Nom, cancellationToken))
             throw new AlreadyExistsException();
@@ -27,8 +25,7 @@ public static class GenreMutations
 
     [Error<AlreadyExistsException>]
     [Error<NotFoundIdException>]
-    [GraphQLType<GenreType>]
-    public static async Task<Genre> UpdateGenre([ID] Guid id, [GraphQLType<GenreInputType>] Genre genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    public static async Task<Genre> UpdateGenre([ID] Guid id, Genre genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         Genre? oldGenre = await dbContext.Genres.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
         if (oldGenre is null)
@@ -36,7 +33,7 @@ public static class GenreMutations
         if (await dbContext.Genres.AnyAsync(g => g.Id != oldGenre.Id && g.Nom == genre.Nom, cancellationToken))
             throw new AlreadyExistsException();
 
-        GenreInputType.ApplyUpdate(genre, oldGenre);
+        // GenreInputType.ApplyUpdate(genre, oldGenre);
         dbContext.Update(oldGenre);
 
         await dbContext.SaveChangesAsync(cancellationToken);
@@ -45,7 +42,6 @@ public static class GenreMutations
     }
 
     [Error<NotFoundIdException>]
-    [GraphQLType<GenreType>]
     public static async Task<Genre> DeleteGenre([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         Genre? genre = await dbContext.Genres.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);

@@ -14,7 +14,6 @@ public static class CollectionMutations
     // updateCollection(data: CollectionUpdateInput!): Collection!
 
     [Error<NotFoundIdException>]
-    [GraphQLType<CollectionType>]
     public static async Task<Collection> DeleteCollection([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         Collection? collection = await dbContext.Collections.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);

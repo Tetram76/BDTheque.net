@@ -14,7 +14,6 @@ public static class PersonneMutations
     // updatePersonne(data: PersonneUpdateInput!): Personne!
 
     [Error<NotFoundIdException>]
-    [GraphQLType<PersonneType>]
     public static async Task<Personne> DeletePersonne([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         Personne? personne = await dbContext.Personnes.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);

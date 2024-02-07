@@ -6,8 +6,10 @@ using BDTheque.Model.Entities.Abstract;
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
+[ObjectType]
 public class Option : SimpleIdEntity
 {
+    [ID]
     public ushort Category { get; set; }
 
     public string Libelle { get; set; } = null!;

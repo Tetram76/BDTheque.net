@@ -8,6 +8,7 @@ using BDTheque.Model.Enums;
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
+[ObjectType]
 public class Auteur : UniqueIdEntity
 {
     public Guid PersonneId { get; set; }

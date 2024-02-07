@@ -8,27 +8,21 @@ using HotChocolate.Subscriptions;
 public static class AlbumSubscriptions
 {
     [Subscribe(With = nameof(AlbumCreatedStream))]
-    [GraphQLType<AlbumType>]
     public static Album AlbumCreated([EventMessage] Album album) => album;
 
     [Subscribe(With = nameof(AlbumUpdatedStream))]
-    [GraphQLType<AlbumType>]
     public static Album AlbumUpdated([EventMessage] Album album) => album;
 
     [Subscribe(With = nameof(AlbumDeletedStream))]
-    [GraphQLType<AlbumType>]
     public static Album AlbumDeleted([EventMessage] Album album) => album;
 
     [Subscribe(With = nameof(CoteAlbumCreatedStream))]
-    [GraphQLType<CoteEditionType>]
     public static CoteEdition CoteAlbumCreated([EventMessage] CoteEdition coteAlbum) => coteAlbum;
 
     [Subscribe(With = nameof(CoteAlbumUpdatedStream))]
-    [GraphQLType<CoteEditionType>]
     public static CoteEdition CoteAlbumUpdated([EventMessage] CoteEdition coteAlbum) => coteAlbum;
 
     [Subscribe(With = nameof(CoteAlbumDeletedStream))]
-    [GraphQLType<CoteEditionType>]
     public static CoteEdition CoteAlbumDeleted([EventMessage] CoteEdition coteAlbum) => coteAlbum;
 
     private static async IAsyncEnumerable<Album> AlbumCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)

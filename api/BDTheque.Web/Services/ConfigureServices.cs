@@ -1,7 +1,9 @@
 namespace BDTheque.Web.Services;
 
 using BDTheque.Data.Context;
+using BDTheque.GraphQL.Filters;
 using BDTheque.GraphQL.Listeners;
+using HotChocolate.Data.Filters;
 using HotChocolate.Execution.Configuration;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -37,14 +39,23 @@ public static class ConfigureServices
         => services
             .AddGraphQLServer()
             .ModifyOptions(options => options.EnableTrueNullability = true)
-            .RegisterDbContext<BDThequeContext>()
             .BindRuntimeType<char, StringType>()
             .BindRuntimeType<ushort, UnsignedShortType>()
-            .AddBDThequeGraphQL()
             .AddMutationConventions()
             .AddProjections() // Pour les requêtes de sous-sélection
-            .AddFiltering() // Pour les filtres
-            .AddSorting(); // Pour le tri
+            .AddFiltering( // Pour les filtres
+                descriptor =>
+                    descriptor
+                        .AddDefaults()
+                        .BindRuntimeType<char, CharOperationFilterInputType>()
+                        .BindRuntimeType<char?, CharOperationFilterInputType>()
+                        .BindRuntimeType<ushort, ComparableOperationFilterInputType<NonNullType<UnsignedIntType>>>()
+                        .BindRuntimeType<ushort?, ComparableOperationFilterInputType<UnsignedIntType>>()
+            )
+            .AddSorting() // Pour le tri
+            .RegisterDbContext<BDThequeContext>()
+            .AddBDThequeGraphQLTypes()
+            .AddBDThequeGraphQLExtensions();
 
     public static IRequestExecutorBuilder SetupGraphQLPipeline(this IRequestExecutorBuilder builder, ConfigurationManager configuration, IWebHostEnvironment environment)
         => builder

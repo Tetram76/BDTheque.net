@@ -1,8 +1,9 @@
 namespace BDTheque.GraphQL.Inputs;
 
 using System.Reflection;
-using BDTheque.GraphQL.Extensions;
 using BDTheque.Model.Entities.Abstract;
+using BDTheque.Model.Extensions;
+using BDTheque.Model.Mapping;
 
 public abstract class VersioningInputType<T> : InputObjectType<T>
     where T : VersioningEntity
@@ -16,7 +17,7 @@ public abstract class VersioningInputType<T> : InputObjectType<T>
 
     public static void ApplyUpdate(T fromEntity, T toEntity)
     {
-        IEnumerable<PropertyInfo> properties = typeof(T).GetProperties().Where(info => !InputObjectTypeDescriptorExtensions.IgnoredProperties.Any(func => func(info)));
+        IEnumerable<PropertyInfo> properties = typeof(T).GetProperties().Where(info => !MappingDefinitions.InputIgnoredProperties.Any(func => func(info)));
         foreach (PropertyInfo property in properties)
             property.SetValue(toEntity, property.GetValue(fromEntity));
     }

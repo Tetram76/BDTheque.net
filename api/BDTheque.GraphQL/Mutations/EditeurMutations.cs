@@ -14,7 +14,6 @@ public static class EditeurMutations
     // updateEditeur(data: EditeurUpdateInput!): Editeur!
 
     [Error<NotFoundIdException>]
-    [GraphQLType<EditeurType>]
     public static async Task<Editeur> DeleteEditeur([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         Editeur? editeur = await dbContext.Editeurs.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);

@@ -8,15 +8,12 @@ using HotChocolate.Subscriptions;
 public static class UniversSubscriptions
 {
     [Subscribe(With = nameof(UniversCreatedStream))]
-    [GraphQLType<UniversType>]
     public static Univers UniversCreated([EventMessage] Univers univers) => univers;
 
     [Subscribe(With = nameof(UniversUpdatedStream))]
-    [GraphQLType<UniversType>]
     public static Univers UniversUpdated([EventMessage] Univers univers) => univers;
 
     [Subscribe(With = nameof(UniversDeletedStream))]
-    [GraphQLType<UniversType>]
     public static Univers UniversDeleted([EventMessage] Univers univers) => univers;
 
     private static async IAsyncEnumerable<Univers> UniversCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)

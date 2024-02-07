@@ -8,9 +8,8 @@ public static class UniversQueries
 {
     [UsePaging]
     [UseProjection]
-    [UseFiltering<UniversType>]
-    [UseSorting<UniversType>]
-    [GraphQLType<ListType<UniversType>>]
+    [UseFiltering]
+    [UseSorting]
     public static IQueryable<Univers> GetUnivers(BDThequeContext dbContext)
         => dbContext.Univers;
 }

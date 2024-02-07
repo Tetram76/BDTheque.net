@@ -8,9 +8,8 @@ public static class EditeurQueries
 {
     [UsePaging]
     [UseProjection]
-    [UseFiltering<EditeurType>]
-    [UseSorting<EditeurType>]
-    [GraphQLType<ListType<EditeurType>>]
+    [UseFiltering]
+    [UseSorting]
     public static IQueryable<Editeur> GetEditeurs(BDThequeContext dbContext)
         => dbContext.Editeurs;
 }

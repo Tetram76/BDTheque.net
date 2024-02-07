@@ -7,6 +7,7 @@ using BDTheque.Model.Entities.Abstract;
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
+[ObjectType]
 public class Univers : MandatoryLabelEntity
 {
     public string Nom { get; set; } = null!;
@@ -19,9 +20,13 @@ public class Univers : MandatoryLabelEntity
     public Uri? SiteWeb { get; set; }
 
     public Guid UniversRacineId { get; set; }
+
+    [GraphQLName("racine")]
     public virtual Univers UniversRacine { get; set; } = null!;
 
     public Guid? UniversParentId { get; set; }
+
+    [GraphQLName("parent")]
     public virtual Univers? UniversParent { get; set; }
 
     public List<Guid>? UniversBranches { get; set; }
