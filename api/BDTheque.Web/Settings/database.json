@@ -1,0 +1,5 @@
+﻿{
+  "ConnectionStrings": {
+    "BDThequeDatabase": "Host=localhost:5432;Database=BDTheque;Username=postgres;Password=SuperSecret"
+  }
+}

@@ -1,0 +1,7 @@
+﻿{
+  "Jwt": {
+    "Key": "VotreCléSecrèteTrèsLongue",
+    "Issuer": "ExempleIssuer",
+    "Audience": "ExempleAudience"
+  }
+}
