@@ -1,10 +1,8 @@
 namespace BDTheque.Model.Interfaces;
 
-using BDTheque.Model.Attributes;
-
 [InterfaceType]
-[ApplyDefaultInterfaceMapping]
 public interface IUniqueId
 {
+    [ID]
     public Guid Id { get; set; }
 }

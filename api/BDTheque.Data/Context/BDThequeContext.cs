@@ -75,7 +75,7 @@ public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbCont
         {
             entityType.SetTableName(entityType.GetTableName()?.ToSnakeCase());
             foreach (IMutableProperty? property in entityType.GetProperties())
-                property.SetColumnName(property.Name.ToSnakeCase());
+                property.SetColumnName(property.GetColumnName().ToSnakeCase());
         }
 
         modelBuilder.Seed();

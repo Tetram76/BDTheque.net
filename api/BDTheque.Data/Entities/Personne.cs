@@ -20,7 +20,7 @@ public static partial class ModelBuilderExtensions
 
         entity.Property(e => e.Biographie).UseCollation(BDThequeContext.FrenchCollation);
         entity.Property(e => e.BiographieRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Biographie).ToSnakeCase()} COLLATE \"fr-x-icu\")", true);
-        entity.Property(e => e.Initiale).HasMaxLength(1).HasComputedColumnSql($"(upper({entity.GetColumnName(e => e.Nom).ToSnakeCase()}))::character(1)", true);
+        entity.SetupMandatoryInitiale(e => e.Nom);
         entity.Property(e => e.Nom).UseCollation(BDThequeContext.FrenchCollation);
         entity.Property(e => e.NomRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Nom).ToSnakeCase()} COLLATE \"fr-x-icu\")", true);
     }

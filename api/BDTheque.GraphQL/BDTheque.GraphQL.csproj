@@ -23,8 +23,4 @@
     <PackageReference Include="Serilog"/>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Extensions\"/>
-  </ItemGroup>
-
 </Project>

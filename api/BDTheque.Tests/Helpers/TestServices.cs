@@ -10,6 +10,10 @@ public static class TestServices
     static TestServices()
     {
         Services = new ServiceCollection()
+            .SetupDb(
+                "Host=localhost:5432;Database=BDTheque;Username=postgres;Password=SuperSecret",
+                options => options.EnableSensitiveDataLogging()
+            )
             .SetupGraphQLSchema()
             .ModifyOptions(options => { options.SortFieldsByName = true; })
             .ModifyRequestOptions(options => options.IncludeExceptionDetails = true)

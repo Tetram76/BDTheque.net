@@ -3,14 +3,14 @@ namespace BDTheque.Model.Extensions;
 using System.Reflection;
 using BDTheque.Model.Mapping;
 
-public static class InputObjectTypeDescriptorExtensions
+public static class MutationInputTypeDescriptorExtensions
 {
     public static IInputObjectTypeDescriptor SetupDefaults(this IInputObjectTypeDescriptor descriptor, Type type)
     {
         PropertyInfo[] properties = type.GetProperties();
         foreach (PropertyInfo property in properties)
         {
-            if (MappingDefinitions.InputIgnoredProperties.Any(func => func(property)))
+            if (MappingDefinitions.MutationInputIgnoredProperties.Any(func => func(property)))
             {
                 descriptor.Field(property).Ignore();
                 continue;
@@ -35,7 +35,7 @@ public static class InputObjectTypeDescriptorExtensions
         PropertyInfo[] properties = typeof(T).GetProperties();
         foreach (PropertyInfo property in properties)
         {
-            if (MappingDefinitions.InputIgnoredProperties.Any(func => func(property)))
+            if (MappingDefinitions.MutationInputIgnoredProperties.Any(func => func(property)))
             {
                 descriptor.Field(property).Ignore();
                 continue;

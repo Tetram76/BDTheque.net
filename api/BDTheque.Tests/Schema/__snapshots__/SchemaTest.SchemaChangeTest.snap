@@ -817,11 +817,8 @@ input AlbumFilterInput {
   and: [AlbumFilterInput!]
   or: [AlbumFilterInput!]
   titre: StringOperationFilterInput
-  titreRaw: StringOperationFilterInput
   sujet: StringOperationFilterInput
-  sujetRaw: StringOperationFilterInput
   notes: StringOperationFilterInput
-  notesRaw: StringOperationFilterInput
   horsSerie: BooleanOperationFilterInput
   tome: ComparableUnsignedIntTypeOperationFilterInput
   integrale: BooleanOperationFilterInput
@@ -829,15 +826,9 @@ input AlbumFilterInput {
   tomeFin: ComparableUnsignedIntTypeOperationFilterInput
   moisParution: ComparableUnsignedIntTypeOperationFilterInput
   anneeParution: ComparableUnsignedIntTypeOperationFilterInput
-  serieId: UuidOperationFilterInput
   serie: SerieFilterInput
-  notationId: ComparableUnsignedIntTypeOperationFilterInput
   notation: OptionFilterInput
-  auteursAlbums: ListFilterInputTypeOfAuteurAlbumFilterInput
-  editionsAlbums: ListFilterInputTypeOfEditionAlbumFilterInput
-  genresAlbums: ListFilterInputTypeOfGenreAlbumFilterInput
-  universAlbums: ListFilterInputTypeOfUniversAlbumFilterInput
-  initiale: CharOperationFilterInput
+  initiale: StringOperationFilterInput
   associations: ListStringOperationFilterInput
   id: UuidOperationFilterInput
   createdAt: DateTimeOperationFilterInput
@@ -884,26 +875,11 @@ input AlbumSortInput {
   updatedAt: SortEnumType
 }
 
-input AuteurAlbumFilterInput {
-  and: [AuteurAlbumFilterInput!]
-  or: [AuteurAlbumFilterInput!]
-  albumId: UuidOperationFilterInput
-  album: AlbumFilterInput
-  auteurId: UuidOperationFilterInput
-  auteur: AuteurFilterInput
-  id: UuidOperationFilterInput
-  createdAt: DateTimeOperationFilterInput
-  updatedAt: DateTimeOperationFilterInput
-}
-
 input AuteurFilterInput {
   and: [AuteurFilterInput!]
   or: [AuteurFilterInput!]
-  personneId: UuidOperationFilterInput
   personne: PersonneFilterInput
   metier: MetierOperationFilterInput
-  auteursAlbums: ListFilterInputTypeOfAuteurAlbumFilterInput
-  auteursSeries: ListFilterInputTypeOfAuteurSerieFilterInput
   id: UuidOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
@@ -912,18 +888,6 @@ input AuteurFilterInput {
 input AuteurInput {
   metier: Metier!
   personne: PersonneInput!
-}
-
-input AuteurSerieFilterInput {
-  and: [AuteurSerieFilterInput!]
-  or: [AuteurSerieFilterInput!]
-  auteurId: UuidOperationFilterInput
-  auteur: AuteurFilterInput
-  serieId: UuidOperationFilterInput
-  serie: SerieFilterInput
-  id: UuidOperationFilterInput
-  createdAt: DateTimeOperationFilterInput
-  updatedAt: DateTimeOperationFilterInput
 }
 
 input AuteurSortInput {
@@ -953,12 +917,8 @@ input CollectionFilterInput {
   and: [CollectionFilterInput!]
   or: [CollectionFilterInput!]
   nom: StringOperationFilterInput
-  nomRaw: StringOperationFilterInput
-  editeurId: UuidOperationFilterInput
   editeur: EditeurFilterInput
-  editionsAlbums: ListFilterInputTypeOfEditionAlbumFilterInput
-  series: ListFilterInputTypeOfSerieFilterInput
-  initiale: CharOperationFilterInput
+  initiale: StringOperationFilterInput
   associations: ListStringOperationFilterInput
   id: UuidOperationFilterInput
   createdAt: DateTimeOperationFilterInput
@@ -1015,7 +975,6 @@ input ComparableUnsignedIntTypeOperationFilterInput {
 input CoteEditionFilterInput {
   and: [CoteEditionFilterInput!]
   or: [CoteEditionFilterInput!]
-  editionAlbumId: UuidOperationFilterInput
   editionAlbum: EditionAlbumFilterInput
   annee: ComparableNonNullTypeOfUnsignedIntTypeOperationFilterInput
   prix: DecimalOperationFilterInput
@@ -1129,12 +1088,8 @@ input EditeurFilterInput {
   and: [EditeurFilterInput!]
   or: [EditeurFilterInput!]
   nom: StringOperationFilterInput
-  nomRaw: StringOperationFilterInput
   siteWeb: UrlOperationFilterInput
-  collections: ListFilterInputTypeOfCollectionFilterInput
-  series: ListFilterInputTypeOfSerieFilterInput
-  editionsAlbums: ListFilterInputTypeOfEditionAlbumFilterInput
-  initiale: CharOperationFilterInput
+  initiale: StringOperationFilterInput
   associations: ListStringOperationFilterInput
   id: UuidOperationFilterInput
   createdAt: DateTimeOperationFilterInput
@@ -1160,15 +1115,10 @@ input EditeurSortInput {
 input EditionAlbumFilterInput {
   and: [EditionAlbumFilterInput!]
   or: [EditionAlbumFilterInput!]
-  editionId: UuidOperationFilterInput
   edition: EditionFilterInput
-  albumId: UuidOperationFilterInput
   album: AlbumFilterInput
-  editeurId: UuidOperationFilterInput
   editeur: EditeurFilterInput
-  collectionId: UuidOperationFilterInput
   collection: CollectionFilterInput
-  etatId: ComparableUnsignedIntTypeOperationFilterInput
   etat: OptionFilterInput
   stock: BooleanOperationFilterInput
   offert: BooleanOperationFilterInput
@@ -1179,8 +1129,6 @@ input EditionAlbumFilterInput {
   dedicace: BooleanOperationFilterInput
   numeroPerso: StringOperationFilterInput
   notes: StringOperationFilterInput
-  cotesEditions: ListFilterInputTypeOfCoteEditionFilterInput
-  images: ListFilterInputTypeOfImageFilterInput
   id: UuidOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
@@ -1233,22 +1181,15 @@ input EditionFilterInput {
   or: [EditionFilterInput!]
   anneeEdition: ComparableUnsignedIntTypeOperationFilterInput
   notes: StringOperationFilterInput
-  notesRaw: StringOperationFilterInput
   isbn: StringOperationFilterInput
   nombreDePages: ComparableUnsignedIntTypeOperationFilterInput
   couleur: BooleanOperationFilterInput
   vo: BooleanOperationFilterInput
-  reliureId: ComparableUnsignedIntTypeOperationFilterInput
   reliure: OptionFilterInput
-  formatEditionId: ComparableUnsignedIntTypeOperationFilterInput
   formatEdition: OptionFilterInput
-  typeEditionId: ComparableUnsignedIntTypeOperationFilterInput
   typeEdition: OptionFilterInput
-  orientationId: ComparableUnsignedIntTypeOperationFilterInput
   orientation: OptionFilterInput
-  sensLectureId: ComparableUnsignedIntTypeOperationFilterInput
   sensLecture: OptionFilterInput
-  editionsAlbums: ListFilterInputTypeOfEditionAlbumFilterInput
   serie: SerieFilterInput
   id: UuidOperationFilterInput
   createdAt: DateTimeOperationFilterInput
@@ -1294,27 +1235,11 @@ input EditionSortInput {
   updatedAt: SortEnumType
 }
 
-input GenreAlbumFilterInput {
-  and: [GenreAlbumFilterInput!]
-  or: [GenreAlbumFilterInput!]
-  genreId: UuidOperationFilterInput
-  genre: GenreFilterInput
-  albumId: UuidOperationFilterInput
-  album: AlbumFilterInput
-  fromSerie: BooleanOperationFilterInput
-  id: UuidOperationFilterInput
-  createdAt: DateTimeOperationFilterInput
-  updatedAt: DateTimeOperationFilterInput
-}
-
 input GenreFilterInput {
   and: [GenreFilterInput!]
   or: [GenreFilterInput!]
   nom: StringOperationFilterInput
-  nomRaw: StringOperationFilterInput
-  genresAlbums: ListFilterInputTypeOfGenreAlbumFilterInput
-  genresSeries: ListFilterInputTypeOfGenreSerieFilterInput
-  initiale: CharOperationFilterInput
+  initiale: StringOperationFilterInput
   associations: ListStringOperationFilterInput
   id: UuidOperationFilterInput
   createdAt: DateTimeOperationFilterInput
@@ -1324,18 +1249,6 @@ input GenreFilterInput {
 input GenreInput {
   associations: [String!]
   nom: String!
-}
-
-input GenreSerieFilterInput {
-  and: [GenreSerieFilterInput!]
-  or: [GenreSerieFilterInput!]
-  genreId: UuidOperationFilterInput
-  genre: GenreFilterInput
-  serieId: UuidOperationFilterInput
-  serie: SerieFilterInput
-  id: UuidOperationFilterInput
-  createdAt: DateTimeOperationFilterInput
-  updatedAt: DateTimeOperationFilterInput
 }
 
 input GenreSortInput {
@@ -1359,9 +1272,7 @@ input ImageFilterInput {
   or: [ImageFilterInput!]
   titre: StringOperationFilterInput
   ordre: ComparableNonNullTypeOfUnsignedIntTypeOperationFilterInput
-  typeId: ComparableNonNullTypeOfUnsignedIntTypeOperationFilterInput
   type: OptionFilterInput
-  editionId: UuidOperationFilterInput
   edition: EditionAlbumFilterInput
   id: UuidOperationFilterInput
   createdAt: DateTimeOperationFilterInput
@@ -1387,122 +1298,10 @@ input ImageSortInput {
   updatedAt: SortEnumType
 }
 
-input ListFilterInputTypeOfAlbumFilterInput {
-  all: AlbumFilterInput
-  none: AlbumFilterInput
-  some: AlbumFilterInput
-  any: Boolean
-}
-
-input ListFilterInputTypeOfAuteurAlbumFilterInput {
-  all: AuteurAlbumFilterInput
-  none: AuteurAlbumFilterInput
-  some: AuteurAlbumFilterInput
-  any: Boolean
-}
-
-input ListFilterInputTypeOfAuteurFilterInput {
-  all: AuteurFilterInput
-  none: AuteurFilterInput
-  some: AuteurFilterInput
-  any: Boolean
-}
-
-input ListFilterInputTypeOfAuteurSerieFilterInput {
-  all: AuteurSerieFilterInput
-  none: AuteurSerieFilterInput
-  some: AuteurSerieFilterInput
-  any: Boolean
-}
-
-input ListFilterInputTypeOfCollectionFilterInput {
-  all: CollectionFilterInput
-  none: CollectionFilterInput
-  some: CollectionFilterInput
-  any: Boolean
-}
-
-input ListFilterInputTypeOfCoteEditionFilterInput {
-  all: CoteEditionFilterInput
-  none: CoteEditionFilterInput
-  some: CoteEditionFilterInput
-  any: Boolean
-}
-
-input ListFilterInputTypeOfEditionAlbumFilterInput {
-  all: EditionAlbumFilterInput
-  none: EditionAlbumFilterInput
-  some: EditionAlbumFilterInput
-  any: Boolean
-}
-
-input ListFilterInputTypeOfEditionFilterInput {
-  all: EditionFilterInput
-  none: EditionFilterInput
-  some: EditionFilterInput
-  any: Boolean
-}
-
-input ListFilterInputTypeOfGenreAlbumFilterInput {
-  all: GenreAlbumFilterInput
-  none: GenreAlbumFilterInput
-  some: GenreAlbumFilterInput
-  any: Boolean
-}
-
-input ListFilterInputTypeOfGenreSerieFilterInput {
-  all: GenreSerieFilterInput
-  none: GenreSerieFilterInput
-  some: GenreSerieFilterInput
-  any: Boolean
-}
-
-input ListFilterInputTypeOfImageFilterInput {
-  all: ImageFilterInput
-  none: ImageFilterInput
-  some: ImageFilterInput
-  any: Boolean
-}
-
-input ListFilterInputTypeOfSerieFilterInput {
-  all: SerieFilterInput
-  none: SerieFilterInput
-  some: SerieFilterInput
-  any: Boolean
-}
-
-input ListFilterInputTypeOfUniversAlbumFilterInput {
-  all: UniversAlbumFilterInput
-  none: UniversAlbumFilterInput
-  some: UniversAlbumFilterInput
-  any: Boolean
-}
-
-input ListFilterInputTypeOfUniversFilterInput {
-  all: UniversFilterInput
-  none: UniversFilterInput
-  some: UniversFilterInput
-  any: Boolean
-}
-
-input ListFilterInputTypeOfUniversSerieFilterInput {
-  all: UniversSerieFilterInput
-  none: UniversSerieFilterInput
-  some: UniversSerieFilterInput
-  any: Boolean
-}
-
 input ListStringOperationFilterInput {
   all: StringOperationFilterInput
   none: StringOperationFilterInput
   some: StringOperationFilterInput
-  any: Boolean
-}
-
-input ListUuidOperationFilterInput {
-  all: UuidOperationFilterInput
-  none: UuidOperationFilterInput
-  some: UuidOperationFilterInput
   any: Boolean
 }
 
@@ -1520,15 +1319,6 @@ input OptionFilterInput {
   libelle: StringOperationFilterInput
   ordre: ComparableNonNullTypeOfUnsignedIntTypeOperationFilterInput
   defaut: BooleanOperationFilterInput
-  albums: ListFilterInputTypeOfAlbumFilterInput
-  series: ListFilterInputTypeOfSerieFilterInput
-  editionFormatEditions: ListFilterInputTypeOfEditionFilterInput
-  editionOrientations: ListFilterInputTypeOfEditionFilterInput
-  editionReliures: ListFilterInputTypeOfEditionFilterInput
-  editionSensLectures: ListFilterInputTypeOfEditionFilterInput
-  editionTypeEditions: ListFilterInputTypeOfEditionFilterInput
-  editionsAlbums: ListFilterInputTypeOfEditionAlbumFilterInput
-  images: ListFilterInputTypeOfImageFilterInput
   id: ComparableNonNullTypeOfUnsignedIntTypeOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
@@ -1555,12 +1345,9 @@ input PersonneFilterInput {
   and: [PersonneFilterInput!]
   or: [PersonneFilterInput!]
   nom: StringOperationFilterInput
-  nomRaw: StringOperationFilterInput
   biographie: StringOperationFilterInput
-  biographieRaw: StringOperationFilterInput
   siteWeb: UrlOperationFilterInput
-  auteurs: ListFilterInputTypeOfAuteurFilterInput
-  initiale: CharOperationFilterInput
+  initiale: StringOperationFilterInput
   associations: ListStringOperationFilterInput
   id: UuidOperationFilterInput
   createdAt: DateTimeOperationFilterInput
@@ -1590,30 +1377,19 @@ input SerieFilterInput {
   and: [SerieFilterInput!]
   or: [SerieFilterInput!]
   titre: StringOperationFilterInput
-  titreRaw: StringOperationFilterInput
   sujet: StringOperationFilterInput
-  sujetRaw: StringOperationFilterInput
   notes: StringOperationFilterInput
-  notesRaw: StringOperationFilterInput
   siteWeb: UrlOperationFilterInput
-  editeurId: UuidOperationFilterInput
   editeur: EditeurFilterInput
-  collectionId: UuidOperationFilterInput
   collection: CollectionFilterInput
-  modeleEditionId: UuidOperationFilterInput
   modeleEdition: EditionFilterInput
   nbAlbums: ComparableUnsignedIntTypeOperationFilterInput
   terminee: BooleanOperationFilterInput
   complete: BooleanOperationFilterInput
   suivreSorties: BooleanOperationFilterInput
   suivreManquants: BooleanOperationFilterInput
-  notationId: ComparableUnsignedIntTypeOperationFilterInput
   notation: OptionFilterInput
-  albums: ListFilterInputTypeOfAlbumFilterInput
-  auteursSeries: ListFilterInputTypeOfAuteurSerieFilterInput
-  genresSeries: ListFilterInputTypeOfGenreSerieFilterInput
-  universSeries: ListFilterInputTypeOfUniversSerieFilterInput
-  initiale: CharOperationFilterInput
+  initiale: StringOperationFilterInput
   associations: ListStringOperationFilterInput
   id: UuidOperationFilterInput
   createdAt: DateTimeOperationFilterInput
@@ -1679,37 +1455,15 @@ input StringOperationFilterInput {
   nendsWith: String
 }
 
-input UniversAlbumFilterInput {
-  and: [UniversAlbumFilterInput!]
-  or: [UniversAlbumFilterInput!]
-  universId: UuidOperationFilterInput
-  univers: UniversFilterInput
-  albumId: UuidOperationFilterInput
-  album: AlbumFilterInput
-  fromSerie: BooleanOperationFilterInput
-  id: UuidOperationFilterInput
-  createdAt: DateTimeOperationFilterInput
-  updatedAt: DateTimeOperationFilterInput
-}
-
 input UniversFilterInput {
   and: [UniversFilterInput!]
   or: [UniversFilterInput!]
   nom: StringOperationFilterInput
-  nomRaw: StringOperationFilterInput
   description: StringOperationFilterInput
-  descriptionRaw: StringOperationFilterInput
   siteWeb: UrlOperationFilterInput
-  universRacineId: UuidOperationFilterInput
   racine: UniversFilterInput
-  universParentId: UuidOperationFilterInput
   parent: UniversFilterInput
-  universBranches: ListUuidOperationFilterInput
-  universParents: ListFilterInputTypeOfUniversFilterInput
-  universRacines: ListFilterInputTypeOfUniversFilterInput
-  universAlbums: ListFilterInputTypeOfUniversAlbumFilterInput
-  universSeries: ListFilterInputTypeOfUniversSerieFilterInput
-  initiale: CharOperationFilterInput
+  initiale: StringOperationFilterInput
   associations: ListStringOperationFilterInput
   id: UuidOperationFilterInput
   createdAt: DateTimeOperationFilterInput
@@ -1723,18 +1477,6 @@ input UniversInput {
   parent: UniversInput
   racine: UniversInput!
   siteWeb: URL
-}
-
-input UniversSerieFilterInput {
-  and: [UniversSerieFilterInput!]
-  or: [UniversSerieFilterInput!]
-  universId: UuidOperationFilterInput
-  univers: UniversFilterInput
-  serieId: UuidOperationFilterInput
-  serie: SerieFilterInput
-  id: UuidOperationFilterInput
-  createdAt: DateTimeOperationFilterInput
-  updatedAt: DateTimeOperationFilterInput
 }
 
 input UniversSortInput {

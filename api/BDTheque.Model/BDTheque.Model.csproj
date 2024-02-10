@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="HotChocolate.AspNetCore"/>
+    <PackageReference Include="HotChocolate.Data.EntityFramework"/>
     <PackageReference Include="HotChocolate.Types.Analyzers">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive;</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>

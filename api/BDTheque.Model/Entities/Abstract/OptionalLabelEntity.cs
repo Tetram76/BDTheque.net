@@ -4,5 +4,8 @@ using BDTheque.Model.Interfaces;
 
 public abstract class OptionalLabelEntity : AssociableEntity, IOptionalLabel
 {
-    public char? Initiale { get; set; }
+    [GraphQLIgnore]
+    public char? InitialeChar { get => Initiale?[0]; set => Initiale = value?.ToString(); }
+
+    public string? Initiale { get; set; }
 }

@@ -1,4 +1,4 @@
-namespace BDTheque.GraphQL.Inputs;
+namespace BDTheque.GraphQL.Mutations.Inputs;
 
 public class OptionInputType : SimpleIdInputType<Option>
 {

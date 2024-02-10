@@ -4,9 +4,12 @@ using BDTheque.Data.Context;
 using BDTheque.GraphQL.Filters;
 using BDTheque.GraphQL.Listeners;
 using HotChocolate.Data.Filters;
+using HotChocolate.Data.Filters.Expressions;
 using HotChocolate.Execution.Configuration;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
+using QueryableStringContainsHandler = BDTheque.GraphQL.Handlers.QueryableStringContainsHandler;
+using QueryableStringNotContainsHandler = BDTheque.GraphQL.Handlers.QueryableStringNotContainsHandler;
 
 public static class ConfigureServices
 {
@@ -22,14 +25,20 @@ public static class ConfigureServices
             }
         };
 
-    public static IServiceCollection SetupDb(this IServiceCollection services, ConfigurationManager configuration)
+    public static IServiceCollection SetupDb(this IServiceCollection services, IConfiguration configuration, Action<DbContextOptionsBuilder>? optionsAction = null)
+        => services.SetupDb(configuration.GetConnectionString(), optionsAction);
+
+    public static IServiceCollection SetupDb(this IServiceCollection services, string? connectionString, Action<DbContextOptionsBuilder>? optionsAction = null)
     {
         services.AddDbContextPool<BDThequeContext>(
             options =>
+            {
                 options.UseNpgsql(
-                    configuration.GetConnectionString(),
+                    connectionString,
                     builder => builder.MigrationsAssembly("BDTheque.Data")
-                )
+                );
+                optionsAction?.Invoke(options);
+            }
         );
 
         return services;
@@ -39,23 +48,33 @@ public static class ConfigureServices
         => services
             .AddGraphQLServer()
             .ModifyOptions(options => options.EnableTrueNullability = true)
-            .BindRuntimeType<char, StringType>()
+            .RegisterDbContext<BDThequeContext>()
+            .AddBDThequeGraphQLTypes()
+            .AddBDThequeGraphQLExtensions()
+            // .BindRuntimeType<char, StringType>()
             .BindRuntimeType<ushort, UnsignedShortType>()
             .AddMutationConventions()
             .AddProjections() // Pour les requêtes de sous-sélection
-            .AddFiltering( // Pour les filtres
+            .AddFiltering(
                 descriptor =>
                     descriptor
                         .AddDefaults()
-                        .BindRuntimeType<char, CharOperationFilterInputType>()
-                        .BindRuntimeType<char?, CharOperationFilterInputType>()
+                        // .BindRuntimeType<char?, CharOperationFilterInputType>()
+                        // .BindRuntimeType<char?, CharOperationFilterInputType>()
+                        .BindRuntimeType<char, StringOperationFilterInputType>()
+                        .BindRuntimeType<char?, StringOperationFilterInputType>()
                         .BindRuntimeType<ushort, ComparableOperationFilterInputType<NonNullType<UnsignedIntType>>>()
                         .BindRuntimeType<ushort?, ComparableOperationFilterInputType<UnsignedIntType>>()
+                        .Provider(
+                            new QueryableFilterProvider(
+                                providerDescriptor => providerDescriptor
+                                    .AddFieldHandler<QueryableStringContainsHandler>()
+                                    .AddFieldHandler<QueryableStringNotContainsHandler>()
+                                    .AddDefaultFieldHandlers()
+                            )
+                        )
             )
-            .AddSorting() // Pour le tri
-            .RegisterDbContext<BDThequeContext>()
-            .AddBDThequeGraphQLTypes()
-            .AddBDThequeGraphQLExtensions();
+            .AddSorting();
 
     public static IRequestExecutorBuilder SetupGraphQLPipeline(this IRequestExecutorBuilder builder, ConfigurationManager configuration, IWebHostEnvironment environment)
         => builder
