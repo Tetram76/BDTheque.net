@@ -102,10 +102,11 @@ public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbCont
         DateTime now = DateTime.UtcNow;
         foreach (EntityEntry entity in entities)
         {
+            var versioningEntity = (VersioningEntity) entity.Entity;
             if (entity.State == EntityState.Added)
-                ((VersioningEntity) entity.Entity).CreatedAt = now;
+                versioningEntity.CreatedAt = now;
 
-            ((VersioningEntity) entity.Entity).UpdatedAt = now;
+            versioningEntity.UpdatedAt = now;
         }
     }
 }

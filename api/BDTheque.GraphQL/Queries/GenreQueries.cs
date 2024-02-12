@@ -11,7 +11,13 @@ public static class GenreQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<Genre> GetGenres(BDThequeContext dbContext)
+    public static IQueryable<Genre> GetGenreList(BDThequeContext dbContext)
+        => dbContext.Genres;
+
+    [UseSingleOrDefault]
+    [UseProjection]
+    [UseFiltering]
+    public static IQueryable<Genre> GetGenre(BDThequeContext dbContext)
         => dbContext.Genres;
 
     public static Task<Genre> GetGenreByIdAsync([ID] Guid id, IGenreByIdDataLoader dataLoader, CancellationToken cancellationToken)

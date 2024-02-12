@@ -2,6 +2,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
+using BDTheque.Model.Enums;
 
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
@@ -10,7 +11,7 @@ using BDTheque.Model.Entities.Abstract;
 public class Option : SimpleIdEntity
 {
     [ID]
-    public ushort Category { get; set; }
+    public OptionCategory Category { get; set; }
 
     public string Libelle { get; set; } = null!;
 

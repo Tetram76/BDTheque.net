@@ -11,10 +11,11 @@ public static class TestServices
     {
         Services = new ServiceCollection()
             .SetupDb(
+                true,
                 "Host=localhost:5432;Database=BDTheque;Username=postgres;Password=SuperSecret",
                 options => options.EnableSensitiveDataLogging()
             )
-            .SetupGraphQLSchema()
+            .SetupGraphQLSchema(true)
             .ModifyOptions(options => { options.SortFieldsByName = true; })
             .ModifyRequestOptions(options => options.IncludeExceptionDetails = true)
             .Services

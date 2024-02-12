@@ -11,9 +11,18 @@ public static class AlbumQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<Album> GetAlbums(BDThequeContext dbContext, CancellationToken cancellationToken)
+    public static IQueryable<Album> GetAlbumList(BDThequeContext dbContext)
         => dbContext.Albums;
 
-    public static Task<Album> GetAlbumById([ID] Guid id, IAlbumByIdDataLoader dataLoader, CancellationToken cancellationToken)
+    [UseSingleOrDefault]
+    [UseProjection]
+    [UseFiltering]
+    public static IQueryable<Album> GetAlbum(BDThequeContext dbContext)
+        => dbContext.Albums;
+
+    public static Task<Album> GetAlbumByIdAsync([ID] Guid id, IAlbumByIdDataLoader dataLoader, CancellationToken cancellationToken)
         => dataLoader.LoadAsync(id, cancellationToken);
+
+    public static Task<IReadOnlyList<Album>> GetAlbumByTitreAsync(string titre, IAlbumByTitreDataLoader dataLoader, CancellationToken cancellationToken)
+        => dataLoader.LoadAsync(titre, cancellationToken);
 }

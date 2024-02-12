@@ -58,6 +58,26 @@ type Album implements IVersioning & IUniqueId & IAssociable & IOptionalLabel {
 }
 
 "A connection to a list of items."
+type AlbumListConnection {
+  "A list of edges."
+  edges: [AlbumListEdge!]
+  "A flattened list of the nodes."
+  nodes: [Album!]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type AlbumListEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Album!
+}
+
+"A connection to a list of items."
 type AlbumsConnection {
   "A list of edges."
   edges: [AlbumsEdge!]
@@ -65,6 +85,8 @@ type AlbumsConnection {
   nodes: [Album!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -113,6 +135,8 @@ type AuteursConnection {
   nodes: [Auteur!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -136,6 +160,26 @@ type Collection implements IVersioning & IUniqueId & IAssociable & IMandatoryLab
 }
 
 "A connection to a list of items."
+type CollectionListConnection {
+  "A list of edges."
+  edges: [CollectionListEdge!]
+  "A flattened list of the nodes."
+  nodes: [Collection!]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type CollectionListEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Collection!
+}
+
+"A connection to a list of items."
 type CollectionsConnection {
   "A list of edges."
   edges: [CollectionsEdge!]
@@ -143,6 +187,8 @@ type CollectionsConnection {
   nodes: [Collection!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -170,6 +216,8 @@ type CotesConnection {
   nodes: [Cote!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -245,17 +293,19 @@ type Editeur implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel 
 }
 
 "A connection to a list of items."
-type EditeursConnection {
+type EditeurListConnection {
   "A list of edges."
-  edges: [EditeursEdge!]
+  edges: [EditeurListEdge!]
   "A flattened list of the nodes."
   nodes: [Editeur!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
-type EditeursEdge {
+type EditeurListEdge {
   "A cursor for use in pagination."
   cursor: String!
   "The item at the end of the edge."
@@ -311,6 +361,8 @@ type EditionFormatEditionsConnection {
   nodes: [Edition!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -329,6 +381,8 @@ type EditionOrientationsConnection {
   nodes: [Edition!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -347,6 +401,8 @@ type EditionReliuresConnection {
   nodes: [Edition!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -365,6 +421,8 @@ type EditionSensLecturesConnection {
   nodes: [Edition!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -383,6 +441,8 @@ type EditionTypeEditionsConnection {
   nodes: [Edition!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -401,6 +461,8 @@ type EditionsAlbumsConnection {
   nodes: [EditionAlbum!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -419,6 +481,8 @@ type EditionsConnection {
   nodes: [EditionAlbum!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -449,6 +513,26 @@ type GenreAlbum implements IVersioning & IUniqueId {
   updatedAt: DateTime!
 }
 
+"A connection to a list of items."
+type GenreListConnection {
+  "A list of edges."
+  edges: [GenreListEdge!]
+  "A flattened list of the nodes."
+  nodes: [Genre!]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type GenreListEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Genre!
+}
+
 type GenreSerie implements IVersioning & IUniqueId {
   createdAt: DateTime!
   genre: Genre!
@@ -465,6 +549,8 @@ type GenresConnection {
   nodes: [Genre!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -494,6 +580,8 @@ type ImagesConnection {
   nodes: [Image!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -550,6 +638,8 @@ type OptionsConnection {
   nodes: [Option!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -580,6 +670,8 @@ type ParentsConnection {
   nodes: [Univers!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -604,17 +696,19 @@ type Personne implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel
 }
 
 "A connection to a list of items."
-type PersonnesConnection {
+type PersonneListConnection {
   "A list of edges."
-  edges: [PersonnesEdge!]
+  edges: [PersonneListEdge!]
   "A flattened list of the nodes."
   nodes: [Personne!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
-type PersonnesEdge {
+type PersonneListEdge {
   "A cursor for use in pagination."
   cursor: String!
   "The item at the end of the edge."
@@ -622,17 +716,36 @@ type PersonnesEdge {
 }
 
 type Query {
+  album(where: AlbumFilterInput): Album
   albumById(id: ID!): Album!
-  albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumsConnection
-  collections("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [CollectionSortInput!] where: CollectionFilterInput): CollectionsConnection
-  editeurs("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [EditeurSortInput!] where: EditeurFilterInput): EditeursConnection
+  albumByTitre(titre: String!): [Album!]!
+  albumList("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumListConnection
+  collection(where: CollectionFilterInput): Collection
+  collectionById(id: ID!): Collection!
+  collectionByNom(nom: String!): [Collection!]!
+  collectionList("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [CollectionSortInput!] where: CollectionFilterInput): CollectionListConnection
+  editeur(where: EditeurFilterInput): Editeur
+  editeurById(id: ID!): Editeur!
+  editeurByNom(nom: String!): [Editeur!]!
+  editeurList("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [EditeurSortInput!] where: EditeurFilterInput): EditeurListConnection
+  genre(where: GenreFilterInput): Genre
   genreById(id: ID!): Genre!
   genreByNom(nom: String!): [Genre!]!
-  genres("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [GenreSortInput!] where: GenreFilterInput): GenresConnection
+  genreList("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [GenreSortInput!] where: GenreFilterInput): GenreListConnection
+  optionByCategory(category: OptionCategory!): [Option!]!
   options("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [OptionSortInput!] where: OptionFilterInput): OptionsConnection
-  personnes("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [PersonneSortInput!] where: PersonneFilterInput): PersonnesConnection
-  series("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [SerieSortInput!] where: SerieFilterInput): SeriesConnection
-  univers("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [UniversSortInput!] where: UniversFilterInput): UniversConnection
+  personne(where: PersonneFilterInput): Personne
+  personneById(id: ID!): Personne!
+  personneByNom(nom: String!): [Personne!]!
+  personneList("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [PersonneSortInput!] where: PersonneFilterInput): PersonneListConnection
+  serie(where: SerieFilterInput): Serie
+  serieById(id: ID!): Serie!
+  serieByTitre(titre: String!): [Serie!]!
+  serieList("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [SerieSortInput!] where: SerieFilterInput): SerieListConnection
+  univers(where: UniversFilterInput): Univers
+  universById(id: ID!): Univers!
+  universByNom(nom: String!): [Univers!]!
+  universList("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [UniversSortInput!] where: UniversFilterInput): UniversListConnection
 }
 
 "A connection to a list of items."
@@ -643,6 +756,8 @@ type RacinesConnection {
   nodes: [Univers!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -679,6 +794,26 @@ type Serie implements IVersioning & IUniqueId & IAssociable & IOptionalLabel {
 }
 
 "A connection to a list of items."
+type SerieListConnection {
+  "A list of edges."
+  edges: [SerieListEdge!]
+  "A flattened list of the nodes."
+  nodes: [Serie!]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type SerieListEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Serie!
+}
+
+"A connection to a list of items."
 type SeriesConnection {
   "A list of edges."
   edges: [SeriesEdge!]
@@ -686,6 +821,8 @@ type SeriesConnection {
   nodes: [Serie!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
@@ -764,10 +901,32 @@ type UniversConnection {
   nodes: [Univers!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
 }
 
 "An edge in a connection."
 type UniversEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Univers!
+}
+
+"A connection to a list of items."
+type UniversListConnection {
+  "A list of edges."
+  edges: [UniversListEdge!]
+  "A flattened list of the nodes."
+  nodes: [Univers!]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type UniversListEdge {
   "A cursor for use in pagination."
   cursor: String!
   "The item at the end of the edge."
@@ -1563,6 +1722,17 @@ enum Metier {
   SCENARISTE
   DESSINATEUR
   COLORISTE
+}
+
+enum OptionCategory {
+  EDITION_ETAT
+  EDITION_RELIURE
+  EDITION_TYPE
+  EDITION_ORIENTATION
+  EDITION_FORMAT
+  IMAGE_TYPE
+  EDITION_SENS_LECTURE
+  NOTATION
 }
 
 enum SortEnumType {

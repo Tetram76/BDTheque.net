@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Serilog;
+using Serilog.Events;
 using Path = System.IO.Path;
 
 Log.Logger = new LoggerConfiguration()
@@ -46,6 +47,8 @@ try
         (ctx, loggerConfiguration) =>
         {
             loggerConfiguration.ReadFrom.Configuration(ctx.Configuration);
+            if (builder.Environment.IsDevelopment())
+                loggerConfiguration.MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Information);
         }
     );
 
@@ -93,9 +96,10 @@ try
 #endif
         }
     );
+
     builder.Services
-        .SetupDb(builder.Configuration)
-        .SetupGraphQLSchema()
+        .SetupDb(builder.Environment.IsDevelopment(), builder.Configuration)
+        .SetupGraphQLSchema(builder.Environment.IsDevelopment())
         .SetupGraphQLPipeline(builder.Configuration, builder.Environment);
 
     WebApplication app = builder.Build();
@@ -135,7 +139,8 @@ try
                 Enable = app.Environment.IsDevelopment(),
                 ServeMode = app.Environment.IsDevelopment() ? GraphQLToolServeMode.Latest : GraphQLToolServeMode.Embedded,
                 Title = "BDTheque GraphQL API",
-                DisableTelemetry = false
+                DisableTelemetry = false,
+                UseBrowserUrlAsGraphQLEndpoint = true
             }
         }
     );
