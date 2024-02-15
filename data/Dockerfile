@@ -17,7 +17,7 @@ ENV DB_USER=postgres
 HEALTHCHECK --interval=1m --timeout=30s --retries=3 --start-period=5s CMD pg_isready -U $DB_USER || exit 1
 
 ############ Manager
-FROM dpage/pgadmin4 as manager
+FROM dpage/pgadmin4:latest as manager
 
 ENV PGADMIN_DEFAULT_EMAIL=admin@nowhere.invalid.com
 ENV PGADMIN_DEFAULT_PASSWORD=SuperSecret
