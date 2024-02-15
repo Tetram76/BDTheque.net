@@ -33,12 +33,12 @@ try
 
     builder.Configuration.Sources.Clear();
     builder.Configuration
-        .AddJsonFile("Settings/logging.json", false, true)
-        .AddJsonFile("Settings/database.json", false, false)
-        .AddJsonFile("Settings/server.json", false)
-        .AddJsonFile("Settings/authentication.json", false, true)
-        .AddJsonFile("Settings/system.json", true)
-        .AddJsonFile("Settings/appsettings.json", true)
+        .AddContextualJsonFile("Settings/logging.json", false, true)
+        .AddContextualJsonFile("Settings/database.json")
+        .AddContextualJsonFile("Settings/server.json")
+        .AddContextualJsonFile("Settings/authentication.json", false, true)
+        .AddContextualJsonFile("Settings/system.json", true)
+        .AddContextualJsonFile("Settings/appsettings.json", true)
         .AddEnvironmentVariables()
         .AddCommandLine(args)
         .Build();
@@ -98,9 +98,12 @@ try
     );
 
     builder.Services
-        .SetupDb(builder.Environment.IsDevelopment(), builder.Configuration)
-        .SetupGraphQLSchema(builder.Environment.IsDevelopment())
-        .SetupGraphQLPipeline(builder.Configuration, builder.Environment);
+        .SetupApp(
+            new ConfigureServices.Options(builder.Configuration)
+            {
+                Debug = builder.Environment.IsDevelopment()
+            }
+        );
 
     WebApplication app = builder.Build();
 
@@ -131,7 +134,7 @@ try
 
     app.MapHealthChecks(Urls.HealthCheck);
 
-    app.MapGraphQL(Urls.GraphQL).WithOptions(
+    app.MapGraphQL().WithOptions(
         new GraphQLServerOptions
         {
             Tool =

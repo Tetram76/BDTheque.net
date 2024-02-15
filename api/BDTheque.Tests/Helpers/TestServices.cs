@@ -2,6 +2,7 @@ namespace BDTheque.Tests.Helpers;
 
 using System.Runtime.CompilerServices;
 using BDTheque.Web.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Schema = HotChocolate.Schema;
 
@@ -9,16 +10,19 @@ public static class TestServices
 {
     static TestServices()
     {
+        IConfigurationRoot configuration = new ConfigurationManager()
+            .AddContextualJsonFile("Settings/database.json")
+            .AddCommandLine(Environment.GetCommandLineArgs())
+            .Build();
+
         Services = new ServiceCollection()
-            .SetupDb(
-                true,
-                "Host=localhost:5432;Database=BDTheque;Username=postgres;Password=SuperSecret",
-                options => options.EnableSensitiveDataLogging()
+            .SetupApp(
+                new ConfigureServices.Options(configuration)
+                {
+                    SetupPipeline = false,
+                    Debug = true
+                }
             )
-            .SetupGraphQLSchema(true)
-            .ModifyOptions(options => { options.SortFieldsByName = true; })
-            .ModifyRequestOptions(options => options.IncludeExceptionDetails = true)
-            .Services
             .AddSingleton(
                 sp => new RequestExecutorProxy(sp.GetRequiredService<IRequestExecutorResolver>(), Schema.DefaultName)
             )

@@ -11,15 +11,18 @@ public class GenreTest
             b => b.SetQuery(
                 """
                 query {
-                    genres(last: 10, where: {initiale: {eq: "A"}}) {
-                        pageInfo {
-                            hasNextPage
-                            hasPreviousPage
+                    genreList(last: 10, where: {initiale: {eq: "A"}}) {
+                      pageInfo {
+                        hasNextPage
+                        hasPreviousPage
+                      }
+                      edges {
+                        cursor
+                        node {
+                          id
+                          nom
                         }
-                        nodes {
-                            id
-                            nom
-                        }
+                      }
                     }
                 }
                 """

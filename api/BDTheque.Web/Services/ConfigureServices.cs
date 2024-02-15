@@ -9,56 +9,73 @@ using HotChocolate.Types.Pagination;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using StackExchange.Redis;
+using Path = System.IO.Path;
 using QueryableStringContainsHandler = BDTheque.GraphQL.Handlers.QueryableStringContainsHandler;
 using QueryableStringNotContainsHandler = BDTheque.GraphQL.Handlers.QueryableStringNotContainsHandler;
 
 public static class ConfigureServices
 {
-    private static string? GetConnectionString(this IConfiguration configurationManager)
-        => configurationManager.GetConnectionString("BDThequeDatabase");
-
-    private static ConfigurationOptions RedisConfiguration(this IConfiguration _)
-        => new()
-        {
-            EndPoints =
-            {
-                "localhost:6379"
-            }
-        };
-
-    public static IServiceCollection SetupDb(this IServiceCollection services, bool IsDevEnvironment, IConfiguration configuration, Action<DbContextOptionsBuilder>? optionsAction = null)
-        => services.SetupDb(IsDevEnvironment, configuration.GetConnectionString(), optionsAction);
-
-    public static IServiceCollection SetupDb(this IServiceCollection services, bool isDevEnvironment, string? connectionString, Action<DbContextOptionsBuilder>? optionsAction = null)
+    public sealed class Options(IConfiguration configuration)
     {
-        services.AddDbContextPool<BDThequeContext>(
-            options =>
-            {
-                options.ConfigureWarnings(
-                    builder =>
-                        builder.Ignore(CoreEventId.RowLimitingOperationWithoutOrderByWarning)
-                );
+        public string? DatabaseConnectionString => configuration.GetConnectionString("BDThequeDatabase");
 
-                if (isDevEnvironment)
-                    options
-                        .EnableSensitiveDataLogging()
-                        .EnableDetailedErrors();
+        public string RedisEndpoint => configuration.GetConnectionString("RedisEndpoint") ?? "localhost:6379";
 
-                options.UseNpgsql(
-                    connectionString,
-                    builder => builder.MigrationsAssembly("BDTheque.Data")
-                );
-                optionsAction?.Invoke(options);
-            }
-        );
+        public bool SetupPipeline { get; init; } = true;
+        public Action<IRequestExecutorBuilder>? ModifyPipeline { get; init; } = null;
+        public bool Debug { get; init; } = true;
+    }
+
+    public static IServiceCollection SetupApp(this IServiceCollection services, Options options)
+    {
+        services
+            .SetupDb(options);
+
+        IRequestExecutorBuilder requestExecutorBuilder = services
+            .SetupGraphQLSchema(options);
+
+        if (options.SetupPipeline)
+            requestExecutorBuilder.SetupGraphQLPipeline(options);
+
+        options.ModifyPipeline?.Invoke(requestExecutorBuilder);
 
         return services;
     }
 
-    public static IRequestExecutorBuilder SetupGraphQLSchema(this IServiceCollection services, bool isDevEnvironment)
+    public static IConfigurationBuilder AddContextualJsonFile(this IConfigurationBuilder builder, string path, bool optional = false, bool reloadOnChange = false)
+    {
+        builder.AddJsonFile(path, optional, reloadOnChange);
+        string? environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        if (!string.IsNullOrEmpty(environment))
+            builder.AddJsonFile(Path.ChangeExtension(path, $".{environment}{Path.GetExtension(path)}"), true, reloadOnChange);
+        return builder;
+    }
+
+    private static IServiceCollection SetupDb(this IServiceCollection services, Options appOptions)
+        => services.AddDbContextPool<BDThequeContext>(
+            options =>
+            {
+                options
+                    .ConfigureWarnings(
+                        builder =>
+                        {
+                            builder.Ignore(CoreEventId.RowLimitingOperationWithoutOrderByWarning);
+                        }
+                    )
+                    .EnableSensitiveDataLogging(appOptions.Debug)
+                    .EnableDetailedErrors(appOptions.Debug)
+                    .UseNpgsql(
+                        appOptions.DatabaseConnectionString,
+                        builder => builder.MigrationsAssembly("BDTheque.Data")
+                    );
+            }
+        );
+
+    private static IRequestExecutorBuilder SetupGraphQLSchema(this IServiceCollection services, Options appOptions)
         => services
             .AddGraphQLServer()
-            .AllowIntrospection(isDevEnvironment)
+            .AllowIntrospection(appOptions.Debug)
+            .ModifyRequestOptions(o => o.IncludeExceptionDetails = appOptions.Debug)
             .ModifyOptions(
                 options =>
                 {
@@ -66,12 +83,9 @@ public static class ConfigureServices
                     options.UseXmlDocumentation = false;
                     options.ValidatePipelineOrder = true;
                     options.StrictRuntimeTypeValidation = true;
+                    options.SortFieldsByName = appOptions.Debug;
                 }
             )
-            .RegisterDbContext<BDThequeContext>()
-            .AddType(new UuidType('D'))
-            .AddBDThequeGraphQLTypes()
-            .AddBDThequeGraphQLExtensions()
             // .BindRuntimeType<char, StringType>()
             .BindRuntimeType<ushort, UnsignedShortType>()
             .AddMutationConventions()
@@ -101,17 +115,29 @@ public static class ConfigureServices
                             )
                         )
             )
-            .AddSorting();
+            .AddSorting() // Pour le tri
+            .RegisterDbContext<BDThequeContext>()
+            .AddBDThequeGraphQLTypes()
+            .AddBDThequeGraphQLExtensions()
+            .AddRedisSubscriptions(
+                _ => ConnectionMultiplexer.Connect(
+                    new ConfigurationOptions
+                    {
+                        EndPoints =
+                        {
+                            appOptions.RedisEndpoint ?? "localhost:6379"
+                        }
+                    }
+                )
+            )
+            .AddTypeConverter<DateTimeOffset, DateTime>(t => t.UtcDateTime)
+            .AddTypeConverter<DateTime, DateTimeOffset>(t => t.Kind is DateTimeKind.Unspecified ? DateTime.SpecifyKind(t, DateTimeKind.Utc) : t);
 
-    public static IRequestExecutorBuilder SetupGraphQLPipeline(this IRequestExecutorBuilder builder, ConfigurationManager configuration, IWebHostEnvironment environment)
+    private static IRequestExecutorBuilder SetupGraphQLPipeline(this IRequestExecutorBuilder builder, Options appOptions)
         => builder
             .AddHttpRequestInterceptor<CustomRequestInterceptor>()
-            .ModifyRequestOptions(options => options.IncludeExceptionDetails = environment.IsDevelopment())
             .AddDefaultTransactionScopeHandler()
-            .AddRedisSubscriptions(_ => ConnectionMultiplexer.Connect(configuration.RedisConfiguration()))
             .AddMaxExecutionDepthRule(10, true, true)
-            .AddTypeConverter<DateTimeOffset, DateTime>(t => t.UtcDateTime)
-            .AddTypeConverter<DateTime, DateTimeOffset>(t => t.Kind is DateTimeKind.Unspecified ? DateTime.SpecifyKind(t, DateTimeKind.Utc) : t)
             .AddDiagnosticEventListener<ServerEventListener>()
             .AddDiagnosticEventListener<ExecutionEventListener>()
             .AddDiagnosticEventListener<DataLoaderEventListener>();
