@@ -5,36 +5,84 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+          
+env:
+  ASPNETCORE_ENVIRONMENT: CI
 
 jobs:
   backend-tests:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        POSTGRES_DB: 
+          - test_db
+        POSTGRES_USER: 
+          - test_user
+        POSTGRES_PASSWORD: 
+          - test_password
+        POSTGRES_PORT: 
+          - 5432
+        REDIS_PORT: 
+          - 6379
+        solution-path: 
+          - ./api/
+        solution-file: 
+          - BDTheque.net.sln
+
     env:
-      solution-path: ./api/BDTheque.net.sln
+      CI_DATABASE_URL: postgres://${{ matrix.POSTGRES_USER }}:${{ matrix.POSTGRES_PASSWORD }}@localhost:${{ matrix.POSTGRES_PORT }}/${{ matrix.POSTGRES_DB }}
+      CI_CONNECTION_STRING: Host=localhost:${{ matrix.POSTGRES_PORT }};Database=${{ matrix.POSTGRES_DB }};Username=${{ matrix.POSTGRES_USER }};Password=${{ matrix.POSTGRES_PASSWORD }}
+      CI_REDIS_URL: localhost:${{ matrix.REDIS_PORT }}
+
+    services:
+      database:
+        image: postgres:${{ vars.POSTGRES_VERSION }}
+        ports:
+          - ${{ matrix.POSTGRES_PORT }}:5432
+        env:
+          POSTGRES_DB: ${{ matrix.POSTGRES_DB }}
+          POSTGRES_USER: ${{ matrix.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ matrix.POSTGRES_PASSWORD }}
+
+      redis:
+        image: redis:6.0-alpine
+        ports:
+          - ${{ matrix.REDIS_PORT }}:6379
 
     steps:
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4.0.0
       with:
         dotnet-version: ${{ vars.DOTNET_VERSION }} 
 
+    - name: Install EF
+      run: dotnet tool install --global dotnet-ef
+
     - name: Restore dependencies
-      run: dotnet restore ${{ env.solution-path }}
+      run: dotnet restore ${{ matrix.solution-path }}${{ matrix.solution-file }}
+
+    - name: Setup database
+      run: |
+        mkdir  ${{ matrix.solution-path }}Settings
+        echo "{\"ConnectionStrings\": { \"BDThequeDatabase\": \"${{ env.CI_CONNECTION_STRING }}\", \"RedisEndpoint\": \"${{ env.CI_REDIS_URL }}\"} }" > ${{ matrix.solution-path }}BDTheque.Web/Settings/database.CI.json
 
     - name: Build
-      run: dotnet build ${{ env.solution-path }} --no-restore
+      run: dotnet build ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-restore
+
+    - name: Mount database
+      run: dotnet ef database update --project ${{ matrix.solution-path }}BDTheque.Data/BDTheque.Data.csproj --startup-project ${{ matrix.solution-path }}BDTheque.Web/BDTheque.Web.csproj --context BDTheque.Data.Context.BDThequeContext
 
     - name: Run tests
-      run: dotnet test ${{ env.solution-path }} --no-build --verbosity normal
+      run: dotnet test ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-build --verbosity normal
 
   frontend-tests:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4
 
     - name: Setup Node.js
       uses: actions/setup-node@v4.0.2
