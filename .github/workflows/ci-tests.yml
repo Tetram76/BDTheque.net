@@ -67,17 +67,33 @@ jobs:
     - name: Setup database
       run: |
         mkdir  ${{ matrix.solution-path }}Settings
-        echo "{\"ConnectionStrings\": { \"BDThequeDatabase\": \"${{ env.CI_CONNECTION_STRING }}\", \"RedisEndpoint\": \"${{ env.CI_REDIS_URL }}\"} }" > ${{ matrix.solution-path }}BDTheque.Web/Settings/database.CI.json
+        echo "{\"ConnectionStrings\": { \"BDThequeDatabase\": \"${{ env.CI_CONNECTION_STRING }}\", \"RedisEndpoint\": \"${{ env.CI_REDIS_URL }}\"} }" > ${{ matrix.solution-path }}BDTheque.Web/Settings/database.${{ env.ASPNETCORE_ENVIRONMENT }}.json
 
     - name: Build
       run: dotnet build ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-restore
 
     - name: Mount database
-      run: dotnet ef database update --project ${{ matrix.solution-path }}BDTheque.Data/BDTheque.Data.csproj --startup-project ${{ matrix.solution-path }}BDTheque.Web/BDTheque.Web.csproj --context BDTheque.Data.Context.BDThequeContext
+      run: dotnet ef database update --project ${{ matrix.solution-path }}BDTheque.Data/BDTheque.Data.csproj --startup-project ${{ matrix.solution-path }}BDTheque.Web/BDTheque.Web.csproj --context BDTheque.Data.Context.BDThequeContext --no-build
 
     - name: Run tests
-      run: dotnet test ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-build --verbosity normal
+      run: |
+        dotnet test ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-build --verbosity normal --collect:"XPlat Code Coverage;IncludeTestAssembly=false;SkipAutoProps=true" --results-directory ${{ matrix.solution-path }}TestResults
+        COVERAGE_FILE=$(find ${{ matrix.solution-path }}TestResults -name 'coverage.cobertura.xml')
+        if [ ! -z "$COVERAGE_FILE" ]; then
+          mv "$COVERAGE_FILE" ${{ matrix.solution-path }}TestResults/coverage.cobertura.xml
+        else
+          echo "Fichier de couverture non trouvé."
+        fi
 
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        fail_ci_if_error: true
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: coverage.cobertura.xml
+        directory: ${{ matrix.solution-path }}TestResults
+        flags: back
+    
   frontend-tests:
     runs-on: ubuntu-latest
 
