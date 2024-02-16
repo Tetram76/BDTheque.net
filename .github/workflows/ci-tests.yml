@@ -67,7 +67,7 @@ jobs:
     - name: Setup database
       run: |
         mkdir  ${{ matrix.solution-path }}Settings
-        echo "{\"ConnectionStrings\": { \"BDThequeDatabase\": \"${{ env.CI_CONNECTION_STRING }}\", \"RedisEndpoint\": \"${{ env.CI_REDIS_URL }}\"} }" > ${{ matrix.solution-path }}BDTheque.Web/Settings/database.CI.json
+        echo "{\"ConnectionStrings\": { \"BDThequeDatabase\": \"${{ env.CI_CONNECTION_STRING }}\", \"RedisEndpoint\": \"${{ env.CI_REDIS_URL }}\"} }" > ${{ matrix.solution-path }}BDTheque.Web/Settings/database.${{ env.ASPNETCORE_ENVIRONMENT }}.json
 
     - name: Build
       run: dotnet build ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-restore
