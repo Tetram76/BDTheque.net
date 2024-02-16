@@ -80,7 +80,7 @@ jobs:
         dotnet test ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-build --verbosity normal --collect:"XPlat Code Coverage;IncludeTestAssembly=false;SkipAutoProps=true" --results-directory ${{ matrix.solution-path }}TestResults
         COVERAGE_FILE=$(find ${{ matrix.solution-path }}TestResults -name 'coverage.cobertura.xml')
         if [ ! -z "$COVERAGE_FILE" ]; then
-          mv "$COVERAGE_FILE" ${{ matrix.solution-path }}/TestResults/coverage.cobertura.xml
+          mv "$COVERAGE_FILE" ${{ matrix.solution-path }}TestResults/coverage.cobertura.xml
         else
           echo "Fichier de couverture non trouvé."
         fi
