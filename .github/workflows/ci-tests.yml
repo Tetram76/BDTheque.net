@@ -15,6 +15,9 @@ jobs:
     env:
       API_PATH: ./api/
       FRONT_PATH: ./front/
+    outputs:
+      api_changed: ${{ steps.check_api.outputs.changes_detected }}
+      front_changed: ${{ steps.check_front.outputs.changes_detected }}
     steps:
       - uses: actions/checkout@v4
       
@@ -39,7 +42,7 @@ jobs:
 
   backend-tests:
     needs: check-modifications
-    if: needs.check-modifications.check_api.outputs.changes_detected == 'true'
+    if: needs.check-modifications.outputs.api_changed == 'true'
     
     runs-on: ubuntu-latest
 
@@ -125,7 +128,7 @@ jobs:
     
   frontend-tests:
     needs: check-modifications
-    if: needs.check-modifications.check_front.outputs.changes_detected == 'true'
+    if: needs.check-modifications.outputs.front_changed == 'true'
     
     runs-on: ubuntu-latest
 
