@@ -15,14 +15,15 @@ jobs:
     permissions:
       pull-requests: read
     steps:
-      - uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-            api:
-              - 'api/**'
-            front:
-              - 'front/**'  
+    - uses: actions/checkout@v4
+    - uses: dorny/paths-filter@v3
+      id: changes
+      with:
+        filters: |
+          api:
+            - 'api/**'
+          front:
+            - 'front/**'  
 
   backend-tests:
     needs: check-modifications
