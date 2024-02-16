@@ -76,7 +76,7 @@ jobs:
       run: dotnet ef database update --project ${{ matrix.solution-path }}BDTheque.Data/BDTheque.Data.csproj --startup-project ${{ matrix.solution-path }}BDTheque.Web/BDTheque.Web.csproj --context BDTheque.Data.Context.BDThequeContext
 
     - name: Run tests
-      run: dotnet test ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-build --verbosity normal /p:CollectCoverage=true
+      run: dotnet test -v d ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-build --verbosity normal /p:CollectCoverage=true
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4.0.1
