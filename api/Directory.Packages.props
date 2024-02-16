@@ -1,10 +1,9 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <AspNetVersion>8.0.1</AspNetVersion>
-    <EfVersion>8.0.1</EfVersion>
+    <AspNetVersion>8.0.2</AspNetVersion>
+    <EfVersion>8.0.2</EfVersion>
     <DevExpressVersion>23.1.7</DevExpressVersion>
-    <MicrosoftExtensionsVersion>8.0.1</MicrosoftExtensionsVersion>
     <HotChocolateVersion>13.8.1</HotChocolateVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -23,7 +22,7 @@
     <PackageVersion Include="Quartz" Version="3.8.0" />
     <PackageVersion Include="Quartz.Extensions.Hosting" Version="3.8.0" />
     <PackageVersion Include="Serilog" Version="3.1.1" />
-    <PackageVersion Include="Serilog.AspNetCore" Version="$(AspNetVersion)" />
+    <PackageVersion Include="Serilog.AspNetCore" Version="8.0.1" />
     <!-- Tests -->
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />
     <PackageVersion Include="FluentAssertions" Version="6.12.0" />
@@ -35,7 +34,7 @@
     <PackageVersion Include="MSTest.TestFramework" Version="3.1.1" />
     <PackageVersion Include="NBuilder" Version="6.1.0" />
     <PackageVersion Include="Snapshooter.Xunit" Version="0.14.1" />
-    <PackageVersion Include="xunit" Version="2.6.6" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.6" />
+    <PackageVersion Include="xunit" Version="2.7.0" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.7" />
   </ItemGroup>
 </Project>
