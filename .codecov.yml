@@ -1,0 +1,22 @@
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+
+  status:
+    project:
+      api:
+        target: auto
+        if_ci_failed: error
+        flags:
+          - api
+        paths:
+          - ./api/
+
+      front:
+        target: auto
+        if_ci_failed: error
+        flags:
+          - api
+        paths:
+          - ./front/
