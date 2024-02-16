@@ -121,7 +121,6 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: coverage.cobertura.xml
         directory: ${{ matrix.solution-path }}TestResults
-        flags: back
     
   frontend-tests:
     needs: check-modifications
