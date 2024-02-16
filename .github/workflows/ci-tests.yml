@@ -20,6 +20,8 @@ jobs:
       front_changed: ${{ steps.check_front.outputs.changes_detected }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       
       - name: Check API modifcations
         id: check_api
