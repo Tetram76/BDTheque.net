@@ -73,10 +73,12 @@ jobs:
       run: dotnet build ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-restore
 
     - name: Mount database
-      run: dotnet ef database update --project ${{ matrix.solution-path }}BDTheque.Data/BDTheque.Data.csproj --startup-project ${{ matrix.solution-path }}BDTheque.Web/BDTheque.Web.csproj --context BDTheque.Data.Context.BDThequeContext
+      run: dotnet ef database update --project ${{ matrix.solution-path }}BDTheque.Data/BDTheque.Data.csproj --startup-project ${{ matrix.solution-path }}BDTheque.Web/BDTheque.Web.csproj --context BDTheque.Data.Context.BDThequeContext --no-build
 
     - name: Run tests
-      run: dotnet test ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-build --verbosity detailed /p:CollectCoverage=true
+      run: |
+        dotnet add package coverlet.msbuild ${{ matrix.solution-path }}BDTheque.Tests/BDTheque.Tests.csproj
+        dotnet test ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-build --verbosity detailed /p:CollectCoverage=true
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4.0.1
