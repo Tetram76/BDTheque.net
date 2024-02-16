@@ -5,46 +5,28 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-          
+
 env:
   ASPNETCORE_ENVIRONMENT: CI
 
 jobs:
   check-modifications:
     runs-on: ubuntu-latest
-    env:
-      API_PATH: ./api/
-      FRONT_PATH: ./front/
-    outputs:
-      api_changed: ${{ steps.check_api.outputs.changes_detected }}
-      front_changed: ${{ steps.check_front.outputs.changes_detected }}
+    permissions:
+      pull-requests: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: changes
         with:
-          fetch-depth: 2
-      
-      - name: Check API modifcations
-        id: check_api
-        run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '${{ env.API_PATH }}'; then
-            echo "changes_detected=true" >> $GITHUB_OUTPUT
-          else
-            echo "changes_detected=false" >> $GITHUB_OUTPUT
-          fi
-    
-      - name: Check Front modifcations
-        id: check_front
-        run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '${{ env.FRONT_PATH }}'; then
-            echo "changes_detected=true" >> $GITHUB_OUTPUT
-          else
-            echo "changes_detected=false" >> $GITHUB_OUTPUT
-          fi
-    
+          filters: |
+            api:
+              - 'api/**'
+            front:
+              - 'front/**'  
 
   backend-tests:
     needs: check-modifications
-    if: needs.check-modifications.outputs.api_changed == 'true'
+    if: needs.check-modifications.changes.outputs.api == 'true'
     
     runs-on: ubuntu-latest
 
@@ -130,7 +112,7 @@ jobs:
     
   frontend-tests:
     needs: check-modifications
-    if: needs.check-modifications.outputs.front_changed == 'true'
+    if: needs.check-modifications.changes.outputs.front == 'true'
     
     runs-on: ubuntu-latest
 
