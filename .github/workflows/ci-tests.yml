@@ -8,12 +8,13 @@ on:
           
 env:
   ASPNETCORE_ENVIRONMENT: CI
-  API_PATH: ./api/
-  FRONT_PATH: ./front/
 
 jobs:
   check-modifications:
     runs-on: ubuntu-latest
+    env:
+      API_PATH: ./api/
+      FRONT_PATH: ./front/
     steps:
       - uses: actions/checkout@v4
       
@@ -55,7 +56,7 @@ jobs:
         REDIS_PORT: 
           - 6379
         solution-path: 
-          - ${{ env.API_PATH }}
+          - ./api/
         solution-file: 
           - BDTheque.net.sln
 
