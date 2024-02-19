@@ -19,7 +19,7 @@ public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbCont
     public virtual DbSet<AuteurAlbum> AuteursAlbums { get; init; } = null!;
     public virtual DbSet<AuteurSerie> AuteursSeries { get; init; } = null!;
     public virtual DbSet<Collection> Collections { get; init; } = null!;
-    public virtual DbSet<CoteEdition> CotesAlbums { get; init; } = null!;
+    public virtual DbSet<Cote> CotesAlbums { get; init; } = null!;
     public virtual DbSet<Editeur> Editeurs { get; init; } = null!;
     public virtual DbSet<Edition> Editions { get; init; } = null!;
     public virtual DbSet<EditionAlbum> EditionsAlbums { get; init; } = null!;
@@ -44,7 +44,7 @@ public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbCont
             );
 
         modelBuilder.Entity<Album>().ApplyEntityConfiguration();
-        modelBuilder.Entity<CoteEdition>().ApplyEntityConfiguration();
+        modelBuilder.Entity<Cote>().ApplyEntityConfiguration();
 
         modelBuilder.Entity<Serie>().ApplyEntityConfiguration();
 

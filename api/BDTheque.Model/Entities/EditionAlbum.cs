@@ -42,6 +42,6 @@ public class EditionAlbum : UniqueIdEntity
     [NotEmptyString]
     public string? Notes { get; set; }
 
-    public virtual ICollection<CoteEdition> CotesEditions { get; set; } = new List<CoteEdition>();
+    public virtual ICollection<Cote> Cotes { get; set; } = new List<Cote>();
     public virtual ICollection<Image> Images { get; set; } = new List<Image>();
 }

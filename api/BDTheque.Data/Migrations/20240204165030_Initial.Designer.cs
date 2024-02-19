@@ -305,7 +305,7 @@ namespace BDTheque.Data.Migrations
                     b.ToTable("collections", (string)null);
                 });
 
-            modelBuilder.Entity("BDTheque.Model.Entities.CoteEdition", b =>
+            modelBuilder.Entity("BDTheque.Model.Entities.Cote", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1799,10 +1799,10 @@ namespace BDTheque.Data.Migrations
                     b.Navigation("Editeur");
                 });
 
-            modelBuilder.Entity("BDTheque.Model.Entities.CoteEdition", b =>
+            modelBuilder.Entity("BDTheque.Model.Entities.Cote", b =>
                 {
                     b.HasOne("BDTheque.Model.Entities.EditionAlbum", "EditionAlbum")
-                        .WithMany("CotesEditions")
+                        .WithMany("Cotes")
                         .HasForeignKey("EditionAlbumId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2078,7 +2078,7 @@ namespace BDTheque.Data.Migrations
 
             modelBuilder.Entity("BDTheque.Model.Entities.EditionAlbum", b =>
                 {
-                    b.Navigation("CotesEditions");
+                    b.Navigation("Cotes");
 
                     b.Navigation("Images");
                 });

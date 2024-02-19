@@ -8,8 +8,8 @@ public static class EditionAlbumResolvers
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<CoteEdition> GetCotes([Parent] EditionAlbum edition)
-        => edition.CotesEditions.AsQueryable();
+    public static IQueryable<Cote> GetCotes([Parent] EditionAlbum edition)
+        => edition.Cotes.AsQueryable();
 
     [UsePaging]
     [UseProjection]

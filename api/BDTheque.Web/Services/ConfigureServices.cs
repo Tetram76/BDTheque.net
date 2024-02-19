@@ -120,6 +120,7 @@ public static class ConfigureServices
             .AddDataAnnotationsValidator()
             .RegisterDbContext<BDThequeContext>()
             .AddBDThequeGraphQLTypes()
+            // .AddBDThequeGraphQLInputTypes()
             .AddBDThequeGraphQLExtensions()
             .AddRedisSubscriptions(
                 _ => ConnectionMultiplexer.Connect(
