@@ -1,4 +1,4 @@
-﻿schema {
+schema {
   query: Query
   mutation: Mutation
   subscription: Subscription
@@ -9,7 +9,7 @@ interface Error {
 }
 
 interface IAssociable {
-  associations: [String!]
+  associations: [String!]!
 }
 
 interface IMandatoryLabel {
@@ -35,7 +35,7 @@ interface IVersioning {
 
 type Album implements IVersioning & IUniqueId & IAssociable & IOptionalLabel {
   anneeParution: Year
-  associations: [String!]
+  associations: [String!]!
   auteurs("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AuteurSortInput!] where: AuteurFilterInput): AuteursConnection
   createdAt: DateTime!
   editions("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [EditionAlbumSortInput!] where: EditionAlbumFilterInput): EditionsConnection
@@ -149,7 +149,7 @@ type AuteursEdge {
 
 type Collection implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [EditionAlbumSortInput!] where: EditionAlbumFilterInput): AlbumsConnection
-  associations: [String!]
+  associations: [String!]!
   createdAt: DateTime!
   editeur: Editeur!
   id: ID!
@@ -280,7 +280,7 @@ type DeleteUniversPayload {
 
 type Editeur implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumsConnection
-  associations: [String!]
+  associations: [String!]!
   collections("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [CollectionSortInput!] where: CollectionFilterInput): CollectionsConnection
   createdAt: DateTime!
   editions("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [EditionAlbumSortInput!] where: EditionAlbumFilterInput): EditionsConnection
@@ -495,7 +495,7 @@ type EditionsEdge {
 
 type Genre implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumsConnection
-  associations: [String!]
+  associations: [String!]!
   createdAt: DateTime!
   id: ID!
   initiale: String!
@@ -684,7 +684,7 @@ type ParentsEdge {
 
 type Personne implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumsConnection
-  associations: [String!]
+  associations: [String!]!
   biographie: String
   createdAt: DateTime!
   id: ID!
@@ -770,7 +770,7 @@ type RacinesEdge {
 
 type Serie implements IVersioning & IUniqueId & IAssociable & IOptionalLabel {
   albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumsConnection
-  associations: [String!]
+  associations: [String!]!
   auteurs("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AuteurSortInput!] where: AuteurFilterInput): AuteursConnection
   collection: Collection
   complete: Boolean
@@ -868,7 +868,7 @@ type Subscription {
 
 type Univers implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumsConnection
-  associations: [String!]
+  associations: [String!]!
   branche: [UUID!]
   createdAt: DateTime!
   description: String
@@ -996,7 +996,7 @@ input AlbumFilterInput {
 
 input AlbumInput {
   anneeParution: Year
-  associations: [String!]
+  associations: [String!]!
   horsSerie: Boolean
   integrale: Boolean
   moisParution: Month
@@ -1085,7 +1085,7 @@ input CollectionFilterInput {
 }
 
 input CollectionInput {
-  associations: [String!]
+  associations: [String!]!
   editeur: EditeurInput!
   nom: String!
 }
@@ -1256,7 +1256,7 @@ input EditeurFilterInput {
 }
 
 input EditeurInput {
-  associations: [String!]
+  associations: [String!]!
   nom: String!
   siteWeb: URL
 }
@@ -1406,7 +1406,7 @@ input GenreFilterInput {
 }
 
 input GenreInput {
-  associations: [String!]
+  associations: [String!]!
   nom: String!
 }
 
@@ -1514,7 +1514,7 @@ input PersonneFilterInput {
 }
 
 input PersonneInput {
-  associations: [String!]
+  associations: [String!]!
   biographie: String
   nom: String!
   siteWeb: URL
@@ -1556,7 +1556,7 @@ input SerieFilterInput {
 }
 
 input SerieInput {
-  associations: [String!]
+  associations: [String!]!
   collection: CollectionInput
   complete: Boolean
   editeur: EditeurInput
@@ -1630,7 +1630,7 @@ input UniversFilterInput {
 }
 
 input UniversInput {
-  associations: [String!]
+  associations: [String!]!
   description: String
   nom: String!
   parent: UniversInput
