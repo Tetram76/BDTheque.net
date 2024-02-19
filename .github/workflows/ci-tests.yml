@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
+    outputs:
+      api: ${{ steps.changes.outputs.api }}
+      front: ${{ steps.changes.outputs.front }}
     steps:
     - uses: actions/checkout@v4
     - uses: dorny/paths-filter@v3
@@ -27,7 +30,7 @@ jobs:
 
   backend-tests:
     needs: check-modifications
-    if: needs.check-modifications.changes.outputs.api == 'true'
+    if: ${{ needs.check-modifications.outputs.api == 'true' }}
     
     runs-on: ubuntu-latest
 
@@ -113,7 +116,7 @@ jobs:
     
   frontend-tests:
     needs: check-modifications
-    if: needs.check-modifications.changes.outputs.front == 'true'
+    if: ${{ needs.check-modifications.changes.front == 'true' }}
     
     runs-on: ubuntu-latest
 
