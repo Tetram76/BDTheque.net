@@ -7,6 +7,7 @@ using BDTheque.Model.Entities.Abstract;
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 [ObjectType]
+[InputObjectType]
 public class Genre : MandatoryLabelEntity
 {
     [NotEmptyString]

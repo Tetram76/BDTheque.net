@@ -17,13 +17,13 @@ public static class AlbumSubscriptions
     public static Album AlbumDeleted([EventMessage] Album album) => album;
 
     [Subscribe(With = nameof(CoteAlbumCreatedStream))]
-    public static CoteEdition CoteAlbumCreated([EventMessage] CoteEdition coteAlbum) => coteAlbum;
+    public static Cote CoteAlbumCreated([EventMessage] Cote coteAlbum) => coteAlbum;
 
     [Subscribe(With = nameof(CoteAlbumUpdatedStream))]
-    public static CoteEdition CoteAlbumUpdated([EventMessage] CoteEdition coteAlbum) => coteAlbum;
+    public static Cote CoteAlbumUpdated([EventMessage] Cote coteAlbum) => coteAlbum;
 
     [Subscribe(With = nameof(CoteAlbumDeletedStream))]
-    public static CoteEdition CoteAlbumDeleted([EventMessage] CoteEdition coteAlbum) => coteAlbum;
+    public static Cote CoteAlbumDeleted([EventMessage] Cote coteAlbum) => coteAlbum;
 
     private static async IAsyncEnumerable<Album> AlbumCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
@@ -46,24 +46,24 @@ public static class AlbumSubscriptions
             yield return album;
     }
 
-    private static async IAsyncEnumerable<CoteEdition> CoteAlbumCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    private static async IAsyncEnumerable<Cote> CoteAlbumCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        ISourceStream<CoteEdition> sourceStream = await eventReceiver.SubscribeAsync<CoteEdition>(nameof(CoteAlbumCreated), cancellationToken);
-        await foreach (CoteEdition coteAlbum in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+        ISourceStream<Cote> sourceStream = await eventReceiver.SubscribeAsync<Cote>(nameof(CoteAlbumCreated), cancellationToken);
+        await foreach (Cote coteAlbum in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
             yield return coteAlbum;
     }
 
-    private static async IAsyncEnumerable<CoteEdition> CoteAlbumUpdatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    private static async IAsyncEnumerable<Cote> CoteAlbumUpdatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        ISourceStream<CoteEdition> sourceStream = await eventReceiver.SubscribeAsync<CoteEdition>(nameof(CoteAlbumUpdated), cancellationToken);
-        await foreach (CoteEdition coteAlbum in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+        ISourceStream<Cote> sourceStream = await eventReceiver.SubscribeAsync<Cote>(nameof(CoteAlbumUpdated), cancellationToken);
+        await foreach (Cote coteAlbum in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
             yield return coteAlbum;
     }
 
-    private static async IAsyncEnumerable<CoteEdition> CoteAlbumDeletedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    private static async IAsyncEnumerable<Cote> CoteAlbumDeletedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        ISourceStream<CoteEdition> sourceStream = await eventReceiver.SubscribeAsync<CoteEdition>(nameof(CoteAlbumDeleted), cancellationToken);
-        await foreach (CoteEdition coteAlbum in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+        ISourceStream<Cote> sourceStream = await eventReceiver.SubscribeAsync<Cote>(nameof(CoteAlbumDeleted), cancellationToken);
+        await foreach (Cote coteAlbum in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
             yield return coteAlbum;
     }
 }

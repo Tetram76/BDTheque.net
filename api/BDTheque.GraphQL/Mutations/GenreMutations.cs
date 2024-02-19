@@ -3,6 +3,7 @@ namespace BDTheque.GraphQL.Mutations;
 using BDTheque.Data.Context;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
+using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,29 +12,30 @@ using Microsoft.EntityFrameworkCore;
 public static class GenreMutations
 {
     [Error<AlreadyExistsException>]
-    public static async Task<Genre> CreateGenre(Genre genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    public static async Task<Genre> CreateGenre(GenreInput genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         if (await dbContext.Genres.AnyAsync(g => g.Nom == genre.Nom, cancellationToken))
             throw new AlreadyExistsException();
 
-        dbContext.Genres.Add(genre);
+        Genre newGenre = genre.BuildEntity<Genre>();
+        dbContext.Genres.Add(newGenre);
 
         await dbContext.SaveChangesAsync(cancellationToken);
-        await sender.SendAsync(nameof(GenreSubscriptions.GenreCreated), genre, cancellationToken);
-        return genre;
+        await sender.SendAsync(nameof(GenreSubscriptions.GenreCreated), newGenre, cancellationToken);
+        return newGenre;
     }
 
     [Error<AlreadyExistsException>]
     [Error<NotFoundIdException>]
-    public static async Task<Genre> UpdateGenre([ID] Guid id, Genre genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    public static async Task<Genre> UpdateGenre(GenreInput genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Genre? oldGenre = await dbContext.Genres.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
+        Genre? oldGenre = await dbContext.Genres.Where(p => p.Id == genre.Id.Value).SingleOrDefaultAsync(cancellationToken);
         if (oldGenre is null)
             throw new NotFoundIdException();
-        if (await dbContext.Genres.AnyAsync(g => g.Id != oldGenre.Id && g.Nom == genre.Nom, cancellationToken))
+        if (genre.Nom.HasValue && await dbContext.Genres.AnyAsync(g => g.Id != oldGenre.Id && g.Nom == genre.Nom, cancellationToken))
             throw new AlreadyExistsException();
 
-        // GenreInputType.ApplyUpdate(genre, oldGenre);
+        genre.ApplyUpdate(oldGenre);
         dbContext.Update(oldGenre);
 
         await dbContext.SaveChangesAsync(cancellationToken);

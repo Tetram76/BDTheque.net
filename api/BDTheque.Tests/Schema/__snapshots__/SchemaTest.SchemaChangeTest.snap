@@ -334,7 +334,7 @@ type Edition implements IVersioning & IUniqueId {
 type EditionAlbum implements IVersioning & IUniqueId {
   album: Album!
   collection: Collection
-  cotes("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [CoteEditionSortInput!] where: CoteEditionFilterInput): CotesConnection
+  cotes("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [CoteSortInput!] where: CoteFilterInput): CotesConnection
   createdAt: DateTime!
   dateAchat: Date
   dedicace: Boolean
@@ -997,7 +997,11 @@ input AlbumFilterInput {
 input AlbumInput {
   anneeParution: Year
   associations: [String!]!
+  auteursAlbums: [AuteurAlbumInput!]!
+  editionsAlbums: [EditionAlbumInput!]!
+  genresAlbums: [GenreAlbumInput!]!
   horsSerie: Boolean
+  id: ID!
   integrale: Boolean
   moisParution: Month
   notation: OptionInput
@@ -1008,6 +1012,7 @@ input AlbumInput {
   tome: UnsignedShort
   tomeDebut: UnsignedShort
   tomeFin: UnsignedShort
+  universAlbums: [UniversAlbumInput!]!
 }
 
 input AlbumSortInput {
@@ -1034,6 +1039,12 @@ input AlbumSortInput {
   updatedAt: SortEnumType
 }
 
+input AuteurAlbumInput {
+  album: AlbumInput!
+  auteur: AuteurInput!
+  id: ID!
+}
+
 input AuteurFilterInput {
   and: [AuteurFilterInput!]
   or: [AuteurFilterInput!]
@@ -1045,8 +1056,17 @@ input AuteurFilterInput {
 }
 
 input AuteurInput {
+  auteursAlbums: [AuteurAlbumInput!]!
+  auteursSeries: [AuteurSerieInput!]!
+  id: ID!
   metier: Metier!
   personne: PersonneInput!
+}
+
+input AuteurSerieInput {
+  auteur: AuteurInput!
+  id: ID!
+  serie: SerieInput!
 }
 
 input AuteurSortInput {
@@ -1087,7 +1107,10 @@ input CollectionFilterInput {
 input CollectionInput {
   associations: [String!]!
   editeur: EditeurInput!
+  editionsAlbums: [EditionAlbumInput!]!
+  id: ID!
   nom: String!
+  series: [SerieInput!]!
 }
 
 input CollectionSortInput {
@@ -1131,9 +1154,9 @@ input ComparableUnsignedIntTypeOperationFilterInput {
   nlte: UnsignedInt
 }
 
-input CoteEditionFilterInput {
-  and: [CoteEditionFilterInput!]
-  or: [CoteEditionFilterInput!]
+input CoteFilterInput {
+  and: [CoteFilterInput!]
+  or: [CoteFilterInput!]
   editionAlbum: EditionAlbumFilterInput
   annee: ComparableNonNullTypeOfUnsignedIntTypeOperationFilterInput
   prix: DecimalOperationFilterInput
@@ -1142,7 +1165,14 @@ input CoteEditionFilterInput {
   updatedAt: DateTimeOperationFilterInput
 }
 
-input CoteEditionSortInput {
+input CoteInput {
+  annee: Year
+  editionAlbum: EditionAlbumInput!
+  id: ID!
+  prix: EuroCurrency
+}
+
+input CoteSortInput {
   editionAlbumId: SortEnumType
   editionAlbum: EditionAlbumSortInput
   annee: SortEnumType
@@ -1150,12 +1180,6 @@ input CoteEditionSortInput {
   id: SortEnumType
   createdAt: SortEnumType
   updatedAt: SortEnumType
-}
-
-input CoteInput {
-  annee: Year
-  editionAlbum: EditionAlbumInput!
-  prix: EuroCurrency
 }
 
 input CreateGenreInput {
@@ -1257,7 +1281,11 @@ input EditeurFilterInput {
 
 input EditeurInput {
   associations: [String!]!
+  collections: [CollectionInput!]!
+  editionsAlbums: [EditionAlbumInput!]!
+  id: ID!
   nom: String!
+  series: [SerieInput!]!
   siteWeb: URL
 }
 
@@ -1296,12 +1324,15 @@ input EditionAlbumFilterInput {
 input EditionAlbumInput {
   album: AlbumInput!
   collection: CollectionInput
+  cotes: [CoteInput!]!
   dateAchat: Date
   dedicace: Boolean
   editeur: EditeurInput!
   edition: EditionInput!
   etat: OptionInput
   gratuit: Boolean
+  id: ID!
+  images: [ImageInput!]!
   notes: String
   numeroPerso: String
   occasion: Boolean
@@ -1358,7 +1389,9 @@ input EditionFilterInput {
 input EditionInput {
   anneeEdition: Year
   couleur: Boolean
+  editionsAlbums: [EditionAlbumInput!]!
   formatEdition: OptionInput
+  id: ID!
   isbn: Isbn
   nombreDePages: UnsignedShort
   notes: String
@@ -1394,6 +1427,13 @@ input EditionSortInput {
   updatedAt: SortEnumType
 }
 
+input GenreAlbumInput {
+  album: AlbumInput!
+  fromSerie: Boolean!
+  genre: GenreInput!
+  id: ID!
+}
+
 input GenreFilterInput {
   and: [GenreFilterInput!]
   or: [GenreFilterInput!]
@@ -1407,7 +1447,16 @@ input GenreFilterInput {
 
 input GenreInput {
   associations: [String!]!
+  genresAlbums: [GenreAlbumInput!]!
+  genresSeries: [GenreSerieInput!]!
+  id: ID!
   nom: String!
+}
+
+input GenreSerieInput {
+  genre: GenreInput!
+  id: ID!
+  serie: SerieInput!
 }
 
 input GenreSortInput {
@@ -1440,6 +1489,7 @@ input ImageFilterInput {
 
 input ImageInput {
   edition: EditionAlbumInput!
+  id: ID!
   ordre: UnsignedShort!
   titre: String
   type: OptionInput!
@@ -1484,10 +1534,20 @@ input OptionFilterInput {
 }
 
 input OptionInput {
+  albums: [AlbumInput!]!
   category: ID!
   defaut: Boolean!
+  editionFormatEditions: [EditionInput!]!
+  editionOrientations: [EditionInput!]!
+  editionReliures: [EditionInput!]!
+  editionsAlbums: [EditionAlbumInput!]!
+  editionSensLectures: [EditionInput!]!
+  editionTypeEditions: [EditionInput!]!
+  id: ID!
+  images: [ImageInput!]!
   libelle: String!
   ordre: UnsignedShort!
+  series: [SerieInput!]!
 }
 
 input OptionSortInput {
@@ -1515,7 +1575,9 @@ input PersonneFilterInput {
 
 input PersonneInput {
   associations: [String!]!
+  auteurs: [AuteurInput!]!
   biographie: String
+  id: ID!
   nom: String!
   siteWeb: URL
 }
@@ -1556,10 +1618,14 @@ input SerieFilterInput {
 }
 
 input SerieInput {
+  albums: [AlbumInput!]!
   associations: [String!]!
+  auteursSeries: [AuteurSerieInput!]!
   collection: CollectionInput
   complete: Boolean
   editeur: EditeurInput
+  genresSeries: [GenreSerieInput!]!
+  id: ID!
   modeleEdition: EditionInput!
   nbAlbums: UnsignedShort
   notation: OptionInput
@@ -1570,6 +1636,7 @@ input SerieInput {
   sujet: String
   terminee: Boolean
   titre: String
+  universSeries: [UniversSerieInput!]!
 }
 
 input SerieSortInput {
@@ -1614,6 +1681,13 @@ input StringOperationFilterInput {
   nendsWith: String
 }
 
+input UniversAlbumInput {
+  album: AlbumInput!
+  fromSerie: Boolean!
+  id: ID!
+  univers: UniversInput!
+}
+
 input UniversFilterInput {
   and: [UniversFilterInput!]
   or: [UniversFilterInput!]
@@ -1632,10 +1706,22 @@ input UniversFilterInput {
 input UniversInput {
   associations: [String!]!
   description: String
+  id: ID!
   nom: String!
   parent: UniversInput
   racine: UniversInput!
   siteWeb: URL
+  universAlbums: [UniversAlbumInput!]!
+  universBranches: [UUID!]
+  universParents: [UniversInput!]!
+  universRacines: [UniversInput!]!
+  universSeries: [UniversSerieInput!]!
+}
+
+input UniversSerieInput {
+  id: ID!
+  serie: SerieInput!
+  univers: UniversInput!
 }
 
 input UniversSortInput {
@@ -1656,7 +1742,6 @@ input UniversSortInput {
 
 input UpdateGenreInput {
   genre: GenreInput!
-  id: ID!
 }
 
 input UploadImagePictureInput {

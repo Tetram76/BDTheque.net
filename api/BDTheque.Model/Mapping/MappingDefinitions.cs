@@ -2,6 +2,7 @@ namespace BDTheque.Model.Mapping;
 
 using System.Linq.Expressions;
 using System.Reflection;
+using BDTheque.Model.Inputs;
 using BDTheque.Model.Scalars;
 
 public static class MappingDefinitions
@@ -17,10 +18,11 @@ public static class MappingDefinitions
     public static readonly IEnumerable<Func<PropertyInfo, bool>> MutationInputIgnoredProperties =
         ObjectIgnoredProperties.Union(
             [
-                property => property.Name.Equals("Id", StringComparison.InvariantCultureIgnoreCase),
+                // property => property.Name.Equals("Id", StringComparison.InvariantCultureIgnoreCase),
                 property => property.Name.Equals("CreatedAt", StringComparison.InvariantCultureIgnoreCase),
                 property => property.Name.Equals("UpdatedAt", StringComparison.InvariantCultureIgnoreCase),
-                property => property.Name.Equals("Initiale", StringComparison.InvariantCultureIgnoreCase)
+                property => property.Name.Equals("Initiale", StringComparison.InvariantCultureIgnoreCase),
+                property => property.Name.Equals("Bytes", StringComparison.InvariantCultureIgnoreCase)
             ]
         );
 
@@ -43,7 +45,17 @@ public static class MappingDefinitions
            && type.GetInterfaces()
                .Where(interfaceType => interfaceType.IsGenericType)
                .Select(interfaceType => interfaceType.GetGenericTypeDefinition())
-               .Any(genericTypeDefinition => genericTypeDefinition == typeof(IEnumerable<>));
+               .Any(
+                   genericTypeDefinition =>
+                   {
+                       if (genericTypeDefinition == typeof(IEnumerable<>))
+                           return true;
+                       if (genericTypeDefinition == typeof(Optional<>))
+                           return IsGenericEnumerable(genericTypeDefinition);
+
+                       return false;
+                   }
+               );
 
     public static LambdaExpression GetPropertySelector(PropertyInfo propertyInfo, Type propertyType)
     {
