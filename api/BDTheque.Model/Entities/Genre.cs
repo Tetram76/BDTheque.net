@@ -9,6 +9,7 @@ using BDTheque.Model.Entities.Abstract;
 [ObjectType]
 public class Genre : MandatoryLabelEntity
 {
+    [NotEmptyString]
     public string Nom { get; set; } = null!;
     public string NomRaw { get; set; } = null!;
 

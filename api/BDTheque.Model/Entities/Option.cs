@@ -13,6 +13,7 @@ public class Option : SimpleIdEntity
     [ID]
     public OptionCategory Category { get; set; }
 
+    [NotEmptyString]
     public string Libelle { get; set; } = null!;
 
     public ushort Ordre { get; set; }

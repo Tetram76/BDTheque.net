@@ -1,6 +1,5 @@
 ﻿namespace BDTheque.Model.Entities;
 
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
 
@@ -32,13 +31,15 @@ public class EditionAlbum : UniqueIdEntity
 
     public DateOnly? DateAchat { get; set; }
 
-    [Range(0, double.MaxValue)]
+    [NonNegative<decimal>]
     public decimal? Prix { get; set; }
 
     public bool? Dedicace { get; set; } = false;
 
+    [NotEmptyString]
     public string? NumeroPerso { get; set; }
 
+    [NotEmptyString]
     public string? Notes { get; set; }
 
     public virtual ICollection<CoteEdition> CotesEditions { get; set; } = new List<CoteEdition>();

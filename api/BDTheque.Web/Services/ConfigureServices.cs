@@ -2,6 +2,7 @@ namespace BDTheque.Web.Services;
 
 using BDTheque.Data.Context;
 using BDTheque.GraphQL.Listeners;
+using DataAnnotatedModelValidations;
 using HotChocolate.Data.Filters;
 using HotChocolate.Data.Filters.Expressions;
 using HotChocolate.Execution.Configuration;
@@ -35,7 +36,7 @@ public static class ConfigureServices
             .SetupGraphQLSchema(options);
 
         if (options.SetupPipeline)
-            requestExecutorBuilder.SetupGraphQLPipeline(options);
+            requestExecutorBuilder.SetupGraphQLPipeline();
 
         options.ModifyPipeline?.Invoke(requestExecutorBuilder);
 
@@ -116,6 +117,7 @@ public static class ConfigureServices
                         )
             )
             .AddSorting() // Pour le tri
+            .AddDataAnnotationsValidator()
             .RegisterDbContext<BDThequeContext>()
             .AddBDThequeGraphQLTypes()
             .AddBDThequeGraphQLExtensions()
@@ -133,7 +135,7 @@ public static class ConfigureServices
             .AddTypeConverter<DateTimeOffset, DateTime>(t => t.UtcDateTime)
             .AddTypeConverter<DateTime, DateTimeOffset>(t => t.Kind is DateTimeKind.Unspecified ? DateTime.SpecifyKind(t, DateTimeKind.Utc) : t);
 
-    private static IRequestExecutorBuilder SetupGraphQLPipeline(this IRequestExecutorBuilder builder, Options appOptions)
+    private static IRequestExecutorBuilder SetupGraphQLPipeline(this IRequestExecutorBuilder builder)
         => builder
             .AddHttpRequestInterceptor<CustomRequestInterceptor>()
             .AddDefaultTransactionScopeHandler()

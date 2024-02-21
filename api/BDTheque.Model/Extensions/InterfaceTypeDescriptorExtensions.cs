@@ -20,8 +20,8 @@ public static class InterfaceTypeDescriptorExtensions
             if (property.Name.Equals("id", StringComparison.InvariantCultureIgnoreCase))
                 descriptor.Field(property).ID();
             else
-                foreach ((string keyword, Type fieldType) mapping in MappingDefinitions.TypeMappings)
-                    if (property.Name.Contains(mapping.keyword, StringComparison.InvariantCultureIgnoreCase))
+                foreach ((Func<PropertyInfo, bool> check, Type fieldType) mapping in MappingDefinitions.TypeMappings)
+                    if (mapping.check(property))
                     {
                         descriptor.Field(property).Type(mapping.fieldType);
                         break;

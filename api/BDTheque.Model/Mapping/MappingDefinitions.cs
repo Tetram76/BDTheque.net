@@ -24,12 +24,19 @@ public static class MappingDefinitions
             ]
         );
 
-    public static readonly IEnumerable<(string keyword, Type fieldType)> TypeMappings =
+    public static readonly IEnumerable<(Func<PropertyInfo, bool>, Type fieldType)> TypeMappings =
     [
-        ("prix", typeof(EuroCurrencyType)),
-        ("annee", typeof(YearType)),
-        ("mois", typeof(MonthType))
+        (property => property.GetCustomAttribute<NonNegativeAttribute<decimal>>() != null, typeof(EuroCurrencyType)),
+        (property => property.GetCustomAttribute<NonNegativeAttribute<ushort>>() != null, typeof(UnsignedShortType)),
+        (property => property.GetCustomAttribute<YearAttribute>() != null, typeof(YearType)),
+        (property => property.GetCustomAttribute<MonthAttribute>() != null, typeof(MonthType))
     ];
+
+    public static readonly IEnumerable<(Func<PropertyInfo, bool>, Type fieldType)> MutationTypeMappings =
+        TypeMappings.Union(
+            [
+            ]
+        );
 
     private static bool IsGenericEnumerable(Type type)
         => type != typeof(string)

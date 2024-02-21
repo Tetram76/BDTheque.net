@@ -1,6 +1,5 @@
 namespace BDTheque.Model.Entities;
 
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
 
@@ -10,32 +9,35 @@ using BDTheque.Model.Entities.Abstract;
 [ObjectType]
 public class Album : OptionalLabelEntity
 {
+    [NotEmptyString]
     public string? Titre { get; set; }
     public string? TitreRaw { get; set; }
 
+    [NotEmptyString]
     public string? Sujet { get; set; }
     public string? SujetRaw { get; set; }
 
+    [NotEmptyString]
     public string? Notes { get; set; }
     public string? NotesRaw { get; set; }
 
     public bool? HorsSerie { get; set; } = false;
 
-    [Range(0, Int32.MaxValue)]
+    [NonNegative<ushort>]
     public ushort? Tome { get; set; }
 
     public bool? Integrale { get; set; } = false;
 
-    [Range(0, Int32.MaxValue)]
+    [NonNegative<ushort>]
     public ushort? TomeDebut { get; set; }
 
-    [Range(0, Int32.MaxValue)]
+    [NonNegative<ushort>]
     public ushort? TomeFin { get; set; }
 
-    [Range(1, 12)]
+    [Month]
     public ushort? MoisParution { get; set; }
 
-    [Range(1900, 2999)]
+    [Year]
     public ushort? AnneeParution { get; set; }
 
     public Guid? SerieId { get; set; }

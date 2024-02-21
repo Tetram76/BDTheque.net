@@ -1,6 +1,5 @@
 ﻿namespace BDTheque.Model.Entities;
 
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
 
@@ -13,9 +12,9 @@ public class CoteEdition : UniqueIdEntity
     public Guid EditionAlbumId { get; set; }
     public virtual EditionAlbum EditionAlbum { get; set; } = null!;
 
-    [Range(1900, 2999)]
+    [Year]
     public ushort Annee { get; set; }
 
-    [Range(0, double.MaxValue)]
+    [NonNegative<decimal>]
     public decimal Prix { get; set; }
 }

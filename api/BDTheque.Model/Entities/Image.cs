@@ -9,6 +9,7 @@ using BDTheque.Model.Entities.Abstract;
 [ObjectType]
 public class Image : UniqueIdEntity
 {
+    [NotEmptyString]
     public string? Titre { get; set; }
 
     [GraphQLIgnore]

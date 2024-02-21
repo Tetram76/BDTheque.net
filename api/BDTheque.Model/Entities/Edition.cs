@@ -1,6 +1,5 @@
 ﻿namespace BDTheque.Model.Entities;
 
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
 
@@ -10,9 +9,10 @@ using BDTheque.Model.Entities.Abstract;
 [ObjectType]
 public class Edition : UniqueIdEntity
 {
-    [Range(0, 2999)]
+    [Year]
     public ushort? AnneeEdition { get; set; }
 
+    [NotEmptyString]
     public string? Notes { get; set; }
     public string? NotesRaw { get; set; }
 

@@ -7,6 +7,7 @@
     <HotChocolateVersion>13.8.1</HotChocolateVersion>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="DataAnnotatedModelValidations" Version="5.1.0" />
     <PackageVersion Include="GraphQL" Version="7.7.2" />
     <PackageVersion Include="HotChocolate.AspNetCore" Version="$(HotChocolateVersion)" />
     <PackageVersion Include="HotChocolate.Data.EntityFramework" Version="$(HotChocolateVersion)" />

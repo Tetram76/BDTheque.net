@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DataAnnotatedModelValidations" />
     <PackageReference Include="HotChocolate.AspNetCore"/>
     <PackageReference Include="HotChocolate.Data.EntityFramework"/>
     <PackageReference Include="HotChocolate.Subscriptions.Redis"/>
