@@ -8,6 +8,8 @@ on:
 
 env:
   ASPNETCORE_ENVIRONMENT: CI
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed for Sonar to get PR information, if any
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 jobs:
   check-modifications:
@@ -72,47 +74,67 @@ jobs:
           - ${{ matrix.REDIS_PORT }}:6379
 
     steps:
-    - uses: actions/checkout@v4
+      # Setup environment
+    
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'zulu' # Alternative distribution options are available.
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4.0.0
-      with:
-        dotnet-version: ${{ vars.DOTNET_VERSION }} 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4.0.0
+        with:
+          dotnet-version: ${{ vars.DOTNET_VERSION }} 
+      - name: Install EF
+        run: |
+          dotnet tool install --global dotnet-ef
 
-    - name: Install EF
-      run: dotnet tool install --global dotnet-ef
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Install SonarCloud scanner
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
 
-    - name: Restore dependencies
-      run: dotnet restore ${{ matrix.solution-path }}${{ matrix.solution-file }}
+      # Setup project
 
-    - name: Setup database
-      run: |
-        mkdir  ${{ matrix.solution-path }}Settings
-        echo "{\"ConnectionStrings\": { \"BDThequeDatabase\": \"${{ env.CI_CONNECTION_STRING }}\", \"RedisEndpoint\": \"${{ env.CI_REDIS_URL }}\"} }" > ${{ matrix.solution-path }}BDTheque.Web/Settings/database.${{ env.ASPNETCORE_ENVIRONMENT }}.json
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          
+      - name: Restore dependencies
+        run: dotnet restore ${{ matrix.solution-path }}${{ matrix.solution-file }}
+      - name: Setup database
+        run: |
+          mkdir  ${{ matrix.solution-path }}Settings
+          echo "{\"ConnectionStrings\": { \"BDThequeDatabase\": \"${{ env.CI_CONNECTION_STRING }}\", \"RedisEndpoint\": \"${{ env.CI_REDIS_URL }}\"} }" > ${{ matrix.solution-path }}BDTheque.Web/Settings/database.${{ env.ASPNETCORE_ENVIRONMENT }}.json
 
-    - name: Build
-      run: dotnet build ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-restore
+      # Run & Analyse
 
-    - name: Mount database
-      run: dotnet ef database update --project ${{ matrix.solution-path }}BDTheque.Data/BDTheque.Data.csproj --startup-project ${{ matrix.solution-path }}BDTheque.Web/BDTheque.Web.csproj --context BDTheque.Data.Context.BDThequeContext --no-build
-
-    - name: Run tests
-      run: |
-        dotnet test ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-build --verbosity normal --collect:"XPlat Code Coverage;IncludeTestAssembly=false;SkipAutoProps=true" --results-directory ${{ matrix.solution-path }}TestResults
-        COVERAGE_FILE=$(find ${{ matrix.solution-path }}TestResults -name 'coverage.cobertura.xml')
-        if [ ! -z "$COVERAGE_FILE" ]; then
-          mv "$COVERAGE_FILE" ${{ matrix.solution-path }}TestResults/coverage.cobertura.xml
-        else
-          echo "Fichier de couverture non trouvé."
-        fi
-
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4.0.1
-      with:
-        fail_ci_if_error: true
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: coverage.cobertura.xml
-        directory: ${{ matrix.solution-path }}TestResults
+      - name: Start sonarCloud scanner
+        run: |
+          dotnet sonarscanner begin \
+            /k:"Tetram76_BDTheque.net" /o:"tetram76" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.dotnet.excludeTestProjects=true \
+            /d:sonar.cs.opencover.reportsPaths="${{ matrix.solution-path }}TestResults/**/coverage.opencover.xml"
+      - name: Build
+        run: |
+          dotnet build ${{ matrix.solution-path }}${{ matrix.solution-file }} --no-restore --no-incremental
+      - name: Mount database
+        run: |
+          dotnet ef database update --project ${{ matrix.solution-path }}BDTheque.Data/BDTheque.Data.csproj --startup-project ${{ matrix.solution-path }}BDTheque.Web/BDTheque.Web.csproj --context BDTheque.Data.Context.BDThequeContext --no-build
+      - name: Run tests
+        run: |
+          dotnet test ${{ matrix.solution-path }}${{ matrix.solution-file }} \
+            --no-build --verbosity normal \
+            --collect:"XPlat Code Coverage;Format=opencover;SkipAutoProps=true" \
+            --results-directory ${{ matrix.solution-path }}TestResults
+      - name: Stop sonarCloud scanner & Publish
+        run: |
+          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
     
   frontend-tests:
     needs: check-modifications
