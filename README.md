@@ -1,3 +1,3 @@
-[![codecov](https://codecov.io/github/Tetram76/BDTheque.net/graph/badge.svg?token=AF1WJDFQHP)](https://codecov.io/github/Tetram76/BDTheque.net)
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Tetram76_BDTheque.net)](https://sonarcloud.io/summary/new_code?id=Tetram76_BDTheque.net)
 
-![](https://codecov.io/github/Tetram76/BDTheque.net/graphs/sunburst.svg?token=AF1WJDFQHP)
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Tetram76_BDTheque.net)
