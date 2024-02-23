@@ -31,8 +31,8 @@ jobs:
             - 'front/**'  
 
   backend-tests:
-    # needs: check-modifications
-    # if: ${{ needs.check-modifications.outputs.api == 'true' }}
+    needs: check-modifications
+    if: ${{ needs.check-modifications.outputs.api == 'true' }}
     
     runs-on: ubuntu-latest
 
