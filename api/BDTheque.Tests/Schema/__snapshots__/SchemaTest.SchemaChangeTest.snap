@@ -1,4 +1,4 @@
-schema {
+﻿schema {
   query: Query
   mutation: Mutation
   subscription: Subscription
@@ -1081,15 +1081,6 @@ input AuteurSortInput {
 input BooleanOperationFilterInput {
   eq: Boolean
   neq: Boolean
-}
-
-input CharOperationFilterInput {
-  and: [CharOperationFilterInput!]
-  or: [CharOperationFilterInput!]
-  eq: String
-  neq: String
-  in: String
-  nin: String
 }
 
 input CollectionFilterInput {
