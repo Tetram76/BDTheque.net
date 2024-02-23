@@ -3,7 +3,7 @@ namespace BDTheque.GraphQL.DataLoaders;
 using BDTheque.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-public class GenreLoaders
+public static class GenreLoaders
 {
     [DataLoader]
     internal static async Task<Genre?> GetGenreByIdAsync([ID] Guid id, BDThequeContext context, CancellationToken cancellationToken)

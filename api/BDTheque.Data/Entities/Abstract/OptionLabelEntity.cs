@@ -2,6 +2,7 @@ namespace BDTheque.Data.Entities;
 
 using System.Linq.Expressions;
 using BDTheque.Data.Extensions;
+using BDTheque.Extensions;
 using BDTheque.Model.Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

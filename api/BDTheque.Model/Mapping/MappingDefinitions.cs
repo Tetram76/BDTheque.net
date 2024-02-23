@@ -2,6 +2,7 @@ namespace BDTheque.Model.Mapping;
 
 using System.Linq.Expressions;
 using System.Reflection;
+using BDTheque.Extensions;
 using BDTheque.Model.Inputs;
 using BDTheque.Model.Scalars;
 
@@ -10,8 +11,8 @@ public static class MappingDefinitions
     public static readonly IEnumerable<Func<PropertyInfo, bool>> ObjectIgnoredProperties =
     [
         property => property.Name.EndsWith("Char", StringComparison.InvariantCulture),
-        property => property.DeclaringType!.GetProperties().Any(p => property.Name == p.Name + "Raw"),
-        property => property.DeclaringType!.GetProperties().Any(p => property.Name == p.Name + "Id"),
+        property => property.DeclaringType!.GetProperties().Exists(p => property.Name == p.Name + "Raw"),
+        property => property.DeclaringType!.GetProperties().Exists(p => property.Name == p.Name + "Id"),
         property => !property.Name.Equals("Associations", StringComparison.InvariantCultureIgnoreCase) && IsGenericEnumerable(property.PropertyType)
     ];
 
@@ -26,7 +27,7 @@ public static class MappingDefinitions
             ]
         );
 
-    public static readonly IEnumerable<(Func<PropertyInfo, bool>, Type fieldType)> TypeMappings =
+    public static readonly IEnumerable<(Func<PropertyInfo, bool> check, Type fieldType)> TypeMappings =
     [
         (property => property.GetCustomAttribute<NonNegativeAttribute<decimal>>() != null, typeof(EuroCurrencyType)),
         (property => property.GetCustomAttribute<NonNegativeAttribute<ushort>>() != null, typeof(UnsignedShortType)),
@@ -34,7 +35,7 @@ public static class MappingDefinitions
         (property => property.GetCustomAttribute<MonthAttribute>() != null, typeof(MonthType))
     ];
 
-    public static readonly IEnumerable<(Func<PropertyInfo, bool>, Type fieldType)> MutationTypeMappings =
+    public static readonly IEnumerable<(Func<PropertyInfo, bool> check, Type fieldType)> MutationTypeMappings =
         TypeMappings.Union(
             [
             ]
@@ -61,8 +62,8 @@ public static class MappingDefinitions
     {
         ParameterExpression parameter = Expression.Parameter(propertyInfo.ReflectedType!, "o");
         Expression propertyAccess = Expression.MakeMemberAccess(parameter, propertyInfo);
-        // if (propertyType != propertyInfo.PropertyType)
-        // propertyAccess = Expression.Convert(propertyAccess, propertyType);
+        if (propertyType != propertyInfo.PropertyType)
+            propertyAccess = Expression.Convert(propertyAccess, propertyType); // /!\ not EF compliant
         Type lambdaExpressionType = typeof(Func<,>).MakeGenericType(propertyInfo.ReflectedType!, propertyType);
         LambdaExpression lambdaExpression = Expression.Lambda(lambdaExpressionType, propertyAccess, parameter);
         return lambdaExpression;
@@ -75,7 +76,7 @@ public static class MappingDefinitions
         Type propertyType = propertyInfo.PropertyType;
         MethodInfo? fieldMethod = descriptor.GetType()
             .GetMethods()
-            .FirstOrDefault(
+            .Find(
                 m => m is { Name: "Field", IsGenericMethod: true } &&
                      m.GetParameters().Length == 1 &&
                      m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>)
@@ -90,7 +91,7 @@ public static class MappingDefinitions
             propertyType = typeof(object);
             fieldMethod = descriptor.GetType()
                 .GetMethods()
-                .FirstOrDefault(
+                .Find(
                     m => m is { Name: "Field", IsGenericMethod: false } &&
                          m.GetParameters().Length == 1 &&
                          m.GetParameters()[0].ParameterType.IsGenericType &&
@@ -117,7 +118,7 @@ public static class MappingDefinitions
     {
         MethodInfo? fieldMethod = descriptor.GetType()
             .GetMethods()
-            .FirstOrDefault(
+            .Find(
                 m => m is { Name: "Field", IsGenericMethod: false } &&
                      m.GetParameters().Length == 1 &&
                      m.GetParameters()[0].ParameterType == typeof(string)

@@ -3,7 +3,7 @@ namespace BDTheque.GraphQL.DataLoaders;
 using BDTheque.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-public class UniversLoaders
+public static class UniversLoaders
 {
     [DataLoader]
     internal static async Task<Univers?> GetUniversByIdAsync([ID] Guid id, BDThequeContext context, CancellationToken cancellationToken)

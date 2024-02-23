@@ -3,7 +3,7 @@ namespace BDTheque.GraphQL.DataLoaders;
 using BDTheque.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-public class SerieLoaders
+public static class SerieLoaders
 {
     [DataLoader]
     internal static async Task<Serie?> GetSerieByIdAsync([ID] Guid id, BDThequeContext context, CancellationToken cancellationToken)

@@ -3,7 +3,7 @@ namespace BDTheque.GraphQL.DataLoaders;
 using BDTheque.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-public class AlbumLoaders
+public static class AlbumLoaders
 {
     [DataLoader]
     internal static async Task<Album?> GetAlbumByIdAsync([ID] Guid id, BDThequeContext context, CancellationToken cancellationToken)

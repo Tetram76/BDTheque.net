@@ -18,6 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BDTheque.Analyzers\BDTheque.Analyzers.csproj" />
+    <ProjectReference Include="..\BDTheque.Extensions\BDTheque.Extensions.csproj" />
     <ProjectReference Include="..\BDTheque.Model\BDTheque.Model.csproj"/>
   </ItemGroup>
 

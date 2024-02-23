@@ -2,6 +2,7 @@ namespace BDTheque.GraphQL.Handlers;
 
 using System.Linq.Expressions;
 using System.Reflection;
+using BDTheque.Extensions;
 using BDTheque.GraphQL.Helpers;
 using HotChocolate.Data.Filters;
 using HotChocolate.Data.Filters.Expressions;
@@ -25,7 +26,7 @@ public class QueryableStringNotContainsHandler : QueryableStringOperationHandler
 
         if (property is MemberExpression memberExpression)
         {
-            PropertyInfo? rawProperty = memberExpression.Member.ReflectedType?.GetProperties().FirstOrDefault(p => p.Name == memberExpression.Member.Name + "Raw");
+            PropertyInfo? rawProperty = memberExpression.Member.ReflectedType?.GetProperties().Find(p => p.Name == memberExpression.Member.Name + "Raw");
             if (rawProperty is not null)
                 property = Expression.Property(memberExpression.Expression, rawProperty);
         }
