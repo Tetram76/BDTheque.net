@@ -3,7 +3,7 @@ namespace BDTheque.GraphQL.DataLoaders;
 using BDTheque.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-public class CollectionLoaders
+public static class CollectionLoaders
 {
     [DataLoader]
     internal static async Task<Collection?> GetCollectionByIdAsync([ID] Guid id, BDThequeContext context, CancellationToken cancellationToken)

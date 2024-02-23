@@ -18,13 +18,8 @@ public static class MutationInputTypeDescriptorExtensions
 
             if (property.Name.Equals("id", StringComparison.InvariantCultureIgnoreCase))
                 descriptor.Field(property).ID();
-            else
-                foreach ((Func<PropertyInfo, bool> check, Type fieldType) mapping in MappingDefinitions.MutationTypeMappings)
-                    if (mapping.check(property))
-                    {
-                        descriptor.Field(property).Type(mapping.fieldType);
-                        break;
-                    }
+            else if (MappingDefinitions.MutationTypeMappings.FirstOrDefault(mapping => mapping.check(property)).fieldType is { } fieldType)
+                descriptor.Field(property).Type(fieldType);
         }
 
         return descriptor;
@@ -43,13 +38,8 @@ public static class MutationInputTypeDescriptorExtensions
 
             if (property.Name.Equals("id", StringComparison.InvariantCultureIgnoreCase))
                 descriptor.Field(property).ID();
-            else
-                foreach ((Func<PropertyInfo, bool> check, Type fieldType) mapping in MappingDefinitions.MutationTypeMappings)
-                    if (mapping.check(property))
-                    {
-                        descriptor.Field(property).Type(mapping.fieldType);
-                        break;
-                    }
+            else if (MappingDefinitions.MutationTypeMappings.FirstOrDefault(mapping => mapping.check(property)).fieldType is { } fieldType)
+                descriptor.Field(property).Type(fieldType);
         }
 
         return descriptor;

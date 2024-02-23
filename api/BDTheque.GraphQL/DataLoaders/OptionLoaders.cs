@@ -4,7 +4,7 @@ using BDTheque.Data.Context;
 using BDTheque.Model.Enums;
 using Microsoft.EntityFrameworkCore;
 
-public class OptionLoaders
+public static class OptionLoaders
 {
     [DataLoader]
     internal static async Task<IReadOnlyList<Option>> GetOptionByCategoryAsync(OptionCategory category, BDThequeContext context, CancellationToken cancellationToken)

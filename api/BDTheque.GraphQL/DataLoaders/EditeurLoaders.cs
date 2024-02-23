@@ -3,7 +3,7 @@ namespace BDTheque.GraphQL.DataLoaders;
 using BDTheque.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-public class EditeurLoaders
+public static class EditeurLoaders
 {
     [DataLoader]
     internal static async Task<Editeur?> GetEditeurByIdAsync([ID] Guid id, BDThequeContext context, CancellationToken cancellationToken)
