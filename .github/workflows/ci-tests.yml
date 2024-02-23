@@ -118,6 +118,7 @@ jobs:
       - name: Start sonarCloud scanner
         run: |
           dotnet sonarscanner begin \
+            /s:"./SonarQube.Analysis.xml"
             /k:"Tetram76_BDTheque.net" /o:"tetram76" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.cs.opencover.reportsPaths="${{ matrix.solution-path }}TestResults/**/coverage.opencover.xml"
       - name: Build
