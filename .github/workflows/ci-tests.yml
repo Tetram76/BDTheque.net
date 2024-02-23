@@ -108,7 +108,7 @@ jobs:
           
       - name: Restore dependencies
         run: dotnet restore ${{ matrix.solution-path }}${{ matrix.solution-file }}
-      - name: Setup database
+      - name: Setup database connection string
         run: |
           mkdir  ${{ matrix.solution-path }}Settings
           echo "{\"ConnectionStrings\": { \"BDThequeDatabase\": \"${{ env.CI_CONNECTION_STRING }}\", \"RedisEndpoint\": \"${{ env.CI_REDIS_URL }}\"} }" > ${{ matrix.solution-path }}BDTheque.Web/Settings/database.${{ env.ASPNETCORE_ENVIRONMENT }}.json
@@ -118,7 +118,8 @@ jobs:
       - name: Start sonarCloud scanner
         run: |
           dotnet sonarscanner begin \
-            /k:"Tetram76_BDTheque.net" /o:"tetram76" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.dotnet.excludeTestProjects=true \
+            /s:"${PWD}/${{ matrix.solution-path }}SonarQube.Analysis.xml" \
+            /k:"Tetram76_BDTheque.net" /o:"tetram76" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.cs.opencover.reportsPaths="${{ matrix.solution-path }}TestResults/**/coverage.opencover.xml"
       - name: Build
         run: |
