@@ -9,19 +9,15 @@ interface Error {
 }
 
 interface IAssociable {
-  associations: [String!]!
+  associations: [NonEmptyString!]
 }
 
 interface IMandatoryLabel {
-  initiale: String!
+  initiale: Char!
 }
 
 interface IOptionalLabel {
-  initiale: String
-}
-
-interface ISimpleId {
-  id: ID!
+  initiale: Char
 }
 
 interface IUniqueId {
@@ -35,21 +31,21 @@ interface IVersioning {
 
 type Album implements IVersioning & IUniqueId & IAssociable & IOptionalLabel {
   anneeParution: Year
-  associations: [String!]!
+  associations: [NonEmptyString!]
   auteurs("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AuteurSortInput!] where: AuteurFilterInput): AuteursConnection
   createdAt: DateTime!
   editions("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [EditionAlbumSortInput!] where: EditionAlbumFilterInput): EditionsConnection
   genres("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [GenreSortInput!] where: GenreFilterInput): GenresConnection
   horsSerie: Boolean
   id: ID!
-  initiale: String
+  initiale: Char
   integrale: Boolean
   moisParution: Month
   notation: Option
-  notes: String
+  notes: NonEmptyString
   serie: Serie
-  sujet: String
-  titre: String
+  sujet: NonEmptyString
+  titre: NonEmptyString
   tome: UnsignedShort
   tomeDebut: UnsignedShort
   tomeFin: UnsignedShort
@@ -149,12 +145,12 @@ type AuteursEdge {
 
 type Collection implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [EditionAlbumSortInput!] where: EditionAlbumFilterInput): AlbumsConnection
-  associations: [String!]!
+  associations: [NonEmptyString!]
   createdAt: DateTime!
   editeur: Editeur!
   id: ID!
-  initiale: String!
-  nom: String!
+  initiale: Char!
+  nom: NonEmptyString!
   series("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [SerieSortInput!] where: SerieFilterInput): SeriesConnection
   updatedAt: DateTime!
 }
@@ -228,9 +224,39 @@ type CotesEdge {
   node: Cote!
 }
 
+type CreateAlbumPayload {
+  album: Album
+  errors: [CreateAlbumError!]
+}
+
+type CreateCollectionPayload {
+  collection: Collection
+  errors: [CreateCollectionError!]
+}
+
+type CreateEditeurPayload {
+  editeur: Editeur
+  errors: [CreateEditeurError!]
+}
+
 type CreateGenrePayload {
   errors: [CreateGenreError!]
   genre: Genre
+}
+
+type CreatePersonnePayload {
+  errors: [CreatePersonneError!]
+  personne: Personne
+}
+
+type CreateSeriePayload {
+  errors: [CreateSerieError!]
+  serie: Serie
+}
+
+type CreateUniversPayload {
+  errors: [CreateUniversError!]
+  univers: Univers
 }
 
 type DeleteAlbumPayload {
@@ -280,13 +306,13 @@ type DeleteUniversPayload {
 
 type Editeur implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumsConnection
-  associations: [String!]!
+  associations: [NonEmptyString!]
   collections("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [CollectionSortInput!] where: CollectionFilterInput): CollectionsConnection
   createdAt: DateTime!
   editions("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [EditionAlbumSortInput!] where: EditionAlbumFilterInput): EditionsConnection
   id: ID!
-  initiale: String!
-  nom: String!
+  initiale: Char!
+  nom: NonEmptyString!
   series("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [SerieSortInput!] where: SerieFilterInput): SeriesConnection
   siteWeb: URL
   updatedAt: DateTime!
@@ -321,7 +347,7 @@ type Edition implements IVersioning & IUniqueId {
   id: ID!
   isbn: Isbn
   nombreDePages: UnsignedShort
-  notes: String
+  notes: NonEmptyString
   orientation: Option
   reliure: Option
   sensLecture: Option
@@ -344,8 +370,8 @@ type EditionAlbum implements IVersioning & IUniqueId {
   gratuit: Boolean
   id: ID!
   images("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [ImageSortInput!] where: ImageFilterInput): ImagesConnection
-  notes: String
-  numeroPerso: String
+  notes: NonEmptyString
+  numeroPerso: NonEmptyString
   occasion: Boolean
   offert: Boolean
   prix: EuroCurrency
@@ -495,11 +521,11 @@ type EditionsEdge {
 
 type Genre implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumsConnection
-  associations: [String!]!
+  associations: [NonEmptyString!]
   createdAt: DateTime!
   id: ID!
-  initiale: String!
-  nom: String!
+  initiale: Char!
+  nom: NonEmptyString!
   series("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [SerieSortInput!] where: SerieFilterInput): SeriesConnection
   updatedAt: DateTime!
 }
@@ -566,7 +592,7 @@ type Image implements IVersioning & IUniqueId {
   edition: EditionAlbum!
   id: ID!
   ordre: UnsignedShort!
-  titre: String
+  titre: NonEmptyString
   type: Option!
   updatedAt: DateTime!
   url: URL
@@ -593,7 +619,13 @@ type ImagesEdge {
 }
 
 type Mutation {
+  createAlbum(input: CreateAlbumInput!): CreateAlbumPayload!
+  createCollection(input: CreateCollectionInput!): CreateCollectionPayload!
+  createEditeur(input: CreateEditeurInput!): CreateEditeurPayload!
   createGenre(input: CreateGenreInput!): CreateGenrePayload!
+  createPersonne(input: CreatePersonneInput!): CreatePersonnePayload!
+  createSerie(input: CreateSerieInput!): CreateSeriePayload!
+  createUnivers(input: CreateUniversInput!): CreateUniversPayload!
   deleteAlbum(input: DeleteAlbumInput!): DeleteAlbumPayload!
   deleteCollection(input: DeleteCollectionInput!): DeleteCollectionPayload!
   deleteEditeur(input: DeleteEditeurInput!): DeleteEditeurPayload!
@@ -603,7 +635,13 @@ type Mutation {
   deletePersonne(input: DeletePersonneInput!): DeletePersonnePayload!
   deleteSerie(input: DeleteSerieInput!): DeleteSeriePayload!
   deleteUnivers(input: DeleteUniversInput!): DeleteUniversPayload!
+  updateAlbum(input: UpdateAlbumInput!): UpdateAlbumPayload!
+  updateCollection(input: UpdateCollectionInput!): UpdateCollectionPayload!
+  updateEditeur(input: UpdateEditeurInput!): UpdateEditeurPayload!
   updateGenre(input: UpdateGenreInput!): UpdateGenrePayload!
+  updatePersonne(input: UpdatePersonneInput!): UpdatePersonnePayload!
+  updateSerie(input: UpdateSerieInput!): UpdateSeriePayload!
+  updateUnivers(input: UpdateUniversInput!): UpdateUniversPayload!
   uploadImagePicture(input: UploadImagePictureInput!): UploadImagePicturePayload!
 }
 
@@ -611,9 +649,9 @@ type NotFoundIdError implements Error {
   message: String!
 }
 
-type Option implements IVersioning & ISimpleId {
+type Option implements IVersioning {
   albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumsConnection
-  category: ID!
+  category: OptionCategory!
   createdAt: DateTime!
   defaut: Boolean!
   editionFormatEditions("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [EditionSortInput!] where: EditionFilterInput): EditionFormatEditionsConnection
@@ -624,7 +662,7 @@ type Option implements IVersioning & ISimpleId {
   editionTypeEditions("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [EditionSortInput!] where: EditionFilterInput): EditionTypeEditionsConnection
   id: ID!
   images("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [ImageSortInput!] where: ImageFilterInput): ImagesConnection
-  libelle: String!
+  libelle: NonEmptyString!
   ordre: UnsignedShort!
   series("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [SerieSortInput!] where: SerieFilterInput): SeriesConnection
   updatedAt: DateTime!
@@ -684,12 +722,12 @@ type ParentsEdge {
 
 type Personne implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumsConnection
-  associations: [String!]!
-  biographie: String
+  associations: [NonEmptyString!]
+  biographie: NonEmptyString
   createdAt: DateTime!
   id: ID!
-  initiale: String!
-  nom: String!
+  initiale: Char!
+  nom: NonEmptyString!
   series("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [SerieSortInput!] where: SerieFilterInput): SeriesConnection
   siteWeb: URL
   updatedAt: DateTime!
@@ -718,33 +756,33 @@ type PersonneListEdge {
 type Query {
   album(where: AlbumFilterInput): Album
   albumById(id: ID!): Album!
-  albumByTitre(titre: String!): [Album!]!
+  albumByTitre(titre: NonEmptyString!): [Album!]!
   albumList("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumListConnection
   collection(where: CollectionFilterInput): Collection
   collectionById(id: ID!): Collection!
-  collectionByNom(nom: String!): [Collection!]!
+  collectionByNom(nom: NonEmptyString!): [Collection!]!
   collectionList("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [CollectionSortInput!] where: CollectionFilterInput): CollectionListConnection
   editeur(where: EditeurFilterInput): Editeur
   editeurById(id: ID!): Editeur!
-  editeurByNom(nom: String!): [Editeur!]!
+  editeurByNom(nom: NonEmptyString!): [Editeur!]!
   editeurList("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [EditeurSortInput!] where: EditeurFilterInput): EditeurListConnection
   genre(where: GenreFilterInput): Genre
   genreById(id: ID!): Genre!
-  genreByNom(nom: String!): [Genre!]!
+  genreByNom(nom: NonEmptyString!): [Genre!]!
   genreList("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [GenreSortInput!] where: GenreFilterInput): GenreListConnection
   optionByCategory(category: OptionCategory!): [Option!]!
   options("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [OptionSortInput!] where: OptionFilterInput): OptionsConnection
   personne(where: PersonneFilterInput): Personne
   personneById(id: ID!): Personne!
-  personneByNom(nom: String!): [Personne!]!
+  personneByNom(nom: NonEmptyString!): [Personne!]!
   personneList("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [PersonneSortInput!] where: PersonneFilterInput): PersonneListConnection
   serie(where: SerieFilterInput): Serie
   serieById(id: ID!): Serie!
-  serieByTitre(titre: String!): [Serie!]!
+  serieByTitre(titre: NonEmptyString!): [Serie!]!
   serieList("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [SerieSortInput!] where: SerieFilterInput): SerieListConnection
   univers(where: UniversFilterInput): Univers
   universById(id: ID!): Univers!
-  universByNom(nom: String!): [Univers!]!
+  universByNom(nom: NonEmptyString!): [Univers!]!
   universList("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [UniversSortInput!] where: UniversFilterInput): UniversListConnection
 }
 
@@ -770,7 +808,7 @@ type RacinesEdge {
 
 type Serie implements IVersioning & IUniqueId & IAssociable & IOptionalLabel {
   albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumsConnection
-  associations: [String!]!
+  associations: [NonEmptyString!]
   auteurs("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AuteurSortInput!] where: AuteurFilterInput): AuteursConnection
   collection: Collection
   complete: Boolean
@@ -778,17 +816,17 @@ type Serie implements IVersioning & IUniqueId & IAssociable & IOptionalLabel {
   editeur: Editeur
   genres("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [GenreSortInput!] where: GenreFilterInput): GenresConnection
   id: ID!
-  initiale: String
+  initiale: Char
   modeleEdition: Edition!
   nbAlbums: UnsignedShort
   notation: Option
-  notes: String
+  notes: NonEmptyString
   siteWeb: URL
   suivreManquants: Boolean
   suivreSorties: Boolean
-  sujet: String
+  sujet: NonEmptyString
   terminee: Boolean
-  titre: String
+  titre: NonEmptyString
   univers("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [UniversSortInput!] where: UniversFilterInput): UniversConnection
   updatedAt: DateTime!
 }
@@ -868,13 +906,13 @@ type Subscription {
 
 type Univers implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumsConnection
-  associations: [String!]!
+  associations: [NonEmptyString!]
   branche: [UUID!]
   createdAt: DateTime!
-  description: String
+  description: NonEmptyString
   id: ID!
-  initiale: String!
-  nom: String!
+  initiale: Char!
+  nom: NonEmptyString!
   parent: Univers
   parents("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [UniversSortInput!] where: UniversFilterInput): ParentsConnection
   racine: Univers!
@@ -941,16 +979,58 @@ type UniversSerie implements IVersioning & IUniqueId {
   updatedAt: DateTime!
 }
 
+type UpdateAlbumPayload {
+  album: Album
+  errors: [UpdateAlbumError!]
+}
+
+type UpdateCollectionPayload {
+  collection: Collection
+  errors: [UpdateCollectionError!]
+}
+
+type UpdateEditeurPayload {
+  editeur: Editeur
+  errors: [UpdateEditeurError!]
+}
+
 type UpdateGenrePayload {
   errors: [UpdateGenreError!]
   genre: Genre
+}
+
+type UpdatePersonnePayload {
+  errors: [UpdatePersonneError!]
+  personne: Personne
+}
+
+type UpdateSeriePayload {
+  errors: [UpdateSerieError!]
+  serie: Serie
+}
+
+type UpdateUniversPayload {
+  errors: [UpdateUniversError!]
+  univers: Univers
 }
 
 type UploadImagePicturePayload {
   image: Image
 }
 
+union CreateAlbumError = AlreadyExistsError
+
+union CreateCollectionError = AlreadyExistsError
+
+union CreateEditeurError = AlreadyExistsError
+
 union CreateGenreError = AlreadyExistsError
+
+union CreatePersonneError = AlreadyExistsError
+
+union CreateSerieError = AlreadyExistsError
+
+union CreateUniversError = AlreadyExistsError
 
 union DeleteAlbumError = NotFoundIdError
 
@@ -970,7 +1050,35 @@ union DeleteSerieError = NotFoundIdError
 
 union DeleteUniversError = NotFoundIdError
 
+union UpdateAlbumError = AlreadyExistsError | NotFoundIdError
+
+union UpdateCollectionError = AlreadyExistsError | NotFoundIdError
+
+union UpdateEditeurError = AlreadyExistsError | NotFoundIdError
+
 union UpdateGenreError = AlreadyExistsError | NotFoundIdError
+
+union UpdatePersonneError = AlreadyExistsError | NotFoundIdError
+
+union UpdateSerieError = AlreadyExistsError | NotFoundIdError
+
+union UpdateUniversError = AlreadyExistsError | NotFoundIdError
+
+input AlbumCreateInput {
+  anneeParution: Year
+  associations: [NonEmptyString!]
+  horsSerie: Boolean
+  integrale: Boolean
+  moisParution: Month
+  notation: OptionNestedInput
+  notes: NonEmptyString
+  serie: SerieNestedInput
+  sujet: NonEmptyString
+  titre: NonEmptyString
+  tome: UnsignedShort
+  tomeDebut: UnsignedShort
+  tomeFin: UnsignedShort
+}
 
 input AlbumFilterInput {
   and: [AlbumFilterInput!]
@@ -979,40 +1087,19 @@ input AlbumFilterInput {
   sujet: StringOperationFilterInput
   notes: StringOperationFilterInput
   horsSerie: BooleanOperationFilterInput
-  tome: ComparableUnsignedIntTypeOperationFilterInput
+  tome: ComparableUnsignedShortTypeOperationFilterInput
   integrale: BooleanOperationFilterInput
-  tomeDebut: ComparableUnsignedIntTypeOperationFilterInput
-  tomeFin: ComparableUnsignedIntTypeOperationFilterInput
-  moisParution: ComparableUnsignedIntTypeOperationFilterInput
-  anneeParution: ComparableUnsignedIntTypeOperationFilterInput
+  tomeDebut: ComparableUnsignedShortTypeOperationFilterInput
+  tomeFin: ComparableUnsignedShortTypeOperationFilterInput
+  moisParution: ComparableUnsignedShortTypeOperationFilterInput
+  anneeParution: ComparableUnsignedShortTypeOperationFilterInput
   serie: SerieFilterInput
   notation: OptionFilterInput
-  initiale: StringOperationFilterInput
+  initiale: CharOperationFilterInput
   associations: ListStringOperationFilterInput
-  id: UuidOperationFilterInput
+  id: IdOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
-}
-
-input AlbumInput {
-  anneeParution: Year
-  associations: [String!]!
-  auteursAlbums: [AuteurAlbumInput!]!
-  editionsAlbums: [EditionAlbumInput!]!
-  genresAlbums: [GenreAlbumInput!]!
-  horsSerie: Boolean
-  id: ID!
-  integrale: Boolean
-  moisParution: Month
-  notation: OptionInput
-  notes: String
-  serie: SerieInput
-  sujet: String
-  titre: String
-  tome: UnsignedShort
-  tomeDebut: UnsignedShort
-  tomeFin: UnsignedShort
-  universAlbums: [UniversAlbumInput!]!
 }
 
 input AlbumSortInput {
@@ -1039,10 +1126,21 @@ input AlbumSortInput {
   updatedAt: SortEnumType
 }
 
-input AuteurAlbumInput {
-  album: AlbumInput!
-  auteur: AuteurInput!
+input AlbumUpdateInput {
+  anneeParution: Year
+  associations: [NonEmptyString!]
+  horsSerie: Boolean
   id: ID!
+  integrale: Boolean
+  moisParution: Month
+  notation: OptionNestedInput
+  notes: NonEmptyString
+  serie: SerieNestedInput
+  sujet: NonEmptyString
+  titre: NonEmptyString
+  tome: UnsignedShort
+  tomeDebut: UnsignedShort
+  tomeFin: UnsignedShort
 }
 
 input AuteurFilterInput {
@@ -1050,23 +1148,9 @@ input AuteurFilterInput {
   or: [AuteurFilterInput!]
   personne: PersonneFilterInput
   metier: MetierOperationFilterInput
-  id: UuidOperationFilterInput
+  id: IdOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
-}
-
-input AuteurInput {
-  auteursAlbums: [AuteurAlbumInput!]!
-  auteursSeries: [AuteurSerieInput!]!
-  id: ID!
-  metier: Metier!
-  personne: PersonneInput!
-}
-
-input AuteurSerieInput {
-  auteur: AuteurInput!
-  id: ID!
-  serie: SerieInput!
 }
 
 input AuteurSortInput {
@@ -1083,25 +1167,35 @@ input BooleanOperationFilterInput {
   neq: Boolean
 }
 
+input CharOperationFilterInput {
+  and: [CharOperationFilterInput!]
+  or: [CharOperationFilterInput!]
+  eq: Char
+  neq: Char
+  in: [Char]
+  nin: [Char]
+}
+
+input CollectionCreateInput {
+  associations: [NonEmptyString!]
+  editeur: EditeurNestedInput!
+  nom: NonEmptyString!
+}
+
 input CollectionFilterInput {
   and: [CollectionFilterInput!]
   or: [CollectionFilterInput!]
   nom: StringOperationFilterInput
   editeur: EditeurFilterInput
-  initiale: StringOperationFilterInput
+  initiale: CharOperationFilterInput
   associations: ListStringOperationFilterInput
-  id: UuidOperationFilterInput
+  id: IdOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
 }
 
-input CollectionInput {
-  associations: [String!]!
-  editeur: EditeurInput!
-  editionsAlbums: [EditionAlbumInput!]!
+input CollectionNestedInput {
   id: ID!
-  nom: String!
-  series: [SerieInput!]!
 }
 
 input CollectionSortInput {
@@ -1115,52 +1209,52 @@ input CollectionSortInput {
   updatedAt: SortEnumType
 }
 
-input ComparableNonNullTypeOfUnsignedIntTypeOperationFilterInput {
-  eq: UnsignedInt
-  neq: UnsignedInt
-  in: [UnsignedInt!]
-  nin: [UnsignedInt!]
-  gt: UnsignedInt
-  ngt: UnsignedInt
-  gte: UnsignedInt
-  ngte: UnsignedInt
-  lt: UnsignedInt
-  nlt: UnsignedInt
-  lte: UnsignedInt
-  nlte: UnsignedInt
+input CollectionUpdateInput {
+  associations: [NonEmptyString!]
+  editeur: EditeurNestedInput!
+  id: ID!
+  nom: NonEmptyString!
 }
 
-input ComparableUnsignedIntTypeOperationFilterInput {
-  eq: UnsignedInt
-  neq: UnsignedInt
-  in: [UnsignedInt]
-  nin: [UnsignedInt]
-  gt: UnsignedInt
-  ngt: UnsignedInt
-  gte: UnsignedInt
-  ngte: UnsignedInt
-  lt: UnsignedInt
-  nlt: UnsignedInt
-  lte: UnsignedInt
-  nlte: UnsignedInt
+input ComparableNonNullTypeOfUnsignedShortTypeOperationFilterInput {
+  eq: UnsignedShort
+  neq: UnsignedShort
+  in: [UnsignedShort!]
+  nin: [UnsignedShort!]
+  gt: UnsignedShort
+  ngt: UnsignedShort
+  gte: UnsignedShort
+  ngte: UnsignedShort
+  lt: UnsignedShort
+  nlt: UnsignedShort
+  lte: UnsignedShort
+  nlte: UnsignedShort
+}
+
+input ComparableUnsignedShortTypeOperationFilterInput {
+  eq: UnsignedShort
+  neq: UnsignedShort
+  in: [UnsignedShort]
+  nin: [UnsignedShort]
+  gt: UnsignedShort
+  ngt: UnsignedShort
+  gte: UnsignedShort
+  ngte: UnsignedShort
+  lt: UnsignedShort
+  nlt: UnsignedShort
+  lte: UnsignedShort
+  nlte: UnsignedShort
 }
 
 input CoteFilterInput {
   and: [CoteFilterInput!]
   or: [CoteFilterInput!]
   editionAlbum: EditionAlbumFilterInput
-  annee: ComparableNonNullTypeOfUnsignedIntTypeOperationFilterInput
+  annee: ComparableNonNullTypeOfUnsignedShortTypeOperationFilterInput
   prix: DecimalOperationFilterInput
-  id: UuidOperationFilterInput
+  id: IdOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
-}
-
-input CoteInput {
-  annee: Year
-  editionAlbum: EditionAlbumInput!
-  id: ID!
-  prix: EuroCurrency
 }
 
 input CoteSortInput {
@@ -1173,8 +1267,32 @@ input CoteSortInput {
   updatedAt: SortEnumType
 }
 
+input CreateAlbumInput {
+  album: AlbumCreateInput!
+}
+
+input CreateCollectionInput {
+  collection: CollectionCreateInput!
+}
+
+input CreateEditeurInput {
+  editeur: EditeurCreateInput!
+}
+
 input CreateGenreInput {
-  genre: GenreInput!
+  genre: GenreCreateInput!
+}
+
+input CreatePersonneInput {
+  personne: PersonneCreateInput!
+}
+
+input CreateSerieInput {
+  serie: SerieCreateInput!
+}
+
+input CreateUniversInput {
+  univers: UniversCreateInput!
 }
 
 input DateOperationFilterInput {
@@ -1258,26 +1376,26 @@ input DeleteUniversInput {
   id: ID!
 }
 
+input EditeurCreateInput {
+  associations: [NonEmptyString!]
+  nom: NonEmptyString!
+  siteWeb: URL
+}
+
 input EditeurFilterInput {
   and: [EditeurFilterInput!]
   or: [EditeurFilterInput!]
   nom: StringOperationFilterInput
   siteWeb: UrlOperationFilterInput
-  initiale: StringOperationFilterInput
+  initiale: CharOperationFilterInput
   associations: ListStringOperationFilterInput
-  id: UuidOperationFilterInput
+  id: IdOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
 }
 
-input EditeurInput {
-  associations: [String!]!
-  collections: [CollectionInput!]!
-  editionsAlbums: [EditionAlbumInput!]!
+input EditeurNestedInput {
   id: ID!
-  nom: String!
-  series: [SerieInput!]!
-  siteWeb: URL
 }
 
 input EditeurSortInput {
@@ -1288,6 +1406,13 @@ input EditeurSortInput {
   id: SortEnumType
   createdAt: SortEnumType
   updatedAt: SortEnumType
+}
+
+input EditeurUpdateInput {
+  associations: [NonEmptyString!]
+  id: ID!
+  nom: NonEmptyString!
+  siteWeb: URL
 }
 
 input EditionAlbumFilterInput {
@@ -1307,29 +1432,9 @@ input EditionAlbumFilterInput {
   dedicace: BooleanOperationFilterInput
   numeroPerso: StringOperationFilterInput
   notes: StringOperationFilterInput
-  id: UuidOperationFilterInput
+  id: IdOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
-}
-
-input EditionAlbumInput {
-  album: AlbumInput!
-  collection: CollectionInput
-  cotes: [CoteInput!]!
-  dateAchat: Date
-  dedicace: Boolean
-  editeur: EditeurInput!
-  edition: EditionInput!
-  etat: OptionInput
-  gratuit: Boolean
-  id: ID!
-  images: [ImageInput!]!
-  notes: String
-  numeroPerso: String
-  occasion: Boolean
-  offert: Boolean
-  prix: EuroCurrency
-  stock: Boolean!
 }
 
 input EditionAlbumSortInput {
@@ -1360,10 +1465,10 @@ input EditionAlbumSortInput {
 input EditionFilterInput {
   and: [EditionFilterInput!]
   or: [EditionFilterInput!]
-  anneeEdition: ComparableUnsignedIntTypeOperationFilterInput
+  anneeEdition: ComparableUnsignedShortTypeOperationFilterInput
   notes: StringOperationFilterInput
   isbn: StringOperationFilterInput
-  nombreDePages: ComparableUnsignedIntTypeOperationFilterInput
+  nombreDePages: ComparableUnsignedShortTypeOperationFilterInput
   couleur: BooleanOperationFilterInput
   vo: BooleanOperationFilterInput
   reliure: OptionFilterInput
@@ -1372,26 +1477,13 @@ input EditionFilterInput {
   orientation: OptionFilterInput
   sensLecture: OptionFilterInput
   serie: SerieFilterInput
-  id: UuidOperationFilterInput
+  id: IdOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
 }
 
-input EditionInput {
-  anneeEdition: Year
-  couleur: Boolean
-  editionsAlbums: [EditionAlbumInput!]!
-  formatEdition: OptionInput
+input EditionNestedInput {
   id: ID!
-  isbn: Isbn
-  nombreDePages: UnsignedShort
-  notes: String
-  orientation: OptionInput
-  reliure: OptionInput
-  sensLecture: OptionInput
-  serie: SerieInput
-  typeEdition: OptionInput
-  vo: Boolean
 }
 
 input EditionSortInput {
@@ -1418,36 +1510,20 @@ input EditionSortInput {
   updatedAt: SortEnumType
 }
 
-input GenreAlbumInput {
-  album: AlbumInput!
-  fromSerie: Boolean!
-  genre: GenreInput!
-  id: ID!
+input GenreCreateInput {
+  associations: [NonEmptyString!]
+  nom: NonEmptyString!
 }
 
 input GenreFilterInput {
   and: [GenreFilterInput!]
   or: [GenreFilterInput!]
   nom: StringOperationFilterInput
-  initiale: StringOperationFilterInput
+  initiale: CharOperationFilterInput
   associations: ListStringOperationFilterInput
-  id: UuidOperationFilterInput
+  id: IdOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
-}
-
-input GenreInput {
-  associations: [String!]!
-  genresAlbums: [GenreAlbumInput!]!
-  genresSeries: [GenreSerieInput!]!
-  id: ID!
-  nom: String!
-}
-
-input GenreSerieInput {
-  genre: GenreInput!
-  id: ID!
-  serie: SerieInput!
 }
 
 input GenreSortInput {
@@ -1457,6 +1533,12 @@ input GenreSortInput {
   id: SortEnumType
   createdAt: SortEnumType
   updatedAt: SortEnumType
+}
+
+input GenreUpdateInput {
+  associations: [NonEmptyString!]
+  id: ID!
+  nom: NonEmptyString!
 }
 
 input IdOperationFilterInput {
@@ -1470,20 +1552,12 @@ input ImageFilterInput {
   and: [ImageFilterInput!]
   or: [ImageFilterInput!]
   titre: StringOperationFilterInput
-  ordre: ComparableNonNullTypeOfUnsignedIntTypeOperationFilterInput
+  ordre: ComparableNonNullTypeOfUnsignedShortTypeOperationFilterInput
   type: OptionFilterInput
   edition: EditionAlbumFilterInput
-  id: UuidOperationFilterInput
+  id: IdOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
-}
-
-input ImageInput {
-  edition: EditionAlbumInput!
-  id: ID!
-  ordre: UnsignedShort!
-  titre: String
-  type: OptionInput!
 }
 
 input ImageSortInput {
@@ -1512,43 +1586,44 @@ input MetierOperationFilterInput {
   nin: [Metier!]
 }
 
+input OptionCategoryOperationFilterInput {
+  eq: OptionCategory
+  neq: OptionCategory
+  in: [OptionCategory!]
+  nin: [OptionCategory!]
+}
+
 input OptionFilterInput {
   and: [OptionFilterInput!]
   or: [OptionFilterInput!]
-  category: IdOperationFilterInput
+  id: IdOperationFilterInput
+  category: OptionCategoryOperationFilterInput
   libelle: StringOperationFilterInput
-  ordre: ComparableNonNullTypeOfUnsignedIntTypeOperationFilterInput
+  ordre: ComparableNonNullTypeOfUnsignedShortTypeOperationFilterInput
   defaut: BooleanOperationFilterInput
-  id: ComparableNonNullTypeOfUnsignedIntTypeOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
 }
 
-input OptionInput {
-  albums: [AlbumInput!]!
-  category: ID!
-  defaut: Boolean!
-  editionFormatEditions: [EditionInput!]!
-  editionOrientations: [EditionInput!]!
-  editionReliures: [EditionInput!]!
-  editionsAlbums: [EditionAlbumInput!]!
-  editionSensLectures: [EditionInput!]!
-  editionTypeEditions: [EditionInput!]!
+input OptionNestedInput {
   id: ID!
-  images: [ImageInput!]!
-  libelle: String!
-  ordre: UnsignedShort!
-  series: [SerieInput!]!
 }
 
 input OptionSortInput {
+  id: SortEnumType
   category: SortEnumType
   libelle: SortEnumType
   ordre: SortEnumType
   defaut: SortEnumType
-  id: SortEnumType
   createdAt: SortEnumType
   updatedAt: SortEnumType
+}
+
+input PersonneCreateInput {
+  associations: [NonEmptyString!]
+  biographie: NonEmptyString
+  nom: NonEmptyString!
+  siteWeb: URL
 }
 
 input PersonneFilterInput {
@@ -1557,20 +1632,11 @@ input PersonneFilterInput {
   nom: StringOperationFilterInput
   biographie: StringOperationFilterInput
   siteWeb: UrlOperationFilterInput
-  initiale: StringOperationFilterInput
+  initiale: CharOperationFilterInput
   associations: ListStringOperationFilterInput
-  id: UuidOperationFilterInput
+  id: IdOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
-}
-
-input PersonneInput {
-  associations: [String!]!
-  auteurs: [AuteurInput!]!
-  biographie: String
-  id: ID!
-  nom: String!
-  siteWeb: URL
 }
 
 input PersonneSortInput {
@@ -1585,6 +1651,31 @@ input PersonneSortInput {
   updatedAt: SortEnumType
 }
 
+input PersonneUpdateInput {
+  associations: [NonEmptyString!]
+  biographie: NonEmptyString
+  id: ID!
+  nom: NonEmptyString!
+  siteWeb: URL
+}
+
+input SerieCreateInput {
+  associations: [NonEmptyString!]
+  collection: CollectionNestedInput
+  complete: Boolean
+  editeur: EditeurNestedInput
+  modeleEdition: EditionNestedInput!
+  nbAlbums: UnsignedShort
+  notation: OptionNestedInput
+  notes: NonEmptyString
+  siteWeb: URL
+  suivreManquants: Boolean
+  suivreSorties: Boolean
+  sujet: NonEmptyString
+  terminee: Boolean
+  titre: NonEmptyString
+}
+
 input SerieFilterInput {
   and: [SerieFilterInput!]
   or: [SerieFilterInput!]
@@ -1595,39 +1686,21 @@ input SerieFilterInput {
   editeur: EditeurFilterInput
   collection: CollectionFilterInput
   modeleEdition: EditionFilterInput
-  nbAlbums: ComparableUnsignedIntTypeOperationFilterInput
+  nbAlbums: ComparableUnsignedShortTypeOperationFilterInput
   terminee: BooleanOperationFilterInput
   complete: BooleanOperationFilterInput
   suivreSorties: BooleanOperationFilterInput
   suivreManquants: BooleanOperationFilterInput
   notation: OptionFilterInput
-  initiale: StringOperationFilterInput
+  initiale: CharOperationFilterInput
   associations: ListStringOperationFilterInput
-  id: UuidOperationFilterInput
+  id: IdOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
 }
 
-input SerieInput {
-  albums: [AlbumInput!]!
-  associations: [String!]!
-  auteursSeries: [AuteurSerieInput!]!
-  collection: CollectionInput
-  complete: Boolean
-  editeur: EditeurInput
-  genresSeries: [GenreSerieInput!]!
+input SerieNestedInput {
   id: ID!
-  modeleEdition: EditionInput!
-  nbAlbums: UnsignedShort
-  notation: OptionInput
-  notes: String
-  siteWeb: URL
-  suivreManquants: Boolean
-  suivreSorties: Boolean
-  sujet: String
-  terminee: Boolean
-  titre: String
-  universSeries: [UniversSerieInput!]!
 }
 
 input SerieSortInput {
@@ -1657,6 +1730,24 @@ input SerieSortInput {
   updatedAt: SortEnumType
 }
 
+input SerieUpdateInput {
+  associations: [NonEmptyString!]
+  collection: CollectionNestedInput
+  complete: Boolean
+  editeur: EditeurNestedInput
+  id: ID!
+  modeleEdition: EditionNestedInput!
+  nbAlbums: UnsignedShort
+  notation: OptionNestedInput
+  notes: NonEmptyString
+  siteWeb: URL
+  suivreManquants: Boolean
+  suivreSorties: Boolean
+  sujet: NonEmptyString
+  terminee: Boolean
+  titre: NonEmptyString
+}
+
 input StringOperationFilterInput {
   and: [StringOperationFilterInput!]
   or: [StringOperationFilterInput!]
@@ -1672,11 +1763,13 @@ input StringOperationFilterInput {
   nendsWith: String
 }
 
-input UniversAlbumInput {
-  album: AlbumInput!
-  fromSerie: Boolean!
-  id: ID!
-  univers: UniversInput!
+input UniversCreateInput {
+  associations: [NonEmptyString!]
+  description: NonEmptyString
+  nom: NonEmptyString!
+  parent: UniversNestedInput
+  racine: UniversNestedInput!
+  siteWeb: URL
 }
 
 input UniversFilterInput {
@@ -1687,32 +1780,15 @@ input UniversFilterInput {
   siteWeb: UrlOperationFilterInput
   racine: UniversFilterInput
   parent: UniversFilterInput
-  initiale: StringOperationFilterInput
+  initiale: CharOperationFilterInput
   associations: ListStringOperationFilterInput
-  id: UuidOperationFilterInput
+  id: IdOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
 }
 
-input UniversInput {
-  associations: [String!]!
-  description: String
+input UniversNestedInput {
   id: ID!
-  nom: String!
-  parent: UniversInput
-  racine: UniversInput!
-  siteWeb: URL
-  universAlbums: [UniversAlbumInput!]!
-  universBranches: [UUID!]
-  universParents: [UniversInput!]!
-  universRacines: [UniversInput!]!
-  universSeries: [UniversSerieInput!]!
-}
-
-input UniversSerieInput {
-  id: ID!
-  serie: SerieInput!
-  univers: UniversInput!
 }
 
 input UniversSortInput {
@@ -1731,8 +1807,42 @@ input UniversSortInput {
   updatedAt: SortEnumType
 }
 
+input UniversUpdateInput {
+  associations: [NonEmptyString!]
+  description: NonEmptyString
+  id: ID!
+  nom: NonEmptyString!
+  parent: UniversNestedInput
+  racine: UniversNestedInput!
+  siteWeb: URL
+}
+
+input UpdateAlbumInput {
+  album: AlbumUpdateInput!
+}
+
+input UpdateCollectionInput {
+  collection: CollectionUpdateInput!
+}
+
+input UpdateEditeurInput {
+  editeur: EditeurUpdateInput!
+}
+
 input UpdateGenreInput {
-  genre: GenreInput!
+  genre: GenreUpdateInput!
+}
+
+input UpdatePersonneInput {
+  personne: PersonneUpdateInput!
+}
+
+input UpdateSerieInput {
+  serie: SerieUpdateInput!
+}
+
+input UpdateUniversInput {
+  univers: UniversUpdateInput!
 }
 
 input UploadImagePictureInput {
@@ -1779,21 +1889,6 @@ input UrlOperationFilterInput {
   nlte: URL
 }
 
-input UuidOperationFilterInput {
-  eq: UUID
-  neq: UUID
-  in: [UUID]
-  nin: [UUID]
-  gt: UUID
-  ngt: UUID
-  gte: UUID
-  ngte: UUID
-  lt: UUID
-  nlt: UUID
-  lte: UUID
-  nlte: UUID
-}
-
 enum Metier {
   SCENARISTE
   DESSINATEUR
@@ -1818,6 +1913,8 @@ enum SortEnumType {
 
 directive @nullBubbling(enable: Boolean! = true) on QUERY | MUTATION | SUBSCRIPTION
 
+scalar Char
+
 "The `Date` scalar represents an ISO-8601 compliant date type."
 scalar Date
 
@@ -1835,12 +1932,12 @@ scalar Isbn
 "Value between 1 and 12"
 scalar Month
 
+"The NonEmptyString scalar type represents non empty textual data, represented as UTF‐8 character sequences with at least one character"
+scalar NonEmptyString
+
 scalar URL @specifiedBy(url: "https:\/\/tools.ietf.org\/html\/rfc3986")
 
 scalar UUID @specifiedBy(url: "https:\/\/tools.ietf.org\/html\/rfc4122")
-
-"The UnsignedInt scalar type represents a unsigned 32-bit numeric non-fractional value greater than or equal to 0."
-scalar UnsignedInt
 
 "The UnsignedShort scalar type represents a unsigned 16-bit numeric non-fractional value greater than or equal to 0."
 scalar UnsignedShort

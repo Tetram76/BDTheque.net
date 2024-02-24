@@ -16,9 +16,7 @@ public static class ObjectTypeDescriptorExtensions
                 continue;
             }
 
-            if (property.Name.Equals("id", StringComparison.InvariantCultureIgnoreCase))
-                descriptor.Field(property).ID();
-            else if (MappingDefinitions.TypeMappings.FirstOrDefault(mapping => mapping.check(property)).fieldType is {} fieldType)
+            if (MappingDefinitions.TypeMappings.FirstOrDefault(mapping => mapping.check(property)).fieldType is { } fieldType)
                 descriptor.Field(property).Type(fieldType);
         }
 

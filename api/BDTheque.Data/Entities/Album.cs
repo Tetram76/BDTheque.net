@@ -17,6 +17,7 @@ public static partial class ModelBuilderExtensions
         SetupUniqueIdPrimaryKey(entity);
 
         entity.HasIndex(e => e.Titre).UseCollation(BDThequeContext.FrenchCollation);
+        entity.HasIndex(e => e.TitreRaw);
 
         entity.SetupOptionalInitiale(e => e.Titre);
         entity.Property(e => e.Notes).UseCollation(BDThequeContext.FrenchCollation);

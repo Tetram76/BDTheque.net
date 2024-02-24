@@ -20,7 +20,9 @@ public static class ImageMutations
         Image? image = await dbContext.Images.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
         if (image is null)
             throw new NotFoundIdException();
+
         dbContext.Images.Remove(image);
+
         await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(ImageSubscriptions.ImageDeleted), image, cancellationToken);
         return image;

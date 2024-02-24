@@ -11,7 +11,6 @@ public static partial class ModelBuilderExtensions
 {
     private static void SetupOptionalInitiale<T, TProperty>(this EntityTypeBuilder<T> entity, Expression<Func<T, TProperty>> propertyExpression) where T : OptionalLabelEntity
     {
-        entity.Ignore(e => e.InitialeChar);
         entity.Property(e => e.Initiale)
             .HasMaxLength(1)
             .HasColumnType("character(1)")

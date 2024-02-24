@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BDTheque.Data.Migrations
 {
     [DbContext(typeof(BDThequeContext))]
-    [Migration("20240204165030_Initial")]
+    [Migration("20240224163217_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -22,7 +22,7 @@ namespace BDTheque.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:CollationDefinition:public.french_ci_ai", "fr_fr-u-ks-level1,fr_fr-u-ks-level1,icu,False")
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "metier", new[] { "Scenariste", "Dessinateur", "Coloriste" });
@@ -57,6 +57,7 @@ namespace BDTheque.Data.Migrations
 
                     b.Property<char?>("Initiale")
                         .ValueGeneratedOnAddOrUpdate()
+                        .HasMaxLength(1)
                         .HasColumnType("character(1)")
                         .HasColumnName("initiale")
                         .HasComputedColumnSql("(upper(titre))::character(1)", true);
@@ -636,258 +637,290 @@ namespace BDTheque.Data.Migrations
                         new
                         {
                             Id = new Guid("c9182466-4a97-4a16-a9f5-204a527766c6"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(5951),
                             Initiale = '\0',
                             Nom = "Action",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(5952)
                         },
                         new
                         {
                             Id = new Guid("9d8f75cb-feac-48af-86ae-f31c737d1b3f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6067),
                             Initiale = '\0',
                             Nom = "Aventures",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6067)
                         },
                         new
                         {
                             Id = new Guid("678307d8-862b-4f94-88d8-b8a6962e8292"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6079),
                             Initiale = '\0',
                             Nom = "Humour",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6079)
                         },
                         new
                         {
                             Id = new Guid("412f4f5e-309d-4f69-85b7-a018ffa49f71"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6088),
                             Initiale = '\0',
                             Nom = "Héroïque fantaisie",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6088)
                         },
                         new
                         {
                             Id = new Guid("294d78f5-8cc9-42ae-bbac-495079d812b8"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6099),
                             Initiale = '\0',
                             Nom = "Mythologie",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6099)
                         },
                         new
                         {
                             Id = new Guid("c8a3b392-5bfc-439a-a235-082abe5c0205"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6112),
                             Initiale = '\0',
                             Nom = "Enfant",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6112)
                         },
                         new
                         {
                             Id = new Guid("eeff3beb-70c4-4ec0-811d-0c51a0bd008b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6120),
                             Initiale = '\0',
                             Nom = "Fantastique",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6121)
                         },
                         new
                         {
                             Id = new Guid("2e1f9807-07d8-4036-8503-d5661660d8e6"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6129),
                             Initiale = '\0',
                             Nom = "Hommage",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6129)
                         },
                         new
                         {
                             Id = new Guid("c88e9abd-a9f8-410e-9897-6b2240be664e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6137),
                             Initiale = '\0',
                             Nom = "Guerre",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6137)
                         },
                         new
                         {
                             Id = new Guid("59d1f562-5c18-41cd-8eb8-53f259c0a2c9"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6147),
                             Initiale = '\0',
                             Nom = "Horreur",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6147)
                         },
                         new
                         {
                             Id = new Guid("dcc27058-f9e4-4b08-a9b5-1b099da8d13c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6155),
                             Initiale = '\0',
                             Nom = "Policier",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6155)
                         },
                         new
                         {
                             Id = new Guid("8825a97c-7b24-4d30-96ce-68a1e30f801a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6163),
                             Initiale = '\0',
                             Nom = "Science-Fiction",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6164)
                         },
                         new
                         {
                             Id = new Guid("c5ed5c16-bcfa-4b14-a0c6-f873db9e8aab"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6172),
                             Initiale = '\0',
                             Nom = "Western",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6172)
                         },
                         new
                         {
                             Id = new Guid("fdac06e3-14ba-4801-9064-b6d87527f7c6"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6179),
                             Initiale = '\0',
                             Nom = "Anticipation",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6180)
                         },
                         new
                         {
                             Id = new Guid("411b7fb5-3474-45eb-8bd5-4e1f67291438"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6188),
                             Initiale = '\0',
                             Nom = "Animation",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6188)
                         },
                         new
                         {
                             Id = new Guid("e812da51-345a-4718-99fa-e11e9bf33f1c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6196),
                             Initiale = '\0',
                             Nom = "Manga",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6196)
                         },
                         new
                         {
                             Id = new Guid("cf4a1427-90cf-4b57-ab3b-237d066e5173"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6231),
                             Initiale = '\0',
                             Nom = "Comédie",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6231)
                         },
                         new
                         {
                             Id = new Guid("a9390924-20d5-4bf0-940a-95272359eefb"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6242),
                             Initiale = '\0',
                             Nom = "Comédie dramatique",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6242)
                         },
                         new
                         {
                             Id = new Guid("9509f256-8c4c-4080-ade5-c80b4cb62eb1"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6252),
                             Initiale = '\0',
                             Nom = "Comédie musicale",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6252)
                         },
                         new
                         {
                             Id = new Guid("3953f72d-208d-49c5-8a12-265f3b735b9e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6261),
                             Initiale = '\0',
                             Nom = "Road movie",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6261)
                         },
                         new
                         {
                             Id = new Guid("95c8f82f-b9bd-47df-b6c3-d724837a8703"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6269),
                             Initiale = '\0',
                             Nom = "Historique",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6269)
                         },
                         new
                         {
                             Id = new Guid("f710a4af-49fb-4e9e-b062-5c5a9dd21931"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6277),
                             Initiale = '\0',
                             Nom = "Thriller",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6277)
                         },
                         new
                         {
                             Id = new Guid("6d5d61fa-4a8d-42de-ab51-406ff7c913ab"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6285),
                             Initiale = '\0',
                             Nom = "Espionnage",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6285)
                         },
                         new
                         {
                             Id = new Guid("1f03cc8f-b16f-4d4c-b886-3ebc553fb917"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6293),
                             Initiale = '\0',
                             Nom = "Ésotérisme",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6294)
                         },
                         new
                         {
                             Id = new Guid("d6ec9b1e-1340-413d-a98e-fdb4eb80fc91"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6302),
                             Initiale = '\0',
                             Nom = "Blog",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6303)
                         },
                         new
                         {
                             Id = new Guid("5858be6d-a72b-4b77-a464-80c2410fa38a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6311),
                             Initiale = '\0',
                             Nom = "Érotique",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6311)
                         },
                         new
                         {
                             Id = new Guid("0d86e9c7-cfd2-43f5-ab3b-e004fb7de812"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6319),
                             Initiale = '\0',
                             Nom = "Sport",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6320)
                         },
                         new
                         {
                             Id = new Guid("a59d7520-fa3b-41f9-9aac-957f1efd6766"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6328),
                             Initiale = '\0',
                             Nom = "Roman graphique",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6328)
                         },
                         new
                         {
                             Id = new Guid("37f12eb3-0a8a-4ba4-b890-533c2d82cdeb"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6336),
                             Initiale = '\0',
                             Nom = "Jeunesse",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6336)
                         },
                         new
                         {
                             Id = new Guid("dad45ccb-19e4-4f15-bc2b-b1706d0994a5"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6344),
                             Initiale = '\0',
                             Nom = "Comics",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6344)
                         },
                         new
                         {
                             Id = new Guid("10c607d5-6f20-44d5-b8a6-060a2bceddbb"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6352),
                             Initiale = '\0',
                             Nom = "Romance",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6353)
                         },
                         new
                         {
                             Id = new Guid("bc7157cc-3883-46e9-adc8-bacfc7710824"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Associations = new string[0],
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6361),
                             Initiale = '\0',
                             Nom = "Pirates",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6361)
                         });
                 });
 
@@ -1065,311 +1098,311 @@ namespace BDTheque.Data.Migrations
                         {
                             Id = 100,
                             Category = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6632),
                             Defaut = false,
                             Libelle = "Très mauvais",
                             Ordre = 1,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6633)
                         },
                         new
                         {
                             Id = 103,
                             Category = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6722),
                             Defaut = false,
                             Libelle = "Mauvais",
                             Ordre = 2,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6723)
                         },
                         new
                         {
                             Id = 105,
                             Category = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6740),
                             Defaut = false,
                             Libelle = "Bon",
                             Ordre = 3,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6740)
                         },
                         new
                         {
                             Id = 108,
                             Category = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6754),
                             Defaut = false,
                             Libelle = "Très bon",
                             Ordre = 4,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6754)
                         },
                         new
                         {
                             Id = 110,
                             Category = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6768),
                             Defaut = true,
                             Libelle = "Excellent (neuf)",
                             Ordre = 5,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6768)
                         },
                         new
                         {
                             Id = 200,
                             Category = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6833),
                             Defaut = true,
                             Libelle = "Cartonné",
                             Ordre = 1,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6834)
                         },
                         new
                         {
                             Id = 201,
                             Category = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6849),
                             Defaut = false,
                             Libelle = "Broché",
                             Ordre = 2,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6849)
                         },
                         new
                         {
                             Id = 301,
                             Category = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6863),
                             Defaut = false,
                             Libelle = "Première édition",
                             Ordre = 1,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6863)
                         },
                         new
                         {
                             Id = 302,
                             Category = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6878),
                             Defaut = false,
                             Libelle = "Edition spéciale",
                             Ordre = 2,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6878)
                         },
                         new
                         {
                             Id = 303,
                             Category = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6894),
                             Defaut = false,
                             Libelle = "Tirage de tête",
                             Ordre = 3,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6894)
                         },
                         new
                         {
                             Id = 401,
                             Category = 4,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6908),
                             Defaut = true,
                             Libelle = "Portrait",
                             Ordre = 1,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6908)
                         },
                         new
                         {
                             Id = 402,
                             Category = 4,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6925),
                             Defaut = false,
                             Libelle = "Italienne",
                             Ordre = 2,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6925)
                         },
                         new
                         {
                             Id = 501,
                             Category = 5,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6939),
                             Defaut = false,
                             Libelle = "Poche",
                             Ordre = 1,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6939)
                         },
                         new
                         {
                             Id = 503,
                             Category = 5,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6952),
                             Defaut = false,
                             Libelle = "Moyen (A5)",
                             Ordre = 2,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6952)
                         },
                         new
                         {
                             Id = 504,
                             Category = 5,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6966),
                             Defaut = true,
                             Libelle = "Normal (A4)",
                             Ordre = 3,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6966)
                         },
                         new
                         {
                             Id = 505,
                             Category = 5,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6979),
                             Defaut = false,
                             Libelle = "Grand (A3)",
                             Ordre = 4,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6979)
                         },
                         new
                         {
                             Id = 506,
                             Category = 5,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6992),
                             Defaut = false,
                             Libelle = "Très grand (A2)",
                             Ordre = 5,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(6992)
                         },
                         new
                         {
                             Id = 510,
                             Category = 5,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7007),
                             Defaut = false,
                             Libelle = "Spécial",
                             Ordre = 6,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7007)
                         },
                         new
                         {
                             Id = 600,
                             Category = 6,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7021),
                             Defaut = true,
                             Libelle = "Couverture",
                             Ordre = 1,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7021)
                         },
                         new
                         {
                             Id = 603,
                             Category = 6,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7034),
                             Defaut = false,
                             Libelle = "Page de garde",
                             Ordre = 3,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7034)
                         },
                         new
                         {
                             Id = 601,
                             Category = 6,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7047),
                             Defaut = false,
                             Libelle = "Planche",
                             Ordre = 4,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7047)
                         },
                         new
                         {
                             Id = 602,
                             Category = 6,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7086),
                             Defaut = false,
                             Libelle = "4ème de couverture",
                             Ordre = 5,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7086)
                         },
                         new
                         {
                             Id = 604,
                             Category = 6,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7102),
                             Defaut = false,
                             Libelle = "Dédicace",
                             Ordre = 10,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7102)
                         },
                         new
                         {
                             Id = 801,
                             Category = 8,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7116),
                             Defaut = true,
                             Libelle = "Gauche à droite",
                             Ordre = 1,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7117)
                         },
                         new
                         {
                             Id = 802,
                             Category = 8,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7130),
                             Defaut = false,
                             Libelle = "Droite à gauche",
                             Ordre = 2,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7130)
                         },
                         new
                         {
                             Id = 900,
                             Category = 9,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7143),
                             Defaut = true,
                             Libelle = "Pas noté",
                             Ordre = 1,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7144)
                         },
                         new
                         {
                             Id = 901,
                             Category = 9,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7156),
                             Defaut = false,
                             Libelle = "Très mauvais",
                             Ordre = 2,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7157)
                         },
                         new
                         {
                             Id = 902,
                             Category = 9,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7170),
                             Defaut = false,
                             Libelle = "Mauvais",
                             Ordre = 3,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7170)
                         },
                         new
                         {
                             Id = 903,
                             Category = 9,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7183),
                             Defaut = false,
                             Libelle = "Moyen",
                             Ordre = 4,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7183)
                         },
                         new
                         {
                             Id = 904,
                             Category = 9,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7196),
                             Defaut = false,
                             Libelle = "Bien",
                             Ordre = 5,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7196)
                         },
                         new
                         {
                             Id = 905,
                             Category = 9,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7209),
                             Defaut = false,
                             Libelle = "Très bien",
                             Ordre = 6,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(2024, 2, 24, 16, 32, 16, 552, DateTimeKind.Utc).AddTicks(7209)
                         });
                 });
 

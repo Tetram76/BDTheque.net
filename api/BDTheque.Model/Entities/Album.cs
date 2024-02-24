@@ -9,29 +9,21 @@ using BDTheque.Model.Entities.Abstract;
 [ObjectType]
 public class Album : OptionalLabelEntity
 {
-    [NotEmptyString]
     public string? Titre { get; set; }
     public string? TitreRaw { get; set; }
 
-    [NotEmptyString]
     public string? Sujet { get; set; }
     public string? SujetRaw { get; set; }
 
-    [NotEmptyString]
     public string? Notes { get; set; }
     public string? NotesRaw { get; set; }
 
     public bool? HorsSerie { get; set; } = false;
 
-    [NonNegative<ushort>]
     public ushort? Tome { get; set; }
 
     public bool? Integrale { get; set; } = false;
-
-    [NonNegative<ushort>]
     public ushort? TomeDebut { get; set; }
-
-    [NonNegative<ushort>]
     public ushort? TomeFin { get; set; }
 
     [Month]

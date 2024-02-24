@@ -11,7 +11,6 @@ public static partial class ModelBuilderExtensions
 {
     private static void SetupMandatoryInitiale<T, TProperty>(this EntityTypeBuilder<T> entity, Expression<Func<T, TProperty>> propertyExpression) where T : MandatoryLabelEntity
     {
-        entity.Ignore(e => e.InitialeChar);
         entity.Property(e => e.Initiale)
             .HasColumnType("character(1)")
             .HasMaxLength(1)

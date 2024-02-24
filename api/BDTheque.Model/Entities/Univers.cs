@@ -1,4 +1,4 @@
-﻿namespace BDTheque.Model.Entities;
+namespace BDTheque.Model.Entities;
 
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
@@ -9,11 +9,9 @@ using BDTheque.Model.Entities.Abstract;
 [ObjectType]
 public class Univers : MandatoryLabelEntity
 {
-    [NotEmptyString]
     public string Nom { get; set; } = null!;
     public string NomRaw { get; set; } = null!;
 
-    [NotEmptyString]
     public string? Description { get; set; }
     public string? DescriptionRaw { get; set; }
 

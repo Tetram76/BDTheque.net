@@ -1,7 +1,5 @@
 namespace BDTheque.Analyzers;
 
-using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -9,7 +7,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 [Generator]
 public class MutationInputsGenerator : IIncrementalGenerator
 {
-    private const string InputTypeSuffix = "Input";
+    private const string CreateInputTypeSuffix = "CreateInput";
+    private const string UpdateInputTypeSuffix = "UpdateInput";
+    private const string NestedTypeSuffix = "NestedInput";
     private const string InputsNamespaceName = "BDTheque.Model.Inputs";
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
@@ -23,52 +23,52 @@ public class MutationInputsGenerator : IIncrementalGenerator
 
         context.RegisterSourceOutput(
             classDeclarations,
-            static (sourceContext, generatorContext) => GenerateInputType(sourceContext, generatorContext)
+            static (sourceContext, generatorContext) => GenerateInputTypes(sourceContext, generatorContext)
         );
-
-        // IncrementalValueProvider<(Compilation Left, ImmutableArray<GeneratorSyntaxContext> Right)> valueProvider = context.CompilationProvider.Combine(classDeclarations.Collect());
-        // context.RegisterSourceOutput(
-        //     valueProvider,
-        //     static (productionContext, tuple) => GenerateHotChocolateRegisters(productionContext, tuple.Right)
-        // );
     }
 
-    private static bool IsClassAnnotatedWithObjectType(GeneratorSyntaxContext ctx)
+    private static bool IsClassAnnotatedWithObjectType(GeneratorSyntaxContext ctx) =>
+        IsSyntaxNodeAnnotatedWithAttribute(ctx, ctx.Node, "HotChocolate.Types.ObjectTypeAttribute");
+
+    private static bool IsPropertyAnnotatedWithIdType(GeneratorSyntaxContext ctx, PropertyDeclarationSyntax propertySyntax) =>
+        IsSyntaxNodeAnnotatedWithAttribute(ctx, propertySyntax, "HotChocolate.Types.Relay.IDAttribute");
+
+    private static bool IsSyntaxNodeAnnotatedWithAttribute(GeneratorSyntaxContext ctx, SyntaxNode syntaxNode, string attributeFullClassName)
     {
         SemanticModel model = ctx.SemanticModel;
-        if (model.GetDeclaredSymbol(ctx.Node) is not { } classSymbol) return false;
-        if (model.Compilation.GetTypeByMetadataName("HotChocolate.Types.ObjectTypeAttribute") is not { } objectTypeAttributeSymbol) return false;
+        if (model.GetDeclaredSymbol(syntaxNode) is not { } nodeSymbol) return false;
+        if (model.Compilation.GetTypeByMetadataName(attributeFullClassName) is not { } attributeSymbol) return false;
 
-        return classSymbol
+        return nodeSymbol
             .GetAttributes()
-            .Any(attr => attr.AttributeClass != null && attr.AttributeClass.Equals(objectTypeAttributeSymbol, SymbolEqualityComparer.Default));
+            .Any(attr => attr.AttributeClass != null && attr.AttributeClass.Equals(attributeSymbol, SymbolEqualityComparer.Default));
     }
 
-    private static ClassDeclarationSyntax? GenerateInputType(SourceProductionContext productionContext, GeneratorSyntaxContext generatorContext)
+    private static void GenerateInputTypes(SourceProductionContext sourceContext, GeneratorSyntaxContext generatorContext)
     {
         var classDeclaration = (ClassDeclarationSyntax) generatorContext.Node;
-        (CompilationUnitSyntax compilationUnitSyntax, ClassDeclarationSyntax classDeclarationSyntax)? classSource = GenerateClassSource(classDeclaration, generatorContext);
-        if (classSource is null)
-            return null;
+        CompilationUnitSyntax? compilationUnitSyntax = GenerateClassSource(classDeclaration, generatorContext);
+        if (compilationUnitSyntax is null) return;
 
-        string sourceText = classSource.Value.compilationUnitSyntax.NormalizeWhitespace().ToFullString();
-        productionContext.AddSource($"{classDeclaration.Identifier.Text}Inputs.g.cs", sourceText);
-
-        return classSource.Value.classDeclarationSyntax;
+        string sourceText = compilationUnitSyntax.NormalizeWhitespace().ToFullString();
+        sourceContext.AddSource($"{classDeclaration.Identifier.Text}Inputs.g.cs", sourceText);
     }
 
-    private static (CompilationUnitSyntax, ClassDeclarationSyntax)? GenerateClassSource(ClassDeclarationSyntax classDeclaration, GeneratorSyntaxContext generatorContext)
+    private static CompilationUnitSyntax? GenerateClassSource(ClassDeclarationSyntax classDeclaration, GeneratorSyntaxContext generatorContext)
     {
         if (generatorContext.SemanticModel.GetDeclaredSymbol(classDeclaration) is not { } classSymbol) return null;
         if ((classSymbol.BaseType is not { } baseTypeSymbol) || (baseTypeSymbol.SpecialType == SpecialType.System_Object)) return null;
 
+        const string entitySuffix = "Entity";
         var baseClassName = baseTypeSymbol.ToDisplayParts().Last().ToString();
-        if (!baseClassName.EndsWith("Entity"))
+        if (!baseClassName.EndsWith(entitySuffix))
             return null;
+        baseClassName = baseClassName[..^entitySuffix.Length];
 
-        ClassDeclarationSyntax newClassDeclaration = GenerateInputClassDeclaration(generatorContext, classDeclaration, baseClassName.Remove(baseClassName.Length - "Entity".Length));
+        ClassDeclarationSyntax[] inputClassesDeclaration = GenerateInputClassesDeclaration(generatorContext, classDeclaration, baseClassName);
+        ClassDeclarationSyntax nestedClassDeclaration = GenerateNestedClassDeclaration(generatorContext, classDeclaration, baseClassName);
 
-        return (
+        return
             SyntaxFactory
                 .CompilationUnit()
                 .AddUsings(classDeclaration.SyntaxTree.GetCompilationUnitRoot().Members.OfType<BaseNamespaceDeclarationSyntax>().SelectMany(syntax => syntax.Usings).ToArray())
@@ -80,144 +80,69 @@ public class MutationInputsGenerator : IIncrementalGenerator
                     SyntaxFactory
                         .NamespaceDeclaration(SyntaxFactory.IdentifierName(InputsNamespaceName)) // the generated source is more readable than with a FileScopedNamespaceDeclaration
                         .AddMembers(
-                            newClassDeclaration
+                            inputClassesDeclaration.OfType<MemberDeclarationSyntax>().ToArray()
+                        )
+                        .AddMembers(
+                            nestedClassDeclaration
                         )
                 )
                 .NormalizeWhitespace()
                 .WithLeadingTrivia(
                     SyntaxFactory.Comment("// <auto-generated/>"),
                     SyntaxFactory.Trivia(SyntaxFactory.NullableDirectiveTrivia(SyntaxFactory.Token(SyntaxKind.EnableKeyword), true))
-                ),
-            newClassDeclaration
-        );
+                );
     }
 
-    private static ClassDeclarationSyntax GenerateInputClassDeclaration(GeneratorSyntaxContext generatorContext, ClassDeclarationSyntax classDeclaration, string baseClassName)
-    {
-        ClassDeclarationSyntax classBuilder = SyntaxFactory
-            .ClassDeclaration(classDeclaration.Identifier.Text + InputTypeSuffix)
+    private static ClassDeclarationSyntax GenerateInputClassDeclaration(GeneratorSyntaxContext generatorContext, ClassDeclarationSyntax classDeclaration, string baseClassName, string classSuffix) =>
+        SyntaxFactory
+            .ClassDeclaration(classDeclaration.Identifier.Text + classSuffix)
             .WithModifiers(classDeclaration.Modifiers)
             .AddBaseListTypes(
-                SyntaxFactory.SimpleBaseType(SyntaxFactory.IdentifierName(baseClassName + InputTypeSuffix))
+                SyntaxFactory.SimpleBaseType(SyntaxFactory.IdentifierName(baseClassName + classSuffix))
             )
             .AddGeneratedAttribute<MutationInputsGenerator>()
             .AddMembers(
                 classDeclaration.Members
                     .OfType<PropertyDeclarationSyntax>()
+                    .Where(
+                        property => !generatorContext.IsCollectionType(property.Type) &&
+                                    !generatorContext.IsEntityIdProperty(property) &&
+                                    !property.Identifier.Text.EndsWith("Raw")
+                    )
                     .Select(
                         property => property // duplicate original property with some alterations
                             .WithType(
                                 SyntaxFactory
                                     .GenericName(SyntaxFactory.Identifier("global::HotChocolate.Optional"))
-                                    .AddTypeArgumentListArguments(RewriteType(generatorContext.SemanticModel, property.Type))
+                                    .AddTypeArgumentListArguments(generatorContext.RewriteType(property.Type, syntax => SyntaxFactory.IdentifierName(syntax + NestedTypeSuffix)))
                             )
+                            .AddRequiredAttribute(classSuffix == CreateInputTypeSuffix && property.Type is not NullableTypeSyntax)
                             .WithInitializer(null).WithSemicolonToken(default)
                     )
                     .Cast<MemberDeclarationSyntax>()
                     .ToArray()
             );
-        return classBuilder;
-    }
 
-    private static TypeSyntax RewriteType(SemanticModel generatorContextSemanticModel, TypeSyntax propertyType) =>
-        propertyType switch
-        {
-            NullableTypeSyntax nullableTypeSyntax =>
-                nullableTypeSyntax.WithElementType(RewriteType(generatorContextSemanticModel, nullableTypeSyntax.ElementType)),
-            ArrayTypeSyntax arrayTypeSyntax =>
-                arrayTypeSyntax.WithElementType(RewriteType(generatorContextSemanticModel, arrayTypeSyntax.ElementType)),
-            GenericNameSyntax genericNameSyntax =>
-                genericNameSyntax.WithTypeArgumentList( // not AddTypeArgumentListArguments: we have to replace the original list
-                    SyntaxFactory.TypeArgumentList(
-                        SyntaxFactory.SeparatedList(
-                            genericNameSyntax.TypeArgumentList.Arguments.Select(syntax => RewriteType(generatorContextSemanticModel, syntax))
-                        )
-                    )
-                ),
-            _ =>
-                IsEntityType(generatorContextSemanticModel, propertyType)
-                    ? SyntaxFactory.IdentifierName(propertyType + InputTypeSuffix) // brand new type
-                    : propertyType // nothing to change
-        };
+    private static ClassDeclarationSyntax[] GenerateInputClassesDeclaration(GeneratorSyntaxContext generatorContext, ClassDeclarationSyntax classDeclaration, string baseClassName) =>
+    [
+        GenerateInputClassDeclaration(generatorContext, classDeclaration, baseClassName, CreateInputTypeSuffix),
+        GenerateInputClassDeclaration(generatorContext, classDeclaration, baseClassName, UpdateInputTypeSuffix)
+    ];
 
-    private static bool IsEntityType(SemanticModel model, TypeSyntax typeSyntax)
-    {
-        ITypeSymbol? typeSymbol = model.GetTypeInfo(typeSyntax).Type;
-        INamedTypeSymbol? baseClassSymbol = typeSymbol?.BaseType;
-        while (baseClassSymbol != null)
-        {
-            if (baseClassSymbol.MetadataName == "VersioningEntity")
-                return true;
-            baseClassSymbol = baseClassSymbol.BaseType;
-        }
-
-        return false;
-    }
-
-    private static void GenerateHotChocolateRegisters(SourceProductionContext sourceProductionContext, ImmutableArray<GeneratorSyntaxContext> generatorContexts)
-    {
-        if (generatorContexts.IsEmpty) return;
-
-        var typesRegister = generatorContexts
-            .Select(generatorSyntaxContext => GenerateInputType(sourceProductionContext, generatorSyntaxContext))
-            .OfType<ClassDeclarationSyntax>() // exclude nulls
-            .Select(
-                classDeclaration => SyntaxFactory.ExpressionStatement(
-                    SyntaxFactory.InvocationExpression(
-                        // builder.AddType<global::BDTheque.Model.Entities.Album>();
-                        SyntaxFactory.MemberAccessExpression(
-                            SyntaxKind.SimpleMemberAccessExpression,
-                            SyntaxFactory.IdentifierName("builder"),
-                            SyntaxFactory
-                                .GenericName(SyntaxFactory.Identifier("AddType"))
-                                .AddTypeArgumentListArguments(
-                                    SyntaxFactory.IdentifierName($"global::{InputsNamespaceName}.{classDeclaration.Identifier.Text}")
-                                )
-                        )
-                    )
-                )
+    private static ClassDeclarationSyntax GenerateNestedClassDeclaration(GeneratorSyntaxContext generatorContext, ClassDeclarationSyntax classDeclaration, string baseClassName) =>
+        SyntaxFactory
+            .ClassDeclaration(classDeclaration.Identifier.Text + NestedTypeSuffix)
+            .WithModifiers(classDeclaration.Modifiers)
+            .AddBaseListTypes(
+                SyntaxFactory.SimpleBaseType(SyntaxFactory.IdentifierName(baseClassName + NestedTypeSuffix))
             )
-            .Cast<StatementSyntax>()
-            .ToArray();
-
-        if (typesRegister.Length == 0)
-            return;
-
-        TypeSyntax requestExecutorBuilderType = SyntaxFactory.IdentifierName("IRequestExecutorBuilder");
-        ClassDeclarationSyntax staticClass = SyntaxFactory
-            // public static partial class BDThequeGraphQLTypesRequestExecutorBuilderExtensions
-            .ClassDeclaration("BDThequeGraphQLTypesRequestExecutorBuilderExtensions")
-            .AddModifiers(
-                SyntaxFactory.Token(SyntaxKind.PublicKeyword),
-                SyntaxFactory.Token(SyntaxKind.StaticKeyword),
-                SyntaxFactory.Token(SyntaxKind.PartialKeyword)
-            )
-            // public static IRequestExecutorBuilder AddBDThequeGraphQLTypes(this IRequestExecutorBuilder builder)
+            .AddGeneratedAttribute<MutationInputsGenerator>()
             .AddMembers(
-                SyntaxFactory
-                    .MethodDeclaration(requestExecutorBuilderType, SyntaxFactory.ParseToken("AddBDThequeGraphQLInputTypes"))
-                    .AddModifiers(
-                        SyntaxFactory.Token(SyntaxKind.PublicKeyword),
-                        SyntaxFactory.Token(SyntaxKind.StaticKeyword)
-                    )
-                    .AddParameterListParameters(
-                        SyntaxFactory.Parameter(SyntaxFactory.Identifier("builder")).WithType(requestExecutorBuilderType).AddModifiers(SyntaxFactory.Token(SyntaxKind.ThisKeyword))
-                    )
-                    .AddBodyStatements(typesRegister)
-                    .AddBodyStatements(
-                        SyntaxFactory.ReturnStatement(SyntaxFactory.IdentifierName("builder"))
-                    )
+                classDeclaration.Members
+                    .OfType<PropertyDeclarationSyntax>()
+                    .Where(propertySyntax => IsPropertyAnnotatedWithIdType(generatorContext, propertySyntax))
+                    .Select(property => property.AddRequiredAttribute())
+                    .Cast<MemberDeclarationSyntax>()
+                    .ToArray()
             );
-
-        string sourceCode = SyntaxFactory
-            .NamespaceDeclaration(SyntaxFactory.IdentifierName("Microsoft.Extensions.DependencyInjection"))
-            .AddUsings(
-                SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName("HotChocolate.Execution.Configuration")),
-                SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName(InputsNamespaceName))
-            )
-            .AddMembers(staticClass)
-            .NormalizeWhitespace()
-            .ToFullString();
-        sourceProductionContext.AddSource("HotChocolateRegisterTypes.g.cs", sourceCode);
-    }
 }

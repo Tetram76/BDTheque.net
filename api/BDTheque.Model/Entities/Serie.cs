@@ -1,4 +1,4 @@
-﻿namespace BDTheque.Model.Entities;
+namespace BDTheque.Model.Entities;
 
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
@@ -9,15 +9,12 @@ using BDTheque.Model.Entities.Abstract;
 [ObjectType]
 public class Serie : OptionalLabelEntity
 {
-    [NotEmptyString]
     public string? Titre { get; set; }
     public string? TitreRaw { get; set; }
 
-    [NotEmptyString]
     public string? Sujet { get; set; }
     public string? SujetRaw { get; set; }
 
-    [NotEmptyString]
     public string? Notes { get; set; }
     public string? NotesRaw { get; set; }
 
@@ -33,7 +30,6 @@ public class Serie : OptionalLabelEntity
     public Guid ModeleEditionId { get; set; }
     public virtual Edition ModeleEdition { get; set; } = null!;
 
-    [NonNegative<ushort>]
     public ushort? NbAlbums { get; set; }
 
     public bool? Terminee { get; set; } = false;

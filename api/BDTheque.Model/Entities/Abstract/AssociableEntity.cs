@@ -4,5 +4,5 @@ using BDTheque.Model.Interfaces;
 
 public abstract class AssociableEntity : UniqueIdEntity, IAssociable
 {
-    public IList<string> Associations { get; set; } = new List<string>();
+    public IList<string>? Associations { get; set; } = new List<string>();
 }
