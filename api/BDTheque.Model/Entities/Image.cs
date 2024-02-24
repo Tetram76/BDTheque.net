@@ -1,4 +1,4 @@
-﻿namespace BDTheque.Model.Entities;
+namespace BDTheque.Model.Entities;
 
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
@@ -9,7 +9,6 @@ using BDTheque.Model.Entities.Abstract;
 [ObjectType]
 public class Image : UniqueIdEntity
 {
-    [NotEmptyString]
     public string? Titre { get; set; }
 
     [GraphQLIgnore]

@@ -17,6 +17,14 @@ public abstract class VersioningInput
 
     public void ApplyUpdate<T>(T toEntity)
     {
-        PropertyInfo[]? thisProperties = GetType().GetProperties();
+        PropertyInfo[] thisProperties = GetType().GetProperties();
     }
 }
+
+public abstract class VersioningCreateInput : VersioningInput;
+
+public abstract class VersioningUpdateInput : VersioningInput;
+
+#pragma warning disable S2094
+public abstract class VersioningNestedInput;
+#pragma warning restore S2094

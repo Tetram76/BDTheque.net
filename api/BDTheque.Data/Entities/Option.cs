@@ -12,7 +12,8 @@ public static partial class ModelBuilderExtensions
         entity.ToTable("options");
 
         SetupVersioning(entity);
-        SetupIdPrimaryKey(entity);
+
+        entity.HasKey(e => e.Id);
 
         entity.HasIndex(
                 e => new

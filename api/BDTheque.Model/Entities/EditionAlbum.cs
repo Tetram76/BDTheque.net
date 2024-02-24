@@ -1,4 +1,4 @@
-﻿namespace BDTheque.Model.Entities;
+namespace BDTheque.Model.Entities;
 
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
@@ -36,10 +36,8 @@ public class EditionAlbum : UniqueIdEntity
 
     public bool? Dedicace { get; set; } = false;
 
-    [NotEmptyString]
     public string? NumeroPerso { get; set; }
 
-    [NotEmptyString]
     public string? Notes { get; set; }
 
     public virtual ICollection<Cote> Cotes { get; set; } = new List<Cote>();

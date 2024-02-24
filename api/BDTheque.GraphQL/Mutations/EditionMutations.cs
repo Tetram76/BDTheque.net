@@ -19,7 +19,9 @@ public static class EditionMutations
         Edition? edition = await dbContext.Editions.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
         if (edition is null)
             throw new NotFoundIdException();
+
         dbContext.Editions.Remove(edition);
+
         await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(EditionSubscriptions.EditionDeleted), edition, cancellationToken);
         return edition;

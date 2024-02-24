@@ -1,4 +1,4 @@
-﻿namespace BDTheque.Model.Entities;
+namespace BDTheque.Model.Entities;
 
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
@@ -8,12 +8,13 @@ using BDTheque.Model.Enums;
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 [ObjectType]
-public class Option : SimpleIdEntity
+public class Option : VersioningEntity
 {
     [ID]
+    public ushort Id { get; set; }
+
     public OptionCategory Category { get; set; }
 
-    [NotEmptyString]
     public string Libelle { get; set; } = null!;
 
     public ushort Ordre { get; set; }

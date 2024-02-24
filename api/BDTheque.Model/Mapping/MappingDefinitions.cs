@@ -3,7 +3,6 @@ namespace BDTheque.Model.Mapping;
 using System.Linq.Expressions;
 using System.Reflection;
 using BDTheque.Extensions;
-using BDTheque.Model.Inputs;
 using BDTheque.Model.Scalars;
 
 public static class MappingDefinitions
@@ -13,6 +12,7 @@ public static class MappingDefinitions
         property => property.Name.EndsWith("Char", StringComparison.InvariantCulture),
         property => property.DeclaringType!.GetProperties().Exists(p => property.Name == p.Name + "Raw"),
         property => property.DeclaringType!.GetProperties().Exists(p => property.Name == p.Name + "Id"),
+        property => property.Name.Equals("Bytes", StringComparison.InvariantCultureIgnoreCase),
         property => !property.Name.Equals("Associations", StringComparison.InvariantCultureIgnoreCase) && IsGenericEnumerable(property.PropertyType)
     ];
 
@@ -22,15 +22,14 @@ public static class MappingDefinitions
                 // property => property.Name.Equals("Id", StringComparison.InvariantCultureIgnoreCase),
                 property => property.Name.Equals("CreatedAt", StringComparison.InvariantCultureIgnoreCase),
                 property => property.Name.Equals("UpdatedAt", StringComparison.InvariantCultureIgnoreCase),
-                property => property.Name.Equals("Initiale", StringComparison.InvariantCultureIgnoreCase),
-                property => property.Name.Equals("Bytes", StringComparison.InvariantCultureIgnoreCase)
+                property => property.Name.Equals("Initiale", StringComparison.InvariantCultureIgnoreCase)
             ]
         );
 
     public static readonly IEnumerable<(Func<PropertyInfo, bool> check, Type fieldType)> TypeMappings =
     [
-        (property => property.GetCustomAttribute<NonNegativeAttribute<decimal>>() != null, typeof(EuroCurrencyType)),
-        (property => property.GetCustomAttribute<NonNegativeAttribute<ushort>>() != null, typeof(UnsignedShortType)),
+        (property => property.Name.Contains("prix", StringComparison.InvariantCultureIgnoreCase), typeof(EuroCurrencyType)),
+        (property => property.GetCustomAttribute<NonNegativeAttribute<decimal>>() != null, typeof(NonNegativeFloatType)),
         (property => property.GetCustomAttribute<YearAttribute>() != null, typeof(YearType)),
         (property => property.GetCustomAttribute<MonthAttribute>() != null, typeof(MonthType))
     ];

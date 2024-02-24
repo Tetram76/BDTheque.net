@@ -3,6 +3,7 @@ namespace BDTheque.GraphQL.Mutations;
 using BDTheque.Data.Context;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
+using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,8 +11,32 @@ using Microsoft.EntityFrameworkCore;
 [MutationType]
 public static class SerieMutations
 {
-    // createSerie(data: SerieCreateInput!): Serie!
-    // updateSerie(data: SerieUpdateInput!): Serie!
+    [Error<AlreadyExistsException>]
+    public static async Task<Serie> CreateSerie(SerieCreateInput serie, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    {
+        Serie newSerie = serie.BuildEntity<Serie>();
+        dbContext.Series.Add(newSerie);
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+        await sender.SendAsync(nameof(SerieSubscriptions.SerieCreated), newSerie, cancellationToken);
+        return newSerie;
+    }
+
+    [Error<AlreadyExistsException>]
+    [Error<NotFoundIdException>]
+    public static async Task<Serie> UpdateSerie(SerieUpdateInput serie, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    {
+        Serie? oldSerie = await dbContext.Series.Where(p => p.Id == serie.Id).SingleOrDefaultAsync(cancellationToken);
+        if (oldSerie is null)
+            throw new NotFoundIdException();
+
+        serie.ApplyUpdate(oldSerie);
+        dbContext.Update(oldSerie);
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+        await sender.SendAsync(nameof(SerieSubscriptions.SerieUpdated), oldSerie, cancellationToken);
+        return oldSerie;
+    }
 
     [Error<NotFoundIdException>]
     public static async Task<Serie> DeleteSerie([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
@@ -19,7 +44,9 @@ public static class SerieMutations
         Serie? serie = await dbContext.Series.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
         if (serie is null)
             throw new NotFoundIdException();
+
         dbContext.Series.Remove(serie);
+
         await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(SerieSubscriptions.SerieDeleted), serie, cancellationToken);
         return serie;

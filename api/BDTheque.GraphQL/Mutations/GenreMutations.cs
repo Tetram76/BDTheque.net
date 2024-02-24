@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 public static class GenreMutations
 {
     [Error<AlreadyExistsException>]
-    public static async Task<Genre> CreateGenre(GenreInput genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    public static async Task<Genre> CreateGenre(GenreCreateInput genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         if (await dbContext.Genres.AnyAsync(g => g.Nom == genre.Nom, cancellationToken))
             throw new AlreadyExistsException();
@@ -27,9 +27,9 @@ public static class GenreMutations
 
     [Error<AlreadyExistsException>]
     [Error<NotFoundIdException>]
-    public static async Task<Genre> UpdateGenre(GenreInput genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    public static async Task<Genre> UpdateGenre(GenreUpdateInput genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Genre? oldGenre = await dbContext.Genres.Where(p => p.Id == genre.Id.Value).SingleOrDefaultAsync(cancellationToken);
+        Genre? oldGenre = await dbContext.Genres.Where(p => p.Id == genre.Id).SingleOrDefaultAsync(cancellationToken);
         if (oldGenre is null)
             throw new NotFoundIdException();
         if (genre.Nom.HasValue && await dbContext.Genres.AnyAsync(g => g.Id != oldGenre.Id && g.Nom == genre.Nom, cancellationToken))

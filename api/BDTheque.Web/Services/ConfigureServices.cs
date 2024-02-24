@@ -1,7 +1,10 @@
 namespace BDTheque.Web.Services;
 
 using BDTheque.Data.Context;
+using BDTheque.GraphQL.Filters;
+using BDTheque.GraphQL.Handlers;
 using BDTheque.GraphQL.Listeners;
+using BDTheque.Model.Scalars;
 using DataAnnotatedModelValidations;
 using HotChocolate.Data.Filters;
 using HotChocolate.Data.Filters.Expressions;
@@ -87,7 +90,8 @@ public static class ConfigureServices
                     options.SortFieldsByName = appOptions.Debug;
                 }
             )
-            // .BindRuntimeType<char, StringType>()
+            .BindRuntimeType<char, CharType>()
+            .BindRuntimeType<string, NonEmptyStringType>()
             .BindRuntimeType<ushort, UnsignedShortType>()
             .AddMutationConventions()
             .SetPagingOptions(
@@ -101,15 +105,17 @@ public static class ConfigureServices
                 descriptor =>
                     descriptor
                         .AddDefaults()
-                        // .BindRuntimeType<char?, CharOperationFilterInputType>()
-                        // .BindRuntimeType<char?, CharOperationFilterInputType>()
-                        .BindRuntimeType<char, StringOperationFilterInputType>()
-                        .BindRuntimeType<char?, StringOperationFilterInputType>()
-                        .BindRuntimeType<ushort, ComparableOperationFilterInputType<NonNullType<UnsignedIntType>>>()
-                        .BindRuntimeType<ushort?, ComparableOperationFilterInputType<UnsignedIntType>>()
+                        .BindRuntimeType<char, CharOperationFilterInputType>()
+                        .BindRuntimeType<char?, CharOperationFilterInputType>()
+                        .BindRuntimeType<ushort, ComparableOperationFilterInputType<NonNullType<UnsignedShortType>>>()
+                        .BindRuntimeType<ushort?, ComparableOperationFilterInputType<UnsignedShortType>>()
                         .Provider(
                             new QueryableFilterProvider(
                                 providerDescriptor => providerDescriptor
+                                    .AddFieldHandler<QueryableCharEqualsHandler>()
+                                    .AddFieldHandler<QueryableCharNotEqualsHandler>()
+                                    .AddFieldHandler<QueryableCharInHandler>()
+                                    .AddFieldHandler<QueryableCharNotInHandler>()
                                     .AddFieldHandler<QueryableStringContainsHandler>()
                                     .AddFieldHandler<QueryableStringNotContainsHandler>()
                                     .AddDefaultFieldHandlers()

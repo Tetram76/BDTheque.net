@@ -16,9 +16,7 @@ public static class MutationInputTypeDescriptorExtensions
                 continue;
             }
 
-            if (property.Name.Equals("id", StringComparison.InvariantCultureIgnoreCase))
-                descriptor.Field(property).ID();
-            else if (MappingDefinitions.MutationTypeMappings.FirstOrDefault(mapping => mapping.check(property)).fieldType is { } fieldType)
+            if (MappingDefinitions.MutationTypeMappings.FirstOrDefault(mapping => mapping.check(property)).fieldType is { } fieldType)
                 descriptor.Field(property).Type(fieldType);
         }
 
@@ -36,9 +34,7 @@ public static class MutationInputTypeDescriptorExtensions
                 continue;
             }
 
-            if (property.Name.Equals("id", StringComparison.InvariantCultureIgnoreCase))
-                descriptor.Field(property).ID();
-            else if (MappingDefinitions.MutationTypeMappings.FirstOrDefault(mapping => mapping.check(property)).fieldType is { } fieldType)
+            if (MappingDefinitions.MutationTypeMappings.FirstOrDefault(mapping => mapping.check(property)).fieldType is { } fieldType)
                 descriptor.Field(property).Type(fieldType);
         }
 
