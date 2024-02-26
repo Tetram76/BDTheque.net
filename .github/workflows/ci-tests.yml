@@ -128,6 +128,8 @@ jobs:
         run: |
           dotnet ef database update --project ${{ matrix.solution-path }}BDTheque.Data/BDTheque.Data.csproj --startup-project ${{ matrix.solution-path }}BDTheque.Web/BDTheque.Web.csproj --context BDTheque.Data.Context.BDThequeContext --no-build
       - name: Run tests
+        env:
+          SNAPSHOOTER_STRICT_MODE: true
         run: |
           dotnet test ${{ matrix.solution-path }}${{ matrix.solution-file }} \
             --no-build --verbosity normal \
