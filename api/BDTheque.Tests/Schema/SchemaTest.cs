@@ -8,6 +8,6 @@ public class SchemaTest
     public async Task SchemaChangeTest()
     {
         ISchema schema = await TestServices.Executor.GetSchemaAsync(default);
-        schema.ToString().MatchSnapshot();
+        schema.ToString().Should().MatchSnapshot();
     }
 }

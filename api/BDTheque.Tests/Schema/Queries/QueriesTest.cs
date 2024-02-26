@@ -29,6 +29,6 @@ public class GenreTest
             )
         );
 
-        response.MatchSnapshot();
+        response.Should().MatchSnapshot();
     }
 }
