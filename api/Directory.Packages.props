@@ -4,7 +4,7 @@
     <AspNetVersion>8.0.2</AspNetVersion>
     <EfVersion>8.0.2</EfVersion>
     <DevExpressVersion>23.1.7</DevExpressVersion>
-    <HotChocolateVersion>13.8.1</HotChocolateVersion>
+    <HotChocolateVersion>13.9.0</HotChocolateVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="DataAnnotatedModelValidations" Version="5.1.0" />
