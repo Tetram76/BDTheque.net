@@ -13,6 +13,14 @@ public static partial class ModelBuilderExtensions
         SetupVersioning(entity);
         SetupUniqueIdPrimaryKey(entity);
 
+        entity.HasAlternateKey(
+            e => new
+            {
+                e.PersonneId,
+                e.Metier
+            }
+        );
+
         entity.HasOne(d => d.Personne).WithMany(p => p.Auteurs).HasForeignKey(d => d.PersonneId).OnDelete(DeleteBehavior.Restrict);
     }
 }

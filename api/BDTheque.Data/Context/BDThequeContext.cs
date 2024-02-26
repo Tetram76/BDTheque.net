@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbContext(options)
 {
     public const string FrenchCollation = "french_ci_ai";
+    public const string PredictiveFrenchCollation = "fr-x-icu";
 
     public virtual DbSet<Album> Albums { get; init; } = null!;
     public virtual DbSet<Auteur> Auteurs { get; init; } = null!;

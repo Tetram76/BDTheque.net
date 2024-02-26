@@ -11,15 +11,14 @@ public static partial class ModelBuilderExtensions
         entity.ToTable("auteurs_series");
 
         SetupVersioning(entity);
-        SetupUniqueIdPrimaryKey(entity);
 
-        entity.HasIndex(
+        entity.HasKey(
             e => new
             {
                 e.AuteurId,
                 e.SerieId
             }
-        ).IsUnique();
+        );
 
         entity.HasOne(d => d.Auteur).WithMany(p => p.AuteursSeries).HasForeignKey(d => d.AuteurId);
         entity.HasOne(d => d.Serie).WithMany(p => p.AuteursSeries).HasForeignKey(d => d.SerieId);

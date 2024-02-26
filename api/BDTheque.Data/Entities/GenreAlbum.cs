@@ -11,15 +11,14 @@ public static partial class ModelBuilderExtensions
         entity.ToTable("genres_albums");
 
         SetupVersioning(entity);
-        SetupUniqueIdPrimaryKey(entity);
 
-        entity.HasIndex(
+        entity.HasKey(
             e => new
             {
-                e.GenreId,
-                e.AlbumId
+                e.AlbumId,
+                e.GenreId
             }
-        ).IsUnique();
+        );
 
         entity.Property(e => e.FromSerie).HasDefaultValue(false);
 

@@ -7,7 +7,7 @@ using BDTheque.Model.Entities.Abstract;
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 [ObjectType]
-public class GenreSerie : UniqueIdEntity
+public class GenreSerie : VersioningEntity
 {
     public Guid GenreId { get; set; }
     public virtual Genre Genre { get; set; } = null!;

@@ -13,13 +13,13 @@ public static partial class ModelBuilderExtensions
         SetupVersioning(entity);
         SetupUniqueIdPrimaryKey(entity);
 
-        entity.HasIndex(
+        entity.HasAlternateKey(
             e => new
             {
                 e.AlbumId,
-                e.Id
+                e.EditionId
             }
-        ).IsUnique();
+        );
 
         entity.Property(e => e.Dedicace).HasDefaultValue(false);
         entity.Property(e => e.Gratuit).HasDefaultValue(false);

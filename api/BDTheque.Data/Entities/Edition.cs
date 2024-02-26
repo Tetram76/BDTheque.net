@@ -17,7 +17,7 @@ public static partial class ModelBuilderExtensions
         SetupUniqueIdPrimaryKey(entity);
 
         entity.Property(e => e.Notes).UseCollation(BDThequeContext.FrenchCollation);
-        entity.Property(e => e.NotesRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Notes).ToSnakeCase()} COLLATE \"fr-x-icu\")", true);
+        entity.Property(e => e.NotesRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Notes).ToSnakeCase()} COLLATE \"{BDThequeContext.PredictiveFrenchCollation}\")", true);
         entity.Property(e => e.Couleur).HasDefaultValue(true);
         entity.Property(e => e.Vo).HasDefaultValue(false);
 

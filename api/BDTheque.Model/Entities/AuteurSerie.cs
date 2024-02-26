@@ -7,7 +7,7 @@ using BDTheque.Model.Entities.Abstract;
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 [ObjectType]
-public class AuteurSerie : UniqueIdEntity
+public class AuteurSerie : VersioningEntity
 {
     public Guid AuteurId { get; set; }
     public virtual Auteur Auteur { get; set; } = null!;

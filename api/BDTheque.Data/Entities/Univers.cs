@@ -20,10 +20,10 @@ public static partial class ModelBuilderExtensions
         entity.HasIndex(e => e.NomRaw);
 
         entity.Property(e => e.Description).UseCollation(BDThequeContext.FrenchCollation);
-        entity.Property(e => e.DescriptionRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Description).ToSnakeCase()} COLLATE \"fr-x-icu\")", true);
+        entity.Property(e => e.DescriptionRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Description).ToSnakeCase()} COLLATE \"{BDThequeContext.PredictiveFrenchCollation}\")", true);
         entity.SetupMandatoryInitiale(e => e.Nom);
         entity.Property(e => e.Nom).UseCollation(BDThequeContext.FrenchCollation);
-        entity.Property(e => e.NomRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Nom).ToSnakeCase()} COLLATE \"fr-x-icu\")", true);
+        entity.Property(e => e.NomRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Nom).ToSnakeCase()} COLLATE \"{BDThequeContext.PredictiveFrenchCollation}\")", true);
 
         entity.HasOne(d => d.UniversParent).WithMany(p => p.UniversParents).HasForeignKey(d => d.UniversParentId).OnDelete(DeleteBehavior.Restrict);
         entity.HasOne(d => d.UniversRacine).WithMany(p => p.UniversRacines).HasForeignKey(d => d.UniversRacineId).OnDelete(DeleteBehavior.Restrict);

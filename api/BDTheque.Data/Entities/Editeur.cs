@@ -21,6 +21,6 @@ public static partial class ModelBuilderExtensions
 
         entity.SetupMandatoryInitiale(e => e.Nom);
         entity.Property(e => e.Nom).UseCollation(BDThequeContext.FrenchCollation);
-        entity.Property(e => e.NomRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Nom).ToSnakeCase()} COLLATE \"fr-x-icu\")", true);
+        entity.Property(e => e.NomRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Nom).ToSnakeCase()} COLLATE \"{BDThequeContext.PredictiveFrenchCollation}\")", true);
     }
 }

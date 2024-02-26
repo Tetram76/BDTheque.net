@@ -11,15 +11,14 @@ public static partial class ModelBuilderExtensions
         entity.ToTable("genres_series");
 
         SetupVersioning(entity);
-        SetupUniqueIdPrimaryKey(entity);
 
-        entity.HasIndex(
+        entity.HasKey(
             e => new
             {
-                e.GenreId,
-                e.SerieId
+                e.SerieId,
+                e.GenreId
             }
-        ).IsUnique();
+        );
 
         entity.HasOne(d => d.Genre).WithMany(p => p.GenresSeries).HasForeignKey(d => d.GenreId);
         entity.HasOne(d => d.Serie).WithMany(p => p.GenresSeries).HasForeignKey(d => d.SerieId);

@@ -21,11 +21,11 @@ public static partial class ModelBuilderExtensions
 
         entity.SetupOptionalInitiale(e => e.Titre);
         entity.Property(e => e.Notes).UseCollation(BDThequeContext.FrenchCollation);
-        entity.Property(e => e.NotesRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Notes).ToSnakeCase()} COLLATE \"fr-x-icu\")", true);
+        entity.Property(e => e.NotesRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Notes).ToSnakeCase()} COLLATE \"{BDThequeContext.PredictiveFrenchCollation}\")", true);
         entity.Property(e => e.Sujet).UseCollation(BDThequeContext.FrenchCollation);
-        entity.Property(e => e.SujetRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Sujet).ToSnakeCase()} COLLATE \"fr-x-icu\")", true);
+        entity.Property(e => e.SujetRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Sujet).ToSnakeCase()} COLLATE \"{BDThequeContext.PredictiveFrenchCollation}\")", true);
         entity.Property(e => e.Titre).UseCollation(BDThequeContext.FrenchCollation);
-        entity.Property(e => e.TitreRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Titre).ToSnakeCase()} COLLATE \"fr-x-icu\")", true);
+        entity.Property(e => e.TitreRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Titre).ToSnakeCase()} COLLATE \"{BDThequeContext.PredictiveFrenchCollation}\")", true);
         entity.Property(e => e.HorsSerie).HasDefaultValue(false);
         entity.Property(e => e.Integrale).HasDefaultValue(false);
 
