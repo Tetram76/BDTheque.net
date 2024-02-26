@@ -49,6 +49,8 @@ try
             loggerConfiguration.ReadFrom.Configuration(ctx.Configuration);
             if (builder.Environment.IsDevelopment())
                 loggerConfiguration.MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Information);
+            loggerConfiguration.Filter
+                .ByExcluding(logEvent => logEvent.Exception is HostAbortedException);
         }
     );
 
