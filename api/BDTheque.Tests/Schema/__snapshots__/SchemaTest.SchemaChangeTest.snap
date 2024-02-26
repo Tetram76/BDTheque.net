@@ -107,18 +107,16 @@ type Auteur implements IVersioning & IUniqueId {
   updatedAt: DateTime!
 }
 
-type AuteurAlbum implements IVersioning & IUniqueId {
+type AuteurAlbum implements IVersioning {
   album: Album!
   auteur: Auteur!
   createdAt: DateTime!
-  id: ID!
   updatedAt: DateTime!
 }
 
-type AuteurSerie implements IVersioning & IUniqueId {
+type AuteurSerie implements IVersioning {
   auteur: Auteur!
   createdAt: DateTime!
-  id: ID!
   serie: Serie!
   updatedAt: DateTime!
 }
@@ -530,12 +528,11 @@ type Genre implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel {
   updatedAt: DateTime!
 }
 
-type GenreAlbum implements IVersioning & IUniqueId {
+type GenreAlbum implements IVersioning {
   album: Album!
   createdAt: DateTime!
   fromSerie: Boolean!
   genre: Genre!
-  id: ID!
   updatedAt: DateTime!
 }
 
@@ -559,10 +556,9 @@ type GenreListEdge {
   node: Genre!
 }
 
-type GenreSerie implements IVersioning & IUniqueId {
+type GenreSerie implements IVersioning {
   createdAt: DateTime!
   genre: Genre!
-  id: ID!
   serie: Serie!
   updatedAt: DateTime!
 }
@@ -922,11 +918,10 @@ type Univers implements IVersioning & IUniqueId & IAssociable & IMandatoryLabel 
   updatedAt: DateTime!
 }
 
-type UniversAlbum implements IVersioning & IUniqueId {
+type UniversAlbum implements IVersioning {
   album: Album!
   createdAt: DateTime!
   fromSerie: Boolean!
-  id: ID!
   univers: Univers!
   updatedAt: DateTime!
 }
@@ -971,9 +966,8 @@ type UniversListEdge {
   node: Univers!
 }
 
-type UniversSerie implements IVersioning & IUniqueId {
+type UniversSerie implements IVersioning {
   createdAt: DateTime!
-  id: ID!
   serie: Serie!
   univers: Univers!
   updatedAt: DateTime!
