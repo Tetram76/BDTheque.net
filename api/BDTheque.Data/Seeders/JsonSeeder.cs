@@ -13,7 +13,7 @@ public static class JsonSeeder
         var assembly = Assembly.GetExecutingAssembly();
 
         using Stream? stream = assembly.GetManifestResourceStream(resourceName);
-        using var reader = new StreamReader(stream);
+        using var reader = new StreamReader(stream!);
 
         string json = reader.ReadToEnd();
         return JsonSerializer.Deserialize<IEnumerable<T>>(json) ?? new List<T>();
