@@ -92,7 +92,7 @@ public static class Extensions
         const string idSuffix = "Id";
         if (!propertySyntax.Identifier.Text.EndsWith(idSuffix))
             return false;
-        string propertyNameWithoutId = propertySyntax.Identifier.Text[..^idSuffix.Length];
+        string propertyNameWithoutId = propertySyntax.Identifier.Text.Substring(0, propertySyntax.Identifier.Text.Length - idSuffix.Length);
 
         PropertyDeclarationSyntax? entityProperty = propertySyntaxParent.Members
             .OfType<PropertyDeclarationSyntax>()

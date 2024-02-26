@@ -63,7 +63,7 @@ public class MutationInputsGenerator : IIncrementalGenerator
         var baseClassName = baseTypeSymbol.ToDisplayParts().Last().ToString();
         if (!baseClassName.EndsWith(entitySuffix))
             return null;
-        baseClassName = baseClassName[..^entitySuffix.Length];
+        baseClassName = baseClassName.Substring(0, baseClassName.Length - entitySuffix.Length);
 
         ClassDeclarationSyntax[] inputClassesDeclaration = GenerateInputClassesDeclaration(generatorContext, classDeclaration, baseClassName);
         ClassDeclarationSyntax nestedClassDeclaration = GenerateNestedClassDeclaration(generatorContext, classDeclaration, baseClassName);
