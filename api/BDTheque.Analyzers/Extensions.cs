@@ -1,5 +1,6 @@
 ﻿namespace BDTheque.Analyzers;
 
+using System.CodeDom.Compiler;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,7 +12,7 @@ public static class Extensions
             SyntaxFactory.AttributeList(
                 SyntaxFactory.SingletonSeparatedList(
                     SyntaxFactory.Attribute(
-                        SyntaxFactory.IdentifierName("global::" + typeof(System.CodeDom.Compiler.GeneratedCodeAttribute).FullName),
+                        SyntaxFactory.IdentifierName("global::" + typeof(GeneratedCodeAttribute).FullName),
                         SyntaxFactory.AttributeArgumentList(
                             SyntaxFactory.SeparatedList(
                                 [

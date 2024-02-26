@@ -1,7 +1,6 @@
 namespace BDTheque.Tests.Schema;
 
 using BDTheque.Tests.Helpers;
-using HotChocolate.Types;
 
 public class SchemaTest
 {

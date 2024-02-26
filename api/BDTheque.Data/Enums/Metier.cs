@@ -1,6 +1,5 @@
 namespace BDTheque.Data.Enums;
 
-using BDTheque.Data.Extensions;
 using BDTheque.Extensions;
 using Microsoft.EntityFrameworkCore;
 

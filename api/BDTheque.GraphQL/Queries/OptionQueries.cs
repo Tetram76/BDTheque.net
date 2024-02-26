@@ -17,5 +17,4 @@ public static class OptionQueries
 
     public static Task<IReadOnlyList<Option>> GetOptionByCategoryAsync(OptionCategory category, IOptionByCategoryDataLoader dataLoader, CancellationToken cancellationToken)
         => dataLoader.LoadAsync(category, cancellationToken);
-
 }

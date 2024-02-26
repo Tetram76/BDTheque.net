@@ -2,7 +2,6 @@ namespace BDTheque.Data.Context;
 
 using BDTheque.Data.Entities;
 using BDTheque.Data.Enums;
-using BDTheque.Data.Extensions;
 using BDTheque.Data.Seeders;
 using BDTheque.Extensions;
 using BDTheque.Model.Entities;
