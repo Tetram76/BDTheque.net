@@ -22,5 +22,6 @@
   <Property Name="sonar.exclusions">**/Migrations/**,**/*.g.cs</Property>
   <Property Name="sonar.dotnet.excludeTestProjects">true</Property>
   <Property Name="sonar.exclusions">**/*.txt, **/*.xml, **/*.json,</Property>
+  <Property Name="sonar.coverage.exclusions">**/BDTheque.Analyzers/**</Property>
 
 </SonarQubeAnalysisProperties>
