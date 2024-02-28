@@ -17,7 +17,7 @@ public static class MappingDefinitions
     ];
 
     public static readonly IEnumerable<Func<PropertyInfo, bool>> MutationInputIgnoredProperties =
-        ObjectIgnoredProperties.Union(
+        ObjectIgnoredProperties.Concat(
             [
                 // property => property.Name.Equals("Id", StringComparison.InvariantCultureIgnoreCase),
                 property => property.Name.Equals("CreatedAt", StringComparison.InvariantCultureIgnoreCase),
@@ -35,7 +35,7 @@ public static class MappingDefinitions
     ];
 
     public static readonly IEnumerable<(Func<PropertyInfo, bool> check, Type fieldType)> MutationTypeMappings =
-        TypeMappings.Union(
+        TypeMappings.Concat(
             [
             ]
         );

@@ -9,6 +9,7 @@ using BDTheque.Model.Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Hosting;
 
 public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbContext(options)
 {
@@ -35,7 +36,7 @@ public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbCont
     public virtual DbSet<UniversAlbum> UniversAlbums { get; init; } = null!;
     public virtual DbSet<UniversSerie> UniversSeries { get; init; } = null!;
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override async void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
             .RegisterEnums()
@@ -79,7 +80,7 @@ public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbCont
                 property.SetColumnName(property.GetColumnName().ToSnakeCase());
         }
 
-        modelBuilder.Seed();
+        await modelBuilder.SeedFromResource<Option>();
     }
 
     public override int SaveChanges()

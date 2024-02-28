@@ -11,7 +11,7 @@ public class GenreTest
             b => b.SetQuery(
                 """
                 query {
-                    genreList(last: 10, where: {initiale: {eq: "A"}}) {
+                    genreList(last: 10, where: {initiale: {eq: "A"}}, order: {nom: ASC}) {
                       pageInfo {
                         hasNextPage
                         hasPreviousPage
