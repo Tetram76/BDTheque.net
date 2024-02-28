@@ -9,6 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Humanizer" />
+      <PackageReference Include="Newtonsoft.Json"/>
       <PackageReference Include="Serilog"/>
       <PackageReference Include="Microsoft.EntityFrameworkCore" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
@@ -22,10 +24,6 @@
     <ProjectReference Include="..\BDTheque.Analyzers\BDTheque.Analyzers.csproj" />
     <ProjectReference Include="..\BDTheque.Extensions\BDTheque.Extensions.csproj" />
     <ProjectReference Include="..\BDTheque.Model\BDTheque.Model.csproj"/>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
