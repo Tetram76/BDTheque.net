@@ -22,10 +22,13 @@ public class EditionAlbum : UniqueIdEntity
     public Guid? CollectionId { get; set; }
     public virtual Collection? Collection { get; set; }
 
-    public ushort? EtatId { get; set; }
+    [Year]
+    public ushort? AnneeEdition { get; set; }
 
-    [MutationType<OptionEtatType>]
-    public virtual Option? Etat { get; set; }
+    [GraphQLType<IsbnType>]
+    public string? Isbn { get; set; }
+
+    public ushort? NombreDePages { get; set; }
 
     public bool Stock { get; set; } = true;
     public bool? Offert { get; set; } = false;
@@ -34,14 +37,12 @@ public class EditionAlbum : UniqueIdEntity
 
     public DateOnly? DateAchat { get; set; }
 
-    [NonNegative<decimal>]
-    public decimal? Prix { get; set; }
-
     public bool? Dedicace { get; set; } = false;
 
     public string? NumeroPerso { get; set; }
 
     public string? Notes { get; set; }
+    public string? NotesRaw { get; set; }
 
     public virtual ICollection<Cote> Cotes { get; set; } = new List<Cote>();
     public virtual ICollection<Image> Images { get; set; } = new List<Image>();

@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BDTheque.Data.Migrations
 {
     [DbContext(typeof(BDThequeContext))]
-    [Migration("20240228130240_Initial")]
+    [Migration("20240229210504_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -389,10 +389,6 @@ namespace BDTheque.Data.Migrations
                         .HasColumnName("id")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<int?>("AnneeEdition")
-                        .HasColumnType("integer")
-                        .HasColumnName("annee_edition");
-
                     b.Property<bool?>("Couleur")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -403,32 +399,22 @@ namespace BDTheque.Data.Migrations
                         .HasColumnType("timestamp(3) with time zone")
                         .HasColumnName("created_at");
 
+                    b.Property<int?>("EtatId")
+                        .HasColumnType("integer")
+                        .HasColumnName("etat_id");
+
                     b.Property<int?>("FormatEditionId")
                         .HasColumnType("integer")
                         .HasColumnName("format_edition_id");
 
-                    b.Property<string>("Isbn")
-                        .HasColumnType("text")
-                        .HasColumnName("isbn");
-
-                    b.Property<int?>("NombreDePages")
-                        .HasColumnType("integer")
-                        .HasColumnName("nombre_de_pages");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("text")
-                        .HasColumnName("notes")
-                        .UseCollation("french_ci_ai");
-
-                    b.Property<string>("NotesRaw")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("text")
-                        .HasColumnName("notes_raw")
-                        .HasComputedColumnSql("(notes COLLATE \"fr-x-icu\")", true);
-
                     b.Property<int?>("OrientationId")
                         .HasColumnType("integer")
                         .HasColumnName("orientation_id");
+
+                    b.Property<decimal?>("Prix")
+                        .HasPrecision(8, 3)
+                        .HasColumnType("numeric(8,3)")
+                        .HasColumnName("prix");
 
                     b.Property<int?>("ReliureId")
                         .HasColumnType("integer")
@@ -454,6 +440,8 @@ namespace BDTheque.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EtatId");
+
                     b.HasIndex("FormatEditionId");
 
                     b.HasIndex("OrientationId");
@@ -478,6 +466,10 @@ namespace BDTheque.Data.Migrations
                     b.Property<Guid>("AlbumId")
                         .HasColumnType("uuid")
                         .HasColumnName("album_id");
+
+                    b.Property<int?>("AnneeEdition")
+                        .HasColumnType("integer")
+                        .HasColumnName("annee_edition");
 
                     b.Property<Guid?>("CollectionId")
                         .HasColumnType("uuid")
@@ -505,19 +497,30 @@ namespace BDTheque.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("edition_id");
 
-                    b.Property<int?>("EtatId")
-                        .HasColumnType("integer")
-                        .HasColumnName("etat_id");
-
                     b.Property<bool?>("Gratuit")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false)
                         .HasColumnName("gratuit");
 
+                    b.Property<string>("Isbn")
+                        .HasColumnType("text")
+                        .HasColumnName("isbn");
+
+                    b.Property<int?>("NombreDePages")
+                        .HasColumnType("integer")
+                        .HasColumnName("nombre_de_pages");
+
                     b.Property<string>("Notes")
                         .HasColumnType("text")
-                        .HasColumnName("notes");
+                        .HasColumnName("notes")
+                        .UseCollation("french_ci_ai");
+
+                    b.Property<string>("NotesRaw")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("text")
+                        .HasColumnName("notes_raw")
+                        .HasComputedColumnSql("(notes COLLATE \"fr-x-icu\")", true);
 
                     b.Property<string>("NumeroPerso")
                         .HasColumnType("text")
@@ -535,11 +538,6 @@ namespace BDTheque.Data.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("offert");
 
-                    b.Property<decimal?>("Prix")
-                        .HasPrecision(8, 3)
-                        .HasColumnType("numeric(8,3)")
-                        .HasColumnName("prix");
-
                     b.Property<bool>("Stock")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -555,8 +553,6 @@ namespace BDTheque.Data.Migrations
                     b.HasAlternateKey("AlbumId", "EditionId");
 
                     b.HasIndex("EditionId");
-
-                    b.HasIndex("EtatId");
 
                     b.HasIndex("EditeurId", "CollectionId");
 
@@ -1500,6 +1496,11 @@ namespace BDTheque.Data.Migrations
 
             modelBuilder.Entity("BDTheque.Model.Entities.Edition", b =>
                 {
+                    b.HasOne("BDTheque.Model.Entities.Option", "Etat")
+                        .WithMany("EditionsEtats")
+                        .HasForeignKey("EtatId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("BDTheque.Model.Entities.Option", "FormatEdition")
                         .WithMany("EditionFormatEditions")
                         .HasForeignKey("FormatEditionId")
@@ -1524,6 +1525,8 @@ namespace BDTheque.Data.Migrations
                         .WithMany("EditionTypeEditions")
                         .HasForeignKey("TypeEditionId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Etat");
 
                     b.Navigation("FormatEdition");
 
@@ -1556,11 +1559,6 @@ namespace BDTheque.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BDTheque.Model.Entities.Option", "Etat")
-                        .WithMany("EditionsAlbums")
-                        .HasForeignKey("EtatId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("BDTheque.Model.Entities.Collection", "Collection")
                         .WithMany("EditionsAlbums")
                         .HasForeignKey("EditeurId", "CollectionId")
@@ -1573,8 +1571,6 @@ namespace BDTheque.Data.Migrations
                     b.Navigation("Editeur");
 
                     b.Navigation("Edition");
-
-                    b.Navigation("Etat");
                 });
 
             modelBuilder.Entity("BDTheque.Model.Entities.GenreAlbum", b =>
@@ -1792,7 +1788,7 @@ namespace BDTheque.Data.Migrations
 
                     b.Navigation("EditionTypeEditions");
 
-                    b.Navigation("EditionsAlbums");
+                    b.Navigation("EditionsEtats");
 
                     b.Navigation("Images");
 
