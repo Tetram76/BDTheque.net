@@ -9,12 +9,12 @@ public static class GenreResolvers
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Album> GetAlbums([Parent] Genre genre)
-        => genre.GenresAlbums.Select(genreAlbum => genreAlbum.Album).AsQueryable();
+        => genre.GenresAlbums.Select(genreAlbum => genreAlbum.Album).AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Serie> GetSeries([Parent] Genre genre)
-        => genre.GenresSeries.Select(genreSerie => genreSerie.Serie).AsQueryable();
+        => genre.GenresSeries.Select(genreSerie => genreSerie.Serie).AsQueryable().AsNoTracking();
 }

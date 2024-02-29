@@ -9,12 +9,12 @@ public static class PersonneResolvers
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Album> GetAlbums([Parent] Personne personne)
-        => personne.Auteurs.SelectMany(auteur => auteur.AuteursAlbums).Select(auteurAlbum => auteurAlbum.Album).AsQueryable();
+        => personne.Auteurs.SelectMany(auteur => auteur.AuteursAlbums).Select(auteurAlbum => auteurAlbum.Album).AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Serie> GetSeries([Parent] Personne personne)
-        => personne.Auteurs.SelectMany(auteur => auteur.AuteursSeries).Select(auteurSerie => auteurSerie.Serie).AsQueryable();
+        => personne.Auteurs.SelectMany(auteur => auteur.AuteursSeries).Select(auteurSerie => auteurSerie.Serie).AsQueryable().AsNoTracking();
 }

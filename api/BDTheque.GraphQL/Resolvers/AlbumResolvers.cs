@@ -9,26 +9,26 @@ public static class AlbumResolvers
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Auteur> GetAuteurs([Parent] Album album)
-        => album.AuteursAlbums.Select(auteurAlbum => auteurAlbum.Auteur).AsQueryable();
+        => album.AuteursAlbums.Select(auteurAlbum => auteurAlbum.Auteur).AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<EditionAlbum> GetEditions([Parent] Album album)
-        => album.EditionsAlbums.AsQueryable();
+        => album.EditionsAlbums.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Genre> GetGenres([Parent] Album album)
-        => album.GenresAlbums.Select(genreAlbum => genreAlbum.Genre).AsQueryable();
+        => album.GenresAlbums.Select(genreAlbum => genreAlbum.Genre).AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Univers> GetUnivers([Parent] Album album)
-        => album.UniversAlbums.Select(universAlbum => universAlbum.Univers).AsQueryable();
+        => album.UniversAlbums.Select(universAlbum => universAlbum.Univers).AsQueryable().AsNoTracking();
 }

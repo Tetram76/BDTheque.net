@@ -9,61 +9,61 @@ public static class OptionResolvers
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Album> GetAlbums([Parent] Option option)
-        => option.Albums.AsQueryable();
+        => option.Albums.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Serie> GetSeries([Parent] Option option)
-        => option.Series.AsQueryable();
+        => option.Series.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Edition> GetEditionFormatEditions([Parent] Option option)
-        => option.EditionFormatEditions.AsQueryable();
+        => option.EditionFormatEditions.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Edition> GetEditionOrientations([Parent] Option option)
-        => option.EditionOrientations.AsQueryable();
+        => option.EditionOrientations.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Edition> GetEditionReliures([Parent] Option option)
-        => option.EditionReliures.AsQueryable();
+        => option.EditionReliures.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Edition> GetEditionSensLectures([Parent] Option option)
-        => option.EditionSensLectures.AsQueryable();
+        => option.EditionSensLectures.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Edition> GetEditionTypeEditions([Parent] Option option)
-        => option.EditionTypeEditions.AsQueryable();
+        => option.EditionTypeEditions.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<EditionAlbum> GetEditionsAlbums([Parent] Option option)
-        => option.EditionsAlbums.AsQueryable();
+        => option.EditionsAlbums.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Image> GetImages([Parent] Option option)
-        => option.Images.AsQueryable();
+        => option.Images.AsQueryable().AsNoTracking();
 }

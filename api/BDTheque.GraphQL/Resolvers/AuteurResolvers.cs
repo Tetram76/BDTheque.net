@@ -9,12 +9,12 @@ public static class AuteurResolvers
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Album> GetAlbums([Parent] Auteur auteur)
-        => auteur.AuteursAlbums.Select(auteurAlbum => auteurAlbum.Album).AsQueryable();
+        => auteur.AuteursAlbums.Select(auteurAlbum => auteurAlbum.Album).AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Serie> GetSeries([Parent] Auteur auteur)
-        => auteur.AuteursSeries.Select(auteurSerie => auteurSerie.Serie).AsQueryable();
+        => auteur.AuteursSeries.Select(auteurSerie => auteurSerie.Serie).AsQueryable().AsNoTracking();
 }
