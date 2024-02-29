@@ -1,4 +1,4 @@
-namespace BDTheque.Tests.Schema.Queries;
+namespace BDTheque.Tests.Queries;
 
 using BDTheque.Tests.Helpers;
 

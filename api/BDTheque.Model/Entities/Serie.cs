@@ -2,6 +2,7 @@ namespace BDTheque.Model.Entities;
 
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
+using BDTheque.Model.Scalars;
 
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
@@ -39,6 +40,8 @@ public class Serie : OptionalLabelEntity
     public bool? SuivreManquants { get; set; } = true;
 
     public ushort? NotationId { get; set; }
+
+    [MutationType<OptionNotationType>]
     public virtual Option? Notation { get; set; }
 
     public virtual ICollection<Album> Albums { get; set; } = new List<Album>();
