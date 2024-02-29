@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  ASPNETCORE_ENVIRONMENT: CI
+  ASPNETCORE_ENVIRONMENT: ${{ vars.ASPNETCORE_ENVIRONMENT }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed for Sonar to get PR information, if any
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
