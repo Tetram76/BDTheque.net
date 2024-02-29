@@ -1,5 +1,7 @@
 namespace BDTheque.GraphQL.Resolvers;
 
+using Microsoft.EntityFrameworkCore;
+
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [ExtendObjectType<Collection>]
 public static class CollectionResolvers
@@ -9,12 +11,12 @@ public static class CollectionResolvers
     [UseFiltering]
     [UseSorting]
     public static IQueryable<EditionAlbum> GetAlbums([Parent] Collection collection)
-        => collection.EditionsAlbums.AsQueryable();
+        => collection.EditionsAlbums.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Serie> GetSeries([Parent] Collection collection)
-        => collection.Series.AsQueryable();
+        => collection.Series.AsQueryable().AsNoTracking();
 }

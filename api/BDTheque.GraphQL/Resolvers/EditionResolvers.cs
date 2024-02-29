@@ -9,5 +9,5 @@ public static class EditionResolvers
     [UseFiltering]
     [UseSorting]
     public static IQueryable<EditionAlbum> GetAlbums([Parent] Edition edition)
-        => edition.EditionsAlbums.AsQueryable();
+        => edition.EditionsAlbums.AsQueryable().AsNoTracking();
 }

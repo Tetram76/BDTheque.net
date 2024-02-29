@@ -9,12 +9,12 @@ public static class EditionAlbumResolvers
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Cote> GetCotes([Parent] EditionAlbum edition)
-        => edition.Cotes.AsQueryable();
+        => edition.Cotes.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Image> GetImages([Parent] EditionAlbum edition)
-        => edition.Images.AsQueryable();
+        => edition.Images.AsQueryable().AsNoTracking();
 }

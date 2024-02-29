@@ -9,26 +9,26 @@ public static class EditeurResolvers
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Collection> GetCollections([Parent] Editeur editeur)
-        => editeur.Collections.AsQueryable();
+        => editeur.Collections.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Serie> GetSeries([Parent] Editeur editeur)
-        => editeur.Series.AsQueryable();
+        => editeur.Series.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<EditionAlbum> GetEditions([Parent] Editeur editeur)
-        => editeur.EditionsAlbums.AsQueryable();
+        => editeur.EditionsAlbums.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Album> GetAlbums([Parent] Editeur editeur)
-        => editeur.EditionsAlbums.Select(edition => edition.Album).Distinct().AsQueryable();
+        => editeur.EditionsAlbums.Select(edition => edition.Album).Distinct().AsQueryable().AsNoTracking();
 }
