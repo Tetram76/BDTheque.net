@@ -1914,27 +1914,27 @@ scalar DateTime @specifiedBy(url: "https:\/\/www.graphql-scalars.com\/date-time"
 "The built-in `Decimal` scalar type."
 scalar Decimal
 
-"Integers that will represent a book condition."
+"Integers that will represent a book condition.\nValid values: [100, 103, 105, 108, 110]"
 scalar EditionEtat
 
-"Integers that will represent a book edition format."
+"Integers that will represent a book edition format.\nValid values: [501, 503, 504, 505, 506, 510]"
 scalar EditionFormat
 
-"Integers that will represent a book edition orientation."
+"Integers that will represent a book edition orientation.\nValid values: [401, 402]"
 scalar EditionOrientation
 
-"Integers that will represent a book binding."
+"Integers that will represent a book binding.\nValid values: [200, 201]"
 scalar EditionReliure
 
-"Integers that will represent a book reading direction."
+"Integers that will represent a book reading direction.\nValid values: [801, 802]"
 scalar EditionSensLecture
 
-"Integers that will represent a book edition kind."
+"Integers that will represent a book edition kind.\nValid values: [301, 302, 303]"
 scalar EditionType
 
 scalar EuroCurrency
 
-"Integers that will represent an image kind."
+"Integers that will represent an image kind.\nValid values: [600, 601, 602, 603, 604]"
 scalar ImageType
 
 "The ISBN scalar type is a ISBN-10 or ISBN-13 number: https:\/\/en.wikipedia.org\/wiki\/International_Standard_Book_Number."
@@ -1946,7 +1946,7 @@ scalar Month
 "The NonEmptyString scalar type represents non empty textual data, represented as UTF‐8 character sequences with at least one character"
 scalar NonEmptyString
 
-"Integers that will represent a notation."
+"Integers that will represent a notation.\nValid values: [900, 901, 902, 903, 904, 905]"
 scalar Notation
 
 scalar URL @specifiedBy(url: "https:\/\/tools.ietf.org\/html\/rfc3986")
