@@ -29,7 +29,7 @@ public class Option : VersioningEntity
     public virtual ICollection<Edition> EditionReliures { get; set; } = new List<Edition>();
     public virtual ICollection<Edition> EditionSensLectures { get; set; } = new List<Edition>();
     public virtual ICollection<Edition> EditionTypeEditions { get; set; } = new List<Edition>();
-    public virtual ICollection<EditionAlbum> EditionsAlbums { get; set; } = new List<EditionAlbum>();
+    public virtual ICollection<Edition> EditionsEtats { get; set; } = new List<Edition>();
 
     public virtual ICollection<Image> Images { get; set; } = new List<Image>();
 }

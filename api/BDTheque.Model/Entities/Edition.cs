@@ -10,19 +10,16 @@ using BDTheque.Model.Scalars;
 [ObjectType]
 public class Edition : UniqueIdEntity
 {
-    [Year]
-    public ushort? AnneeEdition { get; set; }
-
-    public string? Notes { get; set; }
-    public string? NotesRaw { get; set; }
-
-    [GraphQLType<IsbnType>]
-    public string? Isbn { get; set; }
-
-    public ushort? NombreDePages { get; set; }
+    [NonNegative<decimal>]
+    public decimal? Prix { get; set; }
 
     public bool? Couleur { get; set; } = true;
     public bool? Vo { get; set; } = false;
+
+    [MutationType<OptionEtatType>]
+    public ushort? EtatId { get; set; }
+
+    public virtual Option? Etat { get; set; }
 
     public ushort? ReliureId { get; set; }
 

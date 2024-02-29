@@ -57,8 +57,8 @@ public static class OptionResolvers
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<EditionAlbum> GetEditionsAlbums([Parent] Option option)
-        => option.EditionsAlbums.AsQueryable().AsNoTracking();
+    public static IQueryable<Edition> GetEditionsEtats([Parent] Option option)
+        => option.EditionsEtats.AsQueryable().AsNoTracking();
 
     [UsePaging]
     [UseProjection]

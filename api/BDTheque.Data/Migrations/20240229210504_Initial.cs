@@ -158,13 +158,10 @@ namespace BDTheque.Data.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    annee_edition = table.Column<int>(type: "integer", nullable: true),
-                    notes = table.Column<string>(type: "text", nullable: true, collation: "french_ci_ai"),
-                    notes_raw = table.Column<string>(type: "text", nullable: true, computedColumnSql: "(notes COLLATE \"fr-x-icu\")", stored: true),
-                    isbn = table.Column<string>(type: "text", nullable: true),
-                    nombre_de_pages = table.Column<int>(type: "integer", nullable: true),
+                    prix = table.Column<decimal>(type: "numeric(8,3)", precision: 8, scale: 3, nullable: true),
                     couleur = table.Column<bool>(type: "boolean", nullable: true, defaultValue: true),
                     vo = table.Column<bool>(type: "boolean", nullable: true, defaultValue: false),
+                    etat_id = table.Column<int>(type: "integer", nullable: true),
                     reliure_id = table.Column<int>(type: "integer", nullable: true),
                     format_edition_id = table.Column<int>(type: "integer", nullable: true),
                     type_edition_id = table.Column<int>(type: "integer", nullable: true),
@@ -176,6 +173,12 @@ namespace BDTheque.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_editions", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_editions_options_etat_id",
+                        column: x => x.etat_id,
+                        principalTable: "options",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_editions_options_format_edition_id",
                         column: x => x.format_edition_id,
@@ -440,16 +443,18 @@ namespace BDTheque.Data.Migrations
                     album_id = table.Column<Guid>(type: "uuid", nullable: false),
                     editeur_id = table.Column<Guid>(type: "uuid", nullable: false),
                     collection_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    etat_id = table.Column<int>(type: "integer", nullable: true),
+                    annee_edition = table.Column<int>(type: "integer", nullable: true),
+                    isbn = table.Column<string>(type: "text", nullable: true),
+                    nombre_de_pages = table.Column<int>(type: "integer", nullable: true),
                     stock = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
                     offert = table.Column<bool>(type: "boolean", nullable: true, defaultValue: false),
                     occasion = table.Column<bool>(type: "boolean", nullable: true, defaultValue: false),
                     gratuit = table.Column<bool>(type: "boolean", nullable: true, defaultValue: false),
                     date_achat = table.Column<DateOnly>(type: "date", nullable: true),
-                    prix = table.Column<decimal>(type: "numeric(8,3)", precision: 8, scale: 3, nullable: true),
                     dedicace = table.Column<bool>(type: "boolean", nullable: true, defaultValue: false),
                     numero_perso = table.Column<string>(type: "text", nullable: true),
-                    notes = table.Column<string>(type: "text", nullable: true),
+                    notes = table.Column<string>(type: "text", nullable: true, collation: "french_ci_ai"),
+                    notes_raw = table.Column<string>(type: "text", nullable: true, computedColumnSql: "(notes COLLATE \"fr-x-icu\")", stored: true),
                     created_at = table.Column<DateTime>(type: "timestamp(3) with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp(3) with time zone", nullable: false)
                 },
@@ -480,12 +485,6 @@ namespace BDTheque.Data.Migrations
                         principalTable: "editions",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_editions_albums_options_etat_id",
-                        column: x => x.etat_id,
-                        principalTable: "options",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -706,6 +705,11 @@ namespace BDTheque.Data.Migrations
                 column: "nom_raw");
 
             migrationBuilder.CreateIndex(
+                name: "IX_editions_etat_id",
+                table: "editions",
+                column: "etat_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_editions_format_edition_id",
                 table: "editions",
                 column: "format_edition_id");
@@ -739,11 +743,6 @@ namespace BDTheque.Data.Migrations
                 name: "IX_editions_albums_edition_id",
                 table: "editions_albums",
                 column: "edition_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_editions_albums_etat_id",
-                table: "editions_albums",
-                column: "etat_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_genres_nom",
