@@ -2,6 +2,7 @@ namespace BDTheque.Model.Entities;
 
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
+using BDTheque.Model.Scalars;
 
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
@@ -17,6 +18,7 @@ public class Image : UniqueIdEntity
     public ushort Ordre { get; set; }
 
     public ushort TypeId { get; set; }
+    [MutationType<TypeImageType>]
     public virtual Option Type { get; set; } = null!;
 
     public Guid EditionId { get; set; }

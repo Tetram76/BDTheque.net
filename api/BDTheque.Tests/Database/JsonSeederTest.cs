@@ -1,4 +1,4 @@
-namespace BDTheque.Tests.Data;
+namespace BDTheque.Tests.Database;
 
 using System.Reflection;
 using BDTheque.Data.Seeders;

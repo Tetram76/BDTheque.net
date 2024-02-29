@@ -1064,7 +1064,7 @@ input AlbumCreateInput {
   horsSerie: Boolean
   integrale: Boolean
   moisParution: Month
-  notation: OptionNestedInput
+  notation: Notation
   notes: NonEmptyString
   serie: SerieNestedInput
   sujet: NonEmptyString
@@ -1127,7 +1127,7 @@ input AlbumUpdateInput {
   id: ID!
   integrale: Boolean
   moisParution: Month
-  notation: OptionNestedInput
+  notation: Notation
   notes: NonEmptyString
   serie: SerieNestedInput
   sujet: NonEmptyString
@@ -1599,10 +1599,6 @@ input OptionFilterInput {
   updatedAt: DateTimeOperationFilterInput
 }
 
-input OptionNestedInput {
-  id: ID!
-}
-
 input OptionSortInput {
   id: SortEnumType
   category: SortEnumType
@@ -1660,7 +1656,7 @@ input SerieCreateInput {
   editeur: EditeurNestedInput
   modeleEdition: EditionNestedInput!
   nbAlbums: UnsignedShort
-  notation: OptionNestedInput
+  notation: Notation
   notes: NonEmptyString
   siteWeb: URL
   suivreManquants: Boolean
@@ -1732,7 +1728,7 @@ input SerieUpdateInput {
   id: ID!
   modeleEdition: EditionNestedInput!
   nbAlbums: UnsignedShort
-  notation: OptionNestedInput
+  notation: Notation
   notes: NonEmptyString
   siteWeb: URL
   suivreManquants: Boolean
@@ -1918,7 +1914,28 @@ scalar DateTime @specifiedBy(url: "https:\/\/www.graphql-scalars.com\/date-time"
 "The built-in `Decimal` scalar type."
 scalar Decimal
 
+"Integers that will represent a book condition."
+scalar EditionEtat
+
+"Integers that will represent a book edition format."
+scalar EditionFormat
+
+"Integers that will represent a book edition orientation."
+scalar EditionOrientation
+
+"Integers that will represent a book binding."
+scalar EditionReliure
+
+"Integers that will represent a book reading direction."
+scalar EditionSensLecture
+
+"Integers that will represent a book edition kind."
+scalar EditionType
+
 scalar EuroCurrency
+
+"Integers that will represent an image kind."
+scalar ImageType
 
 "The ISBN scalar type is a ISBN-10 or ISBN-13 number: https:\/\/en.wikipedia.org\/wiki\/International_Standard_Book_Number."
 scalar Isbn
@@ -1928,6 +1945,9 @@ scalar Month
 
 "The NonEmptyString scalar type represents non empty textual data, represented as UTF‐8 character sequences with at least one character"
 scalar NonEmptyString
+
+"Integers that will represent a notation."
+scalar Notation
 
 scalar URL @specifiedBy(url: "https:\/\/tools.ietf.org\/html\/rfc3986")
 

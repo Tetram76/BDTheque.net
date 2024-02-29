@@ -2,6 +2,7 @@ namespace BDTheque.Model.Entities;
 
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
+using BDTheque.Model.Scalars;
 
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
@@ -22,6 +23,8 @@ public class EditionAlbum : UniqueIdEntity
     public virtual Collection? Collection { get; set; }
 
     public ushort? EtatId { get; set; }
+
+    [MutationType<OptionEtatType>]
     public virtual Option? Etat { get; set; }
 
     public bool Stock { get; set; } = true;
