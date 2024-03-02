@@ -6,6 +6,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 public static class PropertyDeclarationSyntaxExtensions
 {
+    public static bool IsGraphQLReadOnly(this PropertyDeclarationSyntax propertySyntax, GeneratorSyntaxContext context) =>
+        propertySyntax.IsAnnotatedWithAttribute("BDTheque.Model.Attributes.GraphQLReadOnlyAttribute", context);
+
     public static bool IsAnnotatedWithIdType(this PropertyDeclarationSyntax propertySyntax, GeneratorSyntaxContext context) =>
         propertySyntax.IsAnnotatedWithAttribute("HotChocolate.Types.Relay.IDAttribute", context);
 
@@ -56,6 +59,53 @@ public static class PropertyDeclarationSyntaxExtensions
             );
 
         return propertyDeclarationSyntax;
+    }
+
+    public static IfStatementSyntax BuildApplyTest(this PropertyDeclarationSyntax propertyDeclarationSyntax, bool getterExpression)
+    {
+        MemberAccessExpressionSyntax condition = SyntaxFactory.MemberAccessExpression(
+            SyntaxKind.SimpleMemberAccessExpression,
+            SyntaxFactory.MemberAccessExpression(
+                SyntaxKind.SimpleMemberAccessExpression,
+                SyntaxFactory.ThisExpression(),
+                SyntaxFactory.IdentifierName(propertyDeclarationSyntax.Identifier.Text)
+            ),
+            SyntaxFactory.IdentifierName("HasValue")
+        );
+
+        ExpressionSyntax getValueExpression = SyntaxFactory.MemberAccessExpression(
+            SyntaxKind.SimpleMemberAccessExpression,
+            SyntaxFactory.MemberAccessExpression(
+                SyntaxKind.SimpleMemberAccessExpression,
+                SyntaxFactory.ThisExpression(),
+                SyntaxFactory.IdentifierName(propertyDeclarationSyntax.Identifier.Text)
+            ),
+            SyntaxFactory.IdentifierName("Value")
+        );
+
+        if (getterExpression)
+            getValueExpression = SyntaxFactory.AwaitExpression(
+                SyntaxFactory.InvocationExpression(
+                    SyntaxFactory.IdentifierName("get" + propertyDeclarationSyntax.Identifier.Text),
+                    SyntaxFactory.ArgumentList(
+                        SyntaxFactory.SingletonSeparatedList(
+                            SyntaxFactory.Argument(getValueExpression)
+                        )
+                    )
+                )
+            );
+
+        AssignmentExpressionSyntax assignment = SyntaxFactory.AssignmentExpression(
+            SyntaxKind.SimpleAssignmentExpression,
+            SyntaxFactory.MemberAccessExpression(
+                SyntaxKind.SimpleMemberAccessExpression,
+                SyntaxFactory.IdentifierName("entity"),
+                SyntaxFactory.IdentifierName(propertyDeclarationSyntax.Identifier.Text)
+            ),
+            getValueExpression
+        );
+
+        return SyntaxFactory.IfStatement(condition, SyntaxFactory.ExpressionStatement(assignment));
     }
 
     public static TypeSyntax? GetMutationType(this PropertyDeclarationSyntax propertyDeclarationSyntax, GeneratorSyntaxContext context)

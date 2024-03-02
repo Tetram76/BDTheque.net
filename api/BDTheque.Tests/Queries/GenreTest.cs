@@ -1,8 +1,6 @@
 namespace BDTheque.Tests.Queries;
 
-using BDTheque.Tests.Helpers;
-
-public class GenreTest
+public class GenreTest : BaseTest
 {
     [Fact]
     public async Task GetGenresTest()

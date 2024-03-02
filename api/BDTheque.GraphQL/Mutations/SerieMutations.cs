@@ -5,16 +5,23 @@ using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
-using Microsoft.EntityFrameworkCore;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
 public static class SerieMutations
 {
+    private static Task<Serie> ApplyTo(this ISerieInputType input, Serie serie, BDThequeContext dbContext) =>
+        input.ApplyTo(
+            serie,
+            async editeur => editeur == null ? null : await dbContext.Editeurs.FindAsync(editeur.Id),
+            async collection => collection == null ? null : await dbContext.Collections.FindAsync(collection.Id),
+            async notation => notation == null ? null : await dbContext.Options.FindAsync(notation)
+        );
+
     [Error<AlreadyExistsException>]
     public static async Task<Serie> CreateSerie(SerieCreateInput serie, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Serie newSerie = serie.BuildEntity<Serie>();
+        Serie newSerie = await serie.ApplyTo(new Serie(), dbContext);
         dbContext.Series.Add(newSerie);
 
         await dbContext.SaveChangesAsync(cancellationToken);
@@ -30,7 +37,7 @@ public static class SerieMutations
         if (oldSerie is null)
             throw new NotFoundIdException();
 
-        serie.ApplyUpdate(oldSerie);
+        await serie.ApplyTo(oldSerie, dbContext);
         dbContext.Update(oldSerie);
 
         await dbContext.SaveChangesAsync(cancellationToken);

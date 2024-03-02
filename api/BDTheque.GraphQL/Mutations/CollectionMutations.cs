@@ -5,19 +5,25 @@ using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
-using Microsoft.EntityFrameworkCore;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
 public static class CollectionMutations
 {
+    private static Task<Collection> ApplyTo(this ICollectionInputType input, Collection collection, BDThequeContext dbContext, CancellationToken cancellationToken) =>
+        input.ApplyTo(
+            collection,
+            async editeur => await dbContext.Editeurs.SingleAsync(e => e.Id == editeur.Id, cancellationToken)
+        );
+
     [Error<AlreadyExistsException>]
+    [Error<InvalidOperationException>]
     public static async Task<Collection> CreateCollection(CollectionCreateInput collection, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         if (await dbContext.Collections.AnyAsync(g => g.Nom == collection.Nom, cancellationToken))
             throw new AlreadyExistsException();
 
-        Collection newCollection = collection.BuildEntity<Collection>();
+        Collection newCollection = await collection.ApplyTo(new Collection(), dbContext, cancellationToken);
         dbContext.Collections.Add(newCollection);
 
         await dbContext.SaveChangesAsync(cancellationToken);
@@ -27,6 +33,7 @@ public static class CollectionMutations
 
     [Error<AlreadyExistsException>]
     [Error<NotFoundIdException>]
+    [Error<InvalidOperationException>]
     public static async Task<Collection> UpdateCollection(CollectionUpdateInput collection, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         Collection? oldCollection = await dbContext.Collections.Where(p => p.Id == collection.Id).SingleOrDefaultAsync(cancellationToken);
@@ -35,7 +42,7 @@ public static class CollectionMutations
         if (collection.Nom.HasValue && await dbContext.Collections.AnyAsync(g => g.Id != oldCollection.Id && g.Nom == collection.Nom, cancellationToken))
             throw new AlreadyExistsException();
 
-        collection.ApplyUpdate(oldCollection);
+        await collection.ApplyTo(oldCollection, dbContext, cancellationToken);
         dbContext.Update(oldCollection);
 
         await dbContext.SaveChangesAsync(cancellationToken);

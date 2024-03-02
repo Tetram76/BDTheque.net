@@ -5,16 +5,22 @@ using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
-using Microsoft.EntityFrameworkCore;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
 public static class AlbumMutations
 {
+    private static Task<Album> ApplyTo(this IAlbumInputType input, Album album, BDThequeContext dbContext) =>
+        input.ApplyTo(
+            album,
+            async serie => serie == null ? null : await dbContext.Series.FindAsync(serie.Id),
+            async notation => notation == null ? null : await dbContext.Options.FindAsync(notation)
+        );
+
     [Error<AlreadyExistsException>]
     public static async Task<Album> CreateAlbum(AlbumCreateInput album, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Album newAlbum = album.BuildEntity<Album>();
+        Album newAlbum = await album.ApplyTo(new Album(), dbContext);
         dbContext.Albums.Add(newAlbum);
 
         await dbContext.SaveChangesAsync(cancellationToken);
@@ -30,7 +36,7 @@ public static class AlbumMutations
         if (oldAlbum is null)
             throw new NotFoundIdException();
 
-        album.ApplyUpdate(oldAlbum);
+        await album.ApplyTo(oldAlbum, dbContext);
         dbContext.Update(oldAlbum);
 
         await dbContext.SaveChangesAsync(cancellationToken);

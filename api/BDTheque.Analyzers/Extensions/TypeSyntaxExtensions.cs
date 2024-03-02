@@ -10,7 +10,7 @@ public static class TypeSyntaxExtensions
     {
         var semanticModel = typeSyntax.SemanticModel(context);
         if (semanticModel.Compilation.GetTypeByMetadataName("BDTheque.Model.Entities.Abstract.VersioningEntity") is not { } entityTypeSymbol) return false;
-        if (ModelExtensions.GetTypeInfo(semanticModel, typeSyntax).ConvertedType is not { } typeSymbol) return false;
+        if (semanticModel.GetTypeInfo(typeSyntax).ConvertedType is not { } typeSymbol) return false;
 
         INamedTypeSymbol? baseClassSymbol = typeSymbol.BaseType;
         while (baseClassSymbol != null)
@@ -54,5 +54,4 @@ public static class TypeSyntaxExtensions
             _ =>
                 type.IsEntityType(context) ? rewrite(type) : type
         };
-
 }

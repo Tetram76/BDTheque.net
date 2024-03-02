@@ -5,7 +5,6 @@ using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
-using Microsoft.EntityFrameworkCore;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
@@ -14,10 +13,10 @@ public static class GenreMutations
     [Error<AlreadyExistsException>]
     public static async Task<Genre> CreateGenre(GenreCreateInput genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        if (await dbContext.Genres.AnyAsync(g => g.Nom == genre.Nom, cancellationToken))
+        if (await dbContext.Genres.AnyAsync(g => g.Nom == genre.Nom.Value, cancellationToken))
             throw new AlreadyExistsException();
 
-        Genre newGenre = genre.BuildEntity<Genre>();
+        Genre newGenre = (genre as IGenreInputType).ApplyTo(new Genre());
         dbContext.Genres.Add(newGenre);
 
         await dbContext.SaveChangesAsync(cancellationToken);
@@ -35,7 +34,7 @@ public static class GenreMutations
         if (genre.Nom.HasValue && await dbContext.Genres.AnyAsync(g => g.Id != oldGenre.Id && g.Nom == genre.Nom, cancellationToken))
             throw new AlreadyExistsException();
 
-        genre.ApplyUpdate(oldGenre);
+        (genre as IGenreInputType).ApplyTo(oldGenre);
         dbContext.Update(oldGenre);
 
         await dbContext.SaveChangesAsync(cancellationToken);

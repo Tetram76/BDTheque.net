@@ -18,6 +18,7 @@ public class Image : UniqueIdEntity
     public ushort Ordre { get; set; }
 
     public ushort TypeId { get; set; }
+
     [MutationType<TypeImageType>]
     public virtual Option Type { get; set; } = null!;
 

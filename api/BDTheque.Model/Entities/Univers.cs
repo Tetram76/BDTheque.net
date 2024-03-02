@@ -21,6 +21,7 @@ public class Univers : MandatoryLabelEntity
     public Guid UniversRacineId { get; set; }
 
     [GraphQLName("racine")]
+    [GraphQLReadOnly]
     public virtual Univers UniversRacine { get; set; } = null!;
 
     public Guid? UniversParentId { get; set; }

@@ -1,6 +1,5 @@
 namespace BDTheque.Analyzers;
 
-using System.Collections.Immutable;
 using BDTheque.Analyzers.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -10,10 +9,10 @@ using SyntaxKind = Microsoft.CodeAnalysis.CSharp.SyntaxKind;
 [Generator]
 public class MutationInputsGenerator : IIncrementalGenerator
 {
-    private const string CreateInputTypeSuffix = "CreateInput";
-    private const string UpdateInputTypeSuffix = "UpdateInput";
-    private const string NestedTypeSuffix = "NestedInput";
-    private const string InputsNamespaceName = "BDTheque.Model.Inputs";
+    public const string CreateInputTypeSuffix = "CreateInput";
+    public const string UpdateInputTypeSuffix = "UpdateInput";
+    public const string NestedTypeSuffix = "NestedInput";
+    public const string InputsNamespaceName = "BDTheque.Model.Inputs";
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -51,7 +50,8 @@ public class MutationInputsGenerator : IIncrementalGenerator
             return null;
         baseClassName = baseClassName.Substring(0, baseClassName.Length - entitySuffix.Length);
 
-        ClassDeclarationSyntax[] inputClassesDeclaration = GenerateInputClassesDeclaration(context, classDeclaration, baseClassName);
+        InterfaceDeclarationSyntax inputInterfaceDeclaration = GenerateInputInterfaceDeclaration(context, classDeclaration);
+        ClassDeclarationSyntax[] inputClassesDeclaration = GenerateInputClassesDeclaration(context, classDeclaration, baseClassName, inputInterfaceDeclaration);
         ClassDeclarationSyntax nestedClassDeclaration = GenerateNestedClassDeclaration(context, classDeclaration, baseClassName);
 
         return SyntaxFactory
@@ -68,6 +68,7 @@ public class MutationInputsGenerator : IIncrementalGenerator
                         inputClassesDeclaration.OfType<MemberDeclarationSyntax>().ToArray()
                     )
                     .AddMembers(
+                        inputInterfaceDeclaration,
                         nestedClassDeclaration
                     )
             )
@@ -78,22 +79,49 @@ public class MutationInputsGenerator : IIncrementalGenerator
             );
     }
 
-    private static ClassDeclarationSyntax GenerateInputClassDeclaration(GeneratorSyntaxContext context, ClassDeclarationSyntax classDeclaration, string baseClassName, string classSuffix) =>
+    private static InterfaceDeclarationSyntax GenerateInputInterfaceDeclaration(GeneratorSyntaxContext context, ClassDeclarationSyntax classDeclaration) =>
+        SyntaxFactory
+            .InterfaceDeclaration("I" + classDeclaration.Identifier.Text + "InputType")
+            .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+            .AddGeneratedAttribute<MutationInputsGenerator>()
+            .AddMembers(
+                classDeclaration.MutableProperties(context)
+                    .Select(
+                        property =>
+                        {
+                            TypeSyntax? scalarType = property.GetMutationType(context);
+
+                            return SyntaxFactory
+                                .PropertyDeclaration(property.Type, property.Identifier)
+                                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                                .WithType(
+                                    SyntaxFactory
+                                        .GenericName(SyntaxFactory.Identifier("global::HotChocolate.Optional"))
+                                        .AddTypeArgumentListArguments(
+                                            property.Type.RewriteType(context, syntax => SyntaxFactory.IdentifierName(scalarType == null ? syntax + NestedTypeSuffix : "ushort"))
+                                        )
+                                )
+                                .AddAccessorListAccessors(SyntaxFactory.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration).WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken)))
+                                .WithSemicolonToken(default);
+                        }
+                    )
+                    .Cast<MemberDeclarationSyntax>()
+                    .ToArray()
+            )
+            .AddApplyToMethod(context, classDeclaration);
+
+
+    private static ClassDeclarationSyntax GenerateInputClassDeclaration(GeneratorSyntaxContext context, ClassDeclarationSyntax classDeclaration, string baseClassName, InterfaceDeclarationSyntax inputInterfaceDeclaration, string classSuffix) =>
         SyntaxFactory
             .ClassDeclaration(classDeclaration.Identifier.Text + classSuffix)
             .WithModifiers(classDeclaration.Modifiers)
             .AddBaseListTypes(
-                SyntaxFactory.SimpleBaseType(SyntaxFactory.IdentifierName(baseClassName + classSuffix))
+                SyntaxFactory.SimpleBaseType(SyntaxFactory.IdentifierName(baseClassName + classSuffix)),
+                SyntaxFactory.SimpleBaseType(SyntaxFactory.IdentifierName(inputInterfaceDeclaration.Identifier))
             )
             .AddGeneratedAttribute<MutationInputsGenerator>()
             .AddMembers(
-                classDeclaration.Members
-                    .OfType<PropertyDeclarationSyntax>()
-                    .Where(
-                        property => !property.Type.IsCollectionType(context) &&
-                                    !property.IsEntityIdProperty(context) &&
-                                    !property.Identifier.Text.EndsWith("Raw")
-                    )
+                classDeclaration.MutableProperties(context)
                     .Select(
                         property =>
                         {
@@ -116,10 +144,10 @@ public class MutationInputsGenerator : IIncrementalGenerator
                     .ToArray()
             );
 
-    private static ClassDeclarationSyntax[] GenerateInputClassesDeclaration(GeneratorSyntaxContext context, ClassDeclarationSyntax classDeclaration, string baseClassName) =>
+    private static ClassDeclarationSyntax[] GenerateInputClassesDeclaration(GeneratorSyntaxContext context, ClassDeclarationSyntax classDeclaration, string baseClassName, InterfaceDeclarationSyntax inputInterfaceDeclaration) =>
     [
-        GenerateInputClassDeclaration(context, classDeclaration, baseClassName, CreateInputTypeSuffix),
-        GenerateInputClassDeclaration(context, classDeclaration, baseClassName, UpdateInputTypeSuffix)
+        GenerateInputClassDeclaration(context, classDeclaration, baseClassName, inputInterfaceDeclaration, CreateInputTypeSuffix),
+        GenerateInputClassDeclaration(context, classDeclaration, baseClassName, inputInterfaceDeclaration, UpdateInputTypeSuffix)
     ];
 
     private static ClassDeclarationSyntax GenerateNestedClassDeclaration(GeneratorSyntaxContext context, ClassDeclarationSyntax classDeclaration, string baseClassName) =>

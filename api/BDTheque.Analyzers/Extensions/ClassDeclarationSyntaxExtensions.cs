@@ -4,6 +4,7 @@ using System.CodeDom.Compiler;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SyntaxKind = Microsoft.CodeAnalysis.CSharp.SyntaxKind;
 
 public static class ClassDeclarationSyntaxExtensions
 {
@@ -30,6 +31,16 @@ public static class ClassDeclarationSyntaxExtensions
 
         return members;
     }
+
+    public static IEnumerable<PropertyDeclarationSyntax> MutableProperties(this ClassDeclarationSyntax classDeclarationSyntax, GeneratorSyntaxContext context) =>
+        classDeclarationSyntax.Members
+            .OfType<PropertyDeclarationSyntax>()
+            .Where(
+                property => !property.Type.IsCollectionType(context)
+                            && !property.IsEntityIdProperty(context)
+                            && !property.Identifier.Text.EndsWith("Raw")
+                            && !property.IsGraphQLReadOnly(context)
+            );
 
     public static ClassDeclarationSyntax AddGeneratedAttribute<T>(this ClassDeclarationSyntax classDeclarationSyntax) =>
         classDeclarationSyntax.AddAttributeLists(

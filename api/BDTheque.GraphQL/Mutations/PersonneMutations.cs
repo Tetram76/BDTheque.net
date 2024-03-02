@@ -5,7 +5,6 @@ using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
-using Microsoft.EntityFrameworkCore;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
@@ -17,7 +16,7 @@ public static class PersonneMutations
         if (await dbContext.Personnes.AnyAsync(g => g.Nom == personne.Nom, cancellationToken))
             throw new AlreadyExistsException();
 
-        Personne newPersonne = personne.BuildEntity<Personne>();
+        Personne newPersonne = (personne as IPersonneInputType).ApplyTo(new Personne());
         dbContext.Personnes.Add(newPersonne);
 
         await dbContext.SaveChangesAsync(cancellationToken);
@@ -35,7 +34,7 @@ public static class PersonneMutations
         if (personne.Nom.HasValue && await dbContext.Personnes.AnyAsync(g => g.Id != oldPersonne.Id && g.Nom == personne.Nom, cancellationToken))
             throw new AlreadyExistsException();
 
-        personne.ApplyUpdate(oldPersonne);
+        (personne as IPersonneInputType).ApplyTo(oldPersonne);
         dbContext.Update(oldPersonne);
 
         await dbContext.SaveChangesAsync(cancellationToken);

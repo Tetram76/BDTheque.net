@@ -9,7 +9,6 @@ using BDTheque.Model.Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Hosting;
 
 public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbContext(options)
 {

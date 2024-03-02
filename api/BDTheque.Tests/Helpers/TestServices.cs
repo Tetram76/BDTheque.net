@@ -1,13 +1,32 @@
 namespace BDTheque.Tests.Helpers;
 
 using System.Runtime.CompilerServices;
+using BDTheque.Data.Context;
 using BDTheque.Web.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Schema = HotChocolate.Schema;
 
 public static class TestServices
 {
+    public static IServiceProvider Services { get; }
+
+    public static RequestExecutorProxy Executor { get; }
+
+    public static bool IsContinuousIntegration
+    {
+        get
+        {
+            string? environmentVariable = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            return environmentVariable != null && environmentVariable.Equals("CI", StringComparison.InvariantCultureIgnoreCase);
+        }
+    }
+
+    public static BDThequeContext DbContext =>
+        Services.GetRequiredService<BDThequeContext>();
+
     static TestServices()
     {
         IConfigurationRoot configuration = new ConfigurationManager()
@@ -30,10 +49,6 @@ public static class TestServices
 
         Executor = Services.GetRequiredService<RequestExecutorProxy>();
     }
-
-    public static IServiceProvider Services { get; }
-
-    public static RequestExecutorProxy Executor { get; }
 
     public static async Task<string> ExecuteRequestAsync(
         Action<IQueryRequestBuilder> configureRequest,
@@ -71,5 +86,29 @@ public static class TestServices
             {
                 yield return element.ToJson();
             }
+    }
+
+    public static async Task CleanDbAfterTest<T>(string jsonGraphQLResponse, params string[] entityIdJsonPaths) where T : class
+    {
+        try
+        {
+            if (JsonConvert.DeserializeObject<JObject>(jsonGraphQLResponse) is not { } jsonObject) return;
+
+            BDThequeContext? dbContext = null;
+            foreach (string entityIdJsonPath in entityIdJsonPaths)
+            {
+                if (jsonObject.SelectToken(entityIdJsonPath) is not { } entityId) continue;
+                dbContext ??= DbContext;
+                if (await dbContext.FindAsync<T>(entityId.ToObject<Guid>()) is not { } entity) continue;
+                dbContext.Remove(entity);
+            }
+
+            if (dbContext != null)
+                await dbContext.SaveChangesAsync();
+        }
+        catch (Exception)
+        {
+            // silent catch
+        }
     }
 }

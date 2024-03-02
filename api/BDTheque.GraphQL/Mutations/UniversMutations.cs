@@ -5,19 +5,24 @@ using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
-using Microsoft.EntityFrameworkCore;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
 public static class UniversMutations
 {
+    private static Task<Univers> ApplyTo(this IUniversInputType input, Univers univers, BDThequeContext dbContext) =>
+        input.ApplyTo(
+            univers,
+            async parent => parent == null ? null : await dbContext.Univers.FindAsync(parent)
+        );
+
     [Error<AlreadyExistsException>]
     public static async Task<Univers> CreateUnivers(UniversCreateInput univers, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         if (await dbContext.Univers.AnyAsync(g => g.Nom == univers.Nom, cancellationToken))
             throw new AlreadyExistsException();
 
-        Univers newUnivers = univers.BuildEntity<Univers>();
+        Univers newUnivers = await univers.ApplyTo(new Univers(), dbContext);
         dbContext.Univers.Add(newUnivers);
 
         await dbContext.SaveChangesAsync(cancellationToken);
@@ -35,7 +40,7 @@ public static class UniversMutations
         if (univers.Nom.HasValue && await dbContext.Univers.AnyAsync(g => g.Id != oldUnivers.Id && g.Nom == univers.Nom, cancellationToken))
             throw new AlreadyExistsException();
 
-        univers.ApplyUpdate(oldUnivers);
+        await univers.ApplyTo(oldUnivers, dbContext);
         dbContext.Update(oldUnivers);
 
         await dbContext.SaveChangesAsync(cancellationToken);

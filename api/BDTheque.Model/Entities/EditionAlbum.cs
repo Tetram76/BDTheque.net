@@ -2,7 +2,6 @@ namespace BDTheque.Model.Entities;
 
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
-using BDTheque.Model.Scalars;
 
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]

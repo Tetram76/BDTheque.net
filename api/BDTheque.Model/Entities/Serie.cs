@@ -29,6 +29,8 @@ public class Serie : OptionalLabelEntity
     public virtual Collection? Collection { get; set; }
 
     public Guid ModeleEditionId { get; set; }
+
+    [GraphQLReadOnly]
     public virtual Edition ModeleEdition { get; set; } = null!;
 
     public ushort? NbAlbums { get; set; }

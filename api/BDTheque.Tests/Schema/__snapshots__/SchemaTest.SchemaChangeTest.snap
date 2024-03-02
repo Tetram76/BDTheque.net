@@ -613,6 +613,10 @@ type ImagesEdge {
   node: Image!
 }
 
+type InvalidOperationError implements Error {
+  message: String!
+}
+
 type Mutation {
   createAlbum(input: CreateAlbumInput!): CreateAlbumPayload!
   createCollection(input: CreateCollectionInput!): CreateCollectionPayload!
@@ -1013,7 +1017,7 @@ type UploadImagePicturePayload {
 
 union CreateAlbumError = AlreadyExistsError
 
-union CreateCollectionError = AlreadyExistsError
+union CreateCollectionError = AlreadyExistsError | InvalidOperationError
 
 union CreateEditeurError = AlreadyExistsError
 
@@ -1045,7 +1049,7 @@ union DeleteUniversError = NotFoundIdError
 
 union UpdateAlbumError = AlreadyExistsError | NotFoundIdError
 
-union UpdateCollectionError = AlreadyExistsError | NotFoundIdError
+union UpdateCollectionError = AlreadyExistsError | NotFoundIdError | InvalidOperationError
 
 union UpdateEditeurError = AlreadyExistsError | NotFoundIdError
 
@@ -1475,10 +1479,6 @@ input EditionFilterInput {
   updatedAt: DateTimeOperationFilterInput
 }
 
-input EditionNestedInput {
-  id: ID!
-}
-
 input EditionSortInput {
   prix: SortEnumType
   couleur: SortEnumType
@@ -1651,7 +1651,6 @@ input SerieCreateInput {
   collection: CollectionNestedInput
   complete: Boolean
   editeur: EditeurNestedInput
-  modeleEdition: EditionNestedInput!
   nbAlbums: UnsignedShort
   notation: Notation
   notes: NonEmptyString
@@ -1723,7 +1722,6 @@ input SerieUpdateInput {
   complete: Boolean
   editeur: EditeurNestedInput
   id: ID!
-  modeleEdition: EditionNestedInput!
   nbAlbums: UnsignedShort
   notation: Notation
   notes: NonEmptyString
@@ -1755,7 +1753,6 @@ input UniversCreateInput {
   description: NonEmptyString
   nom: NonEmptyString!
   parent: UniversNestedInput
-  racine: UniversNestedInput!
   siteWeb: URL
 }
 
@@ -1800,7 +1797,6 @@ input UniversUpdateInput {
   id: ID!
   nom: NonEmptyString!
   parent: UniversNestedInput
-  racine: UniversNestedInput!
   siteWeb: URL
 }
 

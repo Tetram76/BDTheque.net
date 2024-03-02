@@ -1,7 +1,6 @@
 namespace BDTheque.GraphQL.DataLoaders;
 
 using BDTheque.Data.Context;
-using Microsoft.EntityFrameworkCore;
 
 public static class SerieLoaders
 {
