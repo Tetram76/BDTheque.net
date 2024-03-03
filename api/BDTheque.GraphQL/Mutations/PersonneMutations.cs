@@ -13,8 +13,8 @@ public static class PersonneMutations
     [Error<AlreadyExistsException>]
     public static async Task<Personne> CreatePersonne(PersonneCreateInput personne, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        if (await dbContext.Personnes.AnyAsync(g => g.Nom == personne.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+        if (await dbContext.Personnes.AnyAsync(g => g.Nom == personne.Nom.Value, cancellationToken))
+            throw new AlreadyExistsException($"Personne name \"{personne.Nom.Value}\" is already used");
 
         Personne newPersonne = (personne as IPersonneInputType).ApplyTo(new Personne());
         dbContext.Personnes.Add(newPersonne);
@@ -28,11 +28,11 @@ public static class PersonneMutations
     [Error<NotFoundIdException>]
     public static async Task<Personne> UpdatePersonne(PersonneUpdateInput personne, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Personne? oldPersonne = await dbContext.Personnes.Where(p => p.Id == personne.Id).SingleOrDefaultAsync(cancellationToken);
+        Personne? oldPersonne = await dbContext.Personnes.SingleOrDefaultAsync(p => p.Id == personne.Id, cancellationToken);
         if (oldPersonne is null)
-            throw new NotFoundIdException();
-        if (personne.Nom.HasValue && await dbContext.Personnes.AnyAsync(g => g.Id != oldPersonne.Id && g.Nom == personne.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+            throw new NotFoundIdException(personne.Id);
+        if (personne.Nom.HasValue && await dbContext.Personnes.AnyAsync(g => g.Id != oldPersonne.Id && g.Nom == personne.Nom.Value, cancellationToken))
+            throw new AlreadyExistsException($"Personne name \"{personne.Nom.Value}\" is already used");
 
         (personne as IPersonneInputType).ApplyTo(oldPersonne);
         dbContext.Update(oldPersonne);
@@ -45,14 +45,14 @@ public static class PersonneMutations
     [Error<NotFoundIdException>]
     public static async Task<Personne> DeletePersonne([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Personne? Personne = await dbContext.Personnes.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
-        if (Personne is null)
-            throw new NotFoundIdException();
+        Personne? personne = await dbContext.Personnes.SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
+        if (personne is null)
+            throw new NotFoundIdException(id);
 
-        dbContext.Personnes.Remove(Personne);
+        dbContext.Personnes.Remove(personne);
 
         await dbContext.SaveChangesAsync(cancellationToken);
-        await sender.SendAsync(nameof(PersonneSubscriptions.PersonneDeleted), Personne, cancellationToken);
-        return Personne;
+        await sender.SendAsync(nameof(PersonneSubscriptions.PersonneDeleted), personne, cancellationToken);
+        return personne;
     }
 }

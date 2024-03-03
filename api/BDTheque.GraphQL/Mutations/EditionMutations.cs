@@ -15,9 +15,9 @@ public static class EditionMutations
     [Error<NotFoundIdException>]
     public static async Task<Edition> DeleteEdition([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Edition? edition = await dbContext.Editions.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
+        Edition? edition = await dbContext.Editions.SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
         if (edition is null)
-            throw new NotFoundIdException();
+            throw new NotFoundIdException(id);
 
         dbContext.Editions.Remove(edition);
 

@@ -1,0 +1,13 @@
+﻿{
+  "data": {
+    "deleteGenre": {
+      "genre": null,
+      "errors": [
+        {
+          "__typename": "NotFoundIdError",
+          "message": "Id \"869b249b-d896-4f83-b73a-8909f0b1a91f\" not found"
+        }
+      ]
+    }
+  }
+}

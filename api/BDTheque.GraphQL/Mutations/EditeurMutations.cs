@@ -13,8 +13,8 @@ public static class EditeurMutations
     [Error<AlreadyExistsException>]
     public static async Task<Editeur> CreateEditeur(EditeurCreateInput editeur, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        if (await dbContext.Editeurs.AnyAsync(g => g.Nom == editeur.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+        if (await dbContext.Editeurs.AnyAsync(g => g.Nom == editeur.Nom.Value, cancellationToken))
+            throw new AlreadyExistsException($"Editeur name \"{editeur.Nom.Value}\" is already used");
 
         Editeur newEditeur = (editeur as IEditeurInputType).ApplyTo(new Editeur());
         dbContext.Editeurs.Add(newEditeur);
@@ -28,11 +28,11 @@ public static class EditeurMutations
     [Error<NotFoundIdException>]
     public static async Task<Editeur> UpdateEditeur(EditeurUpdateInput editeur, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Editeur? oldEditeur = await dbContext.Editeurs.Where(p => p.Id == editeur.Id).SingleOrDefaultAsync(cancellationToken);
+        Editeur? oldEditeur = await dbContext.Editeurs.SingleOrDefaultAsync(p => p.Id == editeur.Id, cancellationToken);
         if (oldEditeur is null)
-            throw new NotFoundIdException();
-        if (editeur.Nom.HasValue && await dbContext.Editeurs.AnyAsync(g => g.Id != oldEditeur.Id && g.Nom == editeur.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+            throw new NotFoundIdException(editeur.Id);
+        if (editeur.Nom.HasValue && await dbContext.Editeurs.AnyAsync(g => g.Id != oldEditeur.Id && g.Nom == editeur.Nom.Value, cancellationToken))
+            throw new AlreadyExistsException($"Editeur name \"{editeur.Nom.Value}\" is already used");
 
         (editeur as IEditeurInputType).ApplyTo(oldEditeur);
         dbContext.Update(oldEditeur);
@@ -45,9 +45,9 @@ public static class EditeurMutations
     [Error<NotFoundIdException>]
     public static async Task<Editeur> DeleteEditeur([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Editeur? editeur = await dbContext.Editeurs.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
+        Editeur? editeur = await dbContext.Editeurs.SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
         if (editeur is null)
-            throw new NotFoundIdException();
+            throw new NotFoundIdException(id);
 
         dbContext.Editeurs.Remove(editeur);
 

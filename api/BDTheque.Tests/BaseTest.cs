@@ -1,8 +1,12 @@
 namespace BDTheque.Tests;
 
-public class BaseTest : IDisposable
+using Xunit.Abstractions;
+
+public class BaseTest(ITestOutputHelper testOutputHelper) : IDisposable
 {
     private readonly List<Func<Task>> _finalizers = [];
+
+    public ITestOutputHelper TestOutputHelper { get; } = testOutputHelper;
 
     protected void RegisterFinalizer(Action action) =>
         _finalizers.Add(() => Task.Run(action));
@@ -12,8 +16,11 @@ public class BaseTest : IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        if (disposing)
-            _finalizers.ForEach(action => action());
+        if (!disposing) return;
+
+        _finalizers.Reverse();
+        foreach (Func<Task> action in _finalizers)
+            action().Wait();
     }
 
     public void Dispose()

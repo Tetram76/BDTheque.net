@@ -14,7 +14,7 @@ public static class GenreMutations
     public static async Task<Genre> CreateGenre(GenreCreateInput genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
         if (await dbContext.Genres.AnyAsync(g => g.Nom == genre.Nom.Value, cancellationToken))
-            throw new AlreadyExistsException();
+            throw new AlreadyExistsException($"Genre name \"{genre.Nom.Value}\" is already used");
 
         Genre newGenre = (genre as IGenreInputType).ApplyTo(new Genre());
         dbContext.Genres.Add(newGenre);
@@ -28,11 +28,11 @@ public static class GenreMutations
     [Error<NotFoundIdException>]
     public static async Task<Genre> UpdateGenre(GenreUpdateInput genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Genre? oldGenre = await dbContext.Genres.Where(p => p.Id == genre.Id).SingleOrDefaultAsync(cancellationToken);
+        Genre? oldGenre = await dbContext.Genres.SingleOrDefaultAsync(p => p.Id == genre.Id, cancellationToken);
         if (oldGenre is null)
-            throw new NotFoundIdException();
-        if (genre.Nom.HasValue && await dbContext.Genres.AnyAsync(g => g.Id != oldGenre.Id && g.Nom == genre.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+            throw new NotFoundIdException(genre.Id);
+        if (genre.Nom.HasValue && await dbContext.Genres.AnyAsync(g => g.Id != oldGenre.Id && g.Nom == genre.Nom.Value, cancellationToken))
+            throw new AlreadyExistsException($"Genre name \"{genre.Nom.Value}\" is already used");
 
         (genre as IGenreInputType).ApplyTo(oldGenre);
         dbContext.Update(oldGenre);
@@ -45,9 +45,9 @@ public static class GenreMutations
     [Error<NotFoundIdException>]
     public static async Task<Genre> DeleteGenre([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Genre? genre = await dbContext.Genres.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
+        Genre? genre = await dbContext.Genres.SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
         if (genre is null)
-            throw new NotFoundIdException();
+            throw new NotFoundIdException(id);
 
         dbContext.Genres.Remove(genre);
 

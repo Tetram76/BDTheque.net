@@ -20,8 +20,8 @@ public static class CollectionMutations
     [Error<InvalidOperationException>]
     public static async Task<Collection> CreateCollection(CollectionCreateInput collection, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        if (await dbContext.Collections.AnyAsync(g => g.Nom == collection.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+        if (await dbContext.Collections.AnyAsync(g => g.Nom == collection.Nom.Value && g.EditeurId == collection.Editeur.Value!.Id, cancellationToken))
+            throw new AlreadyExistsException($"Collection name \"{collection.Nom.Value}\" is already used");
 
         Collection newCollection = await collection.ApplyTo(new Collection(), dbContext, cancellationToken);
         dbContext.Collections.Add(newCollection);
@@ -38,9 +38,10 @@ public static class CollectionMutations
     {
         Collection? oldCollection = await dbContext.Collections.Where(p => p.Id == collection.Id).SingleOrDefaultAsync(cancellationToken);
         if (oldCollection is null)
-            throw new NotFoundIdException();
-        if (collection.Nom.HasValue && await dbContext.Collections.AnyAsync(g => g.Id != oldCollection.Id && g.Nom == collection.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+            throw new NotFoundIdException(collection.Id);
+        Guid newEditeurId = collection.Editeur.HasValue ? collection.Editeur.Value.Id : oldCollection.EditeurId;
+        if (collection.Nom.HasValue && await dbContext.Collections.AnyAsync(g => g.Id != oldCollection.Id && g.EditeurId == newEditeurId && g.Nom == collection.Nom.Value, cancellationToken))
+            throw new AlreadyExistsException($"Collection name \"{collection.Nom.Value}\" is already used");
 
         await collection.ApplyTo(oldCollection, dbContext, cancellationToken);
         dbContext.Update(oldCollection);
@@ -53,9 +54,9 @@ public static class CollectionMutations
     [Error<NotFoundIdException>]
     public static async Task<Collection> DeleteCollection([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Collection? collection = await dbContext.Collections.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
+        Collection? collection = await dbContext.Collections.SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
         if (collection is null)
-            throw new NotFoundIdException();
+            throw new NotFoundIdException(id);
 
         dbContext.Collections.Remove(collection);
 
