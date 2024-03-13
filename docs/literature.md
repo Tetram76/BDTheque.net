@@ -1,3 +1,7 @@
+### Code
+
+* https://github.com/dotnet/roslyn/blob/main/docs/features/source-generators.cookbook.md
+
 ### Application design
 
 * Repository pattern : https://medium.com/@opflucker/repository-pattern-common-implementation-mistakes-69ae95b63d3c

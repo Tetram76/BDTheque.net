@@ -38,7 +38,7 @@ public class Album : OptionalLabelEntity
 
     public ushort? NotationId { get; set; }
 
-    [MutationType<OptionNotationType>]
+    [MutationScalarType<OptionNotationType>]
     public virtual Option? Notation { get; set; }
 
     public virtual ICollection<AuteurAlbum> AuteursAlbums { get; set; } = new List<AuteurAlbum>();

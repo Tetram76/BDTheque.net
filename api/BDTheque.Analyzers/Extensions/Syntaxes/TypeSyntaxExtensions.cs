@@ -8,32 +8,14 @@ public static class TypeSyntaxExtensions
 {
     public static bool IsEntityType(this TypeSyntax typeSyntax, GeneratorSyntaxContext context)
     {
-        var semanticModel = typeSyntax.SemanticModel(context);
-        if (semanticModel.Compilation.GetTypeByMetadataName("BDTheque.Model.Entities.Abstract.VersioningEntity") is not { } entityTypeSymbol) return false;
-        if (semanticModel.GetTypeInfo(typeSyntax).ConvertedType is not { } typeSymbol) return false;
-
-        INamedTypeSymbol? baseClassSymbol = typeSymbol.BaseType;
-        while (baseClassSymbol != null)
-        {
-            if (SymbolEqualityComparer.Default.Equals(baseClassSymbol, entityTypeSymbol))
-                return true;
-            baseClassSymbol = baseClassSymbol.BaseType;
-        }
-
-        return false;
+        SemanticModel semanticModel = typeSyntax.SemanticModel(context);
+        return semanticModel.GetTypeInfo(typeSyntax).Type!.IsEntityType(semanticModel.Compilation);
     }
 
     public static bool IsCollectionType(this TypeSyntax typeSyntax, GeneratorSyntaxContext context)
     {
-        if (typeSyntax.SemanticModel(context).GetTypeInfo(typeSyntax).ConvertedType is not { } typeSymbol) return false;
-
-        if (typeSymbol.AllInterfaces.Any(i => i.MetadataName is "ICollection" or "ICollection`1" && i.ContainingNamespace.ToString() == "System.Collections.Generic"))
-            return true;
-
-        if (typeSymbol is INamedTypeSymbol { IsGenericType: true } namedTypeSymbol)
-            return namedTypeSymbol.MetadataName is "ICollection" or "ICollection`1" && namedTypeSymbol.ContainingNamespace.ToString() == "System.Collections.Generic";
-
-        return false;
+        SemanticModel semanticModel = typeSyntax.SemanticModel(context);
+        return semanticModel.GetTypeInfo(typeSyntax).Type!.IsCollectionType();
     }
 
     public static TypeSyntax RewriteType(this TypeSyntax type, GeneratorSyntaxContext context, Func<TypeSyntax, TypeSyntax> rewrite) =>

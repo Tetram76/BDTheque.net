@@ -1,14 +1,17 @@
 namespace BDTheque.GraphQL.Mutations;
 
 using BDTheque.Data.Context;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
 
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class GenreMutations
+[MutationEntity<Genre>]
+public static partial class GenreMutations
 {
     [Error<AlreadyExistsException>]
     public static async Task<Genre> CreateGenre(GenreCreateInput genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)

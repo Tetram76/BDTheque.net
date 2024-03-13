@@ -21,4 +21,9 @@
     <PackageReference Include="Serilog"/>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BDTheque.Analyzers\BDTheque.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all"/>
+    <ProjectReference Include="..\BDTheque.Extensions\BDTheque.Extensions.csproj"/>
+  </ItemGroup>
+
 </Project>

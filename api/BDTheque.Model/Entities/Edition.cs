@@ -16,34 +16,34 @@ public class Edition : UniqueIdEntity
     public bool? Couleur { get; set; } = true;
     public bool? Vo { get; set; } = false;
 
-    [MutationType<OptionEtatType>]
+    [MutationScalarType<OptionEtatType>]
     public ushort? EtatId { get; set; }
 
     public virtual Option? Etat { get; set; }
 
     public ushort? ReliureId { get; set; }
 
-    [MutationType<OptionReliureType>]
+    [MutationScalarType<OptionReliureType>]
     public virtual Option? Reliure { get; set; }
 
     public ushort? FormatEditionId { get; set; }
 
-    [MutationType<OptionFormatEditionType>]
+    [MutationScalarType<OptionFormatEditionType>]
     public virtual Option? FormatEdition { get; set; }
 
     public ushort? TypeEditionId { get; set; }
 
-    [MutationType<OptionTypeEditionType>]
+    [MutationScalarType<OptionTypeEditionType>]
     public virtual Option? TypeEdition { get; set; }
 
     public ushort? OrientationId { get; set; }
 
-    [MutationType<OptionOrientationType>]
+    [MutationScalarType<OptionOrientationType>]
     public virtual Option? Orientation { get; set; }
 
     public ushort? SensLectureId { get; set; }
 
-    [MutationType<OptionSensLectureType>]
+    [MutationScalarType<OptionSensLectureType>]
     public virtual Option? SensLecture { get; set; }
 
     public virtual ICollection<EditionAlbum> EditionsAlbums { get; set; } = new List<EditionAlbum>();

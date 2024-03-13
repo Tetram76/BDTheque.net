@@ -19,7 +19,7 @@ public class Image : UniqueIdEntity
 
     public ushort TypeId { get; set; }
 
-    [MutationType<TypeImageType>]
+    [MutationScalarType<TypeImageType>]
     public virtual Option Type { get; set; } = null!;
 
     public Guid EditionId { get; set; }

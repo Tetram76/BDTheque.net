@@ -1,14 +1,17 @@
 namespace BDTheque.GraphQL.Mutations;
 
 using BDTheque.Data.Context;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using HotChocolate.Subscriptions;
 using Path = System.IO.Path;
 
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class ImageMutations
+[MutationEntity<Image>]
+public static partial class ImageMutations
 {
     // createImage(data: ImageCreateInput!): Image!
     // updateImage(data: ImageUpdateInput!): Image!

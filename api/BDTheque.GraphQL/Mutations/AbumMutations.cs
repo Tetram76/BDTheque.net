@@ -1,22 +1,18 @@
 namespace BDTheque.GraphQL.Mutations;
 
 using BDTheque.Data.Context;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
 
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class AlbumMutations
+[MutationEntity<Album>]
+public static partial class AlbumMutations
 {
-    private static Task<Album> ApplyTo(this IAlbumInputType input, Album album, BDThequeContext dbContext) =>
-        input.ApplyTo(
-            album,
-            async serie => serie == null ? null : await dbContext.Series.FindAsync(serie.Id),
-            async notation => notation == null ? null : await dbContext.Options.FindAsync(notation)
-        );
-
     [Error<AlreadyExistsException>]
     public static async Task<Album> CreateAlbum(AlbumCreateInput album, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {

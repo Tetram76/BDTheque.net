@@ -47,7 +47,7 @@ public static class InterfaceDeclarationSyntaxExtensions
                                 if (property.Type.IsEntityType(context))
                                 {
                                     TypeSyntax? scalarType = property.GetMutationType(context);
-                                    TypeSyntax inputType = property.Type.RewriteType(context, syntax => SyntaxFactory.IdentifierName(scalarType == null ? syntax + MutationInputsGenerator.NestedTypeSuffix : "ushort"));
+                                    TypeSyntax inputType = property.Type.RewriteType(context, syntax => SyntaxFactory.IdentifierName(scalarType == null ? syntax + WellKnownDefinitions.NestedTypeSuffix : "ushort"));
 
                                     methodParameters.Add(
                                         SyntaxFactory

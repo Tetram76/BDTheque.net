@@ -43,7 +43,7 @@ public class Serie : OptionalLabelEntity
 
     public ushort? NotationId { get; set; }
 
-    [MutationType<OptionNotationType>]
+    [MutationScalarType<OptionNotationType>]
     public virtual Option? Notation { get; set; }
 
     public virtual ICollection<Album> Albums { get; set; } = new List<Album>();

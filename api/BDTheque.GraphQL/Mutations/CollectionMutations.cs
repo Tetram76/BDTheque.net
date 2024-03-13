@@ -1,21 +1,18 @@
 namespace BDTheque.GraphQL.Mutations;
 
 using BDTheque.Data.Context;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
 
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class CollectionMutations
+[MutationEntity<Collection>]
+public static partial class CollectionMutations
 {
-    private static Task<Collection> ApplyTo(this ICollectionInputType input, Collection collection, BDThequeContext dbContext, CancellationToken cancellationToken) =>
-        input.ApplyTo(
-            collection,
-            async editeur => await dbContext.Editeurs.SingleAsync(e => e.Id == editeur.Id, cancellationToken)
-        );
-
     [Error<AlreadyExistsException>]
     [Error<InvalidOperationException>]
     public static async Task<Collection> CreateCollection(CollectionCreateInput collection, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)

@@ -1,23 +1,18 @@
 namespace BDTheque.GraphQL.Mutations;
 
 using BDTheque.Data.Context;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
 
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class SerieMutations
+[MutationEntity<Serie>]
+public static partial class SerieMutations
 {
-    private static Task<Serie> ApplyTo(this ISerieInputType input, Serie serie, BDThequeContext dbContext) =>
-        input.ApplyTo(
-            serie,
-            async editeur => editeur == null ? null : await dbContext.Editeurs.FindAsync(editeur.Id),
-            async collection => collection == null ? null : await dbContext.Collections.FindAsync(collection.Id),
-            async notation => notation == null ? null : await dbContext.Options.FindAsync(notation)
-        );
-
     [Error<AlreadyExistsException>]
     public static async Task<Serie> CreateSerie(SerieCreateInput serie, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {

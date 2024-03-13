@@ -1,21 +1,18 @@
 namespace BDTheque.GraphQL.Mutations;
 
 using BDTheque.Data.Context;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
 
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class UniversMutations
+[MutationEntity<Univers>]
+public static partial class UniversMutations
 {
-    private static Task<Univers> ApplyTo(this IUniversInputType input, Univers univers, BDThequeContext dbContext) =>
-        input.ApplyTo(
-            univers,
-            async parent => parent == null ? null : await dbContext.Univers.FindAsync(parent)
-        );
-
     [Error<AlreadyExistsException>]
     public static async Task<Univers> CreateUnivers(UniversCreateInput univers, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {

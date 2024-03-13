@@ -1,13 +1,16 @@
 namespace BDTheque.GraphQL.Mutations;
 
 using BDTheque.Data.Context;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using HotChocolate.Subscriptions;
 
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class EditionMutations
+[MutationEntity<Edition>]
+public static partial class EditionMutations
 {
     // createEditionAlbum(data: EditionAlbumCreateInput!): EditionAlbum!
     // updateEditionAlbum(data: EditionAlbumUpdateInput!): EditionAlbum!
