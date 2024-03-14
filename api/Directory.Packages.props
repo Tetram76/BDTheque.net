@@ -21,12 +21,13 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.9.2" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(EfVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EfVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="$(EfVersion)"/>
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(EfVersion)" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EfVersion)" />
     <PackageVersion Include="Quartz" Version="3.8.0" />
     <PackageVersion Include="Quartz.Extensions.Hosting" Version="3.8.0" />
     <PackageVersion Include="Serilog" Version="3.1.1" />
