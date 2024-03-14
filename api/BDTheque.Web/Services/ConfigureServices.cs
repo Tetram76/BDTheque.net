@@ -70,7 +70,7 @@ public static class ConfigureServices
                     .EnableDetailedErrors(appOptions.Debug)
                     .UseNpgsql(
                         appOptions.DatabaseConnectionString,
-                        builder => builder.MigrationsAssembly("BDTheque.Data")
+                        builder => builder.MigrationsAssembly("BDTheque.Data.Migrations")
                     );
             }
         );
