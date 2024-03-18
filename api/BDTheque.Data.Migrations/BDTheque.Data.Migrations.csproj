@@ -1,14 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <RootNamespace>BDTheque.Data</RootNamespace>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>BDTheque.Data</RootNamespace>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\BDTheque.Data\BDTheque.Data.csproj" />
-    </ItemGroup>
+  <PropertyGroup>
+    <NoWarn>1701;1702;S1192</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BDTheque.Data\BDTheque.Data.csproj"/>
+  </ItemGroup>
 
 </Project>
