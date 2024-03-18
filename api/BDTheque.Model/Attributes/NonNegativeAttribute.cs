@@ -9,7 +9,7 @@ public class NonNegativeAttribute<T>() : RangeAttribute(typeof(T), "0", GetMaxVa
 
     private static T GetMaxValue()
     {
-        if (_maxValue == null)
+        if (Equals(_maxValue, default))
         {
             FieldInfo maxValueConst = typeof(T).GetField("MaxValue", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
                                       ?? throw new InvalidOperationException($"{typeof(T).Name} does not provide a MaxValue");
