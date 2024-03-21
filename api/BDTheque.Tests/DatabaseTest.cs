@@ -21,6 +21,9 @@ public class DatabaseTest : BaseTest
 
     public BDThequeContext DbContext { get; }
 
+    public Task AddEntities<T>(params T[] entities) where T : class =>
+        AddEntities(entities.Cast<object>().ToArray());
+
     public async Task AddEntities(params object[] entities)
     {
         entities = entities
@@ -37,6 +40,9 @@ public class DatabaseTest : BaseTest
         DbContext.AddRange(entities);
         await DbContext.SaveChangesAsync();
     }
+
+    public Task RemoveEntities<T>(params T[] entities) where T : class =>
+        RemoveEntities(entities.Cast<object>().ToArray());
 
     public async Task RemoveEntities(params object[] entities)
     {
