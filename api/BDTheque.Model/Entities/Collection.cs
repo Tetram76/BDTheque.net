@@ -2,13 +2,16 @@ namespace BDTheque.Model.Entities;
 
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
+using Microsoft.EntityFrameworkCore;
 
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 [ObjectType]
+[Index(nameof(EditeurId), nameof(Nom), IsUnique = true)]
 public class Collection : MandatoryLabelEntity
 {
+    [RequiredName]
     public string Nom { get; set; } = null!;
     public string NomRaw { get; set; } = null!;
 

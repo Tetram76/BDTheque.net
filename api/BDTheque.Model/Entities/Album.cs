@@ -45,4 +45,10 @@ public class Album : OptionalLabelEntity
     public virtual ICollection<EditionAlbum> EditionsAlbums { get; set; } = new List<EditionAlbum>();
     public virtual ICollection<GenreAlbum> GenresAlbums { get; set; } = new List<GenreAlbum>();
     public virtual ICollection<UniversAlbum> UniversAlbums { get; set; } = new List<UniversAlbum>();
+
+    public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (Serie is null && string.IsNullOrWhiteSpace(Titre))
+            yield return new ValidationResult("Album title is required when not attached to a Serie");
+    }
 }

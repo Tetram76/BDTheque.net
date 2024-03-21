@@ -4,6 +4,7 @@ using BDTheque.Data.Context;
 using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
+using BDTheque.Model.Extensions;
 using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
 
@@ -20,6 +21,7 @@ public static partial class EditeurMutations
             throw new AlreadyExistsException($"Editeur name \"{editeur.Nom.Value}\" is already used");
 
         Editeur newEditeur = (editeur as IEditeurInputType).ApplyTo(new Editeur());
+        newEditeur.Validate();
         dbContext.Editeurs.Add(newEditeur);
 
         await dbContext.SaveChangesAsync(cancellationToken);

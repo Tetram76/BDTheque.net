@@ -21,7 +21,8 @@ public static class ClassDeclarationSyntaxExtensions
 
     public static ITypeSymbol GetEntityTypeFromAttribute(this ClassDeclarationSyntax classDeclarationSyntax, GeneratorSyntaxContext context)
     {
-        Debug.Assert(classDeclarationSyntax.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.MutationEntityAttribute, classDeclarationSyntax.SemanticModel(context), out AttributeSyntax? attributeSyntax));
+        if (!classDeclarationSyntax.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.MutationEntityAttribute, classDeclarationSyntax.SemanticModel(context), out AttributeSyntax? attributeSyntax))
+            throw new InvalidOperationException($"Expected {classDeclarationSyntax.Identifier} to be annotated with {WellKnownDefinitions.BDTheque.MutationEntityAttribute} attribute but is not.");
 
         SymbolInfo attributeSymbolInfo = attributeSyntax.SemanticModel(context).GetSymbolInfo(attributeSyntax);
         if (attributeSymbolInfo.Symbol is not IMethodSymbol attributeSymbol)

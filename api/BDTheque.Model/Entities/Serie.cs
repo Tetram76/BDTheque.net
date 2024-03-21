@@ -3,11 +3,13 @@ namespace BDTheque.Model.Entities;
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
 using BDTheque.Model.Scalars;
+using Microsoft.EntityFrameworkCore;
 
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 [ObjectType]
+[Index(nameof(Titre), IsUnique = true)]
 public class Serie : OptionalLabelEntity
 {
     public string? Titre { get; set; }

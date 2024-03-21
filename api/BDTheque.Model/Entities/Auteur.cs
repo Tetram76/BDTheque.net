@@ -4,11 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using BDTheque.Model.Entities.Abstract;
 using BDTheque.Model.Enums;
+using Microsoft.EntityFrameworkCore;
 
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 [ObjectType]
+[Index(nameof(PersonneId), nameof(Metier), IsUnique = true)]
 public class Auteur : UniqueIdEntity
 {
     public Guid PersonneId { get; set; }

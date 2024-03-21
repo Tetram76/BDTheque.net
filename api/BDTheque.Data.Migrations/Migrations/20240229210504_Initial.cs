@@ -658,6 +658,12 @@ namespace BDTheque.Data.Migrations
                 column: "album_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_auteurs_personne_id_metier",
+                table: "auteurs",
+                columns: new[] { "personne_id", "metier" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_auteurs_series_serie_id",
                 table: "auteurs_series",
                 column: "serie_id");
@@ -821,7 +827,8 @@ namespace BDTheque.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_series_titre",
                 table: "series",
-                column: "titre")
+                column: "titre",
+                unique: true)
                 .Annotation("Relational:Collation", new[] { "french_ci_ai" });
 
             migrationBuilder.CreateIndex(
@@ -832,7 +839,8 @@ namespace BDTheque.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_univers_nom",
                 table: "univers",
-                column: "nom")
+                column: "nom",
+                unique: true)
                 .Annotation("Relational:Collation", new[] { "french_ci_ai" });
 
             migrationBuilder.CreateIndex(

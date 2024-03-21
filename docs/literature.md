@@ -13,6 +13,7 @@
 
 ### Use of Entity Framework
 
+* https://learn.microsoft.com/en-us/ef/ef6/saving/validation
 * https://medium.com/c-sharp-progarmming/using-dapper-with-entity-framework-c-e71a3870b6ef
 * https://ardalis.com/avoid-dbcontext-iqueryable-proliferation/
 * https://levelup.gitconnected.com/what-to-return-from-repositories-iqueryable-ienumerable-or-ireadonlylist-91c0647fe5e1

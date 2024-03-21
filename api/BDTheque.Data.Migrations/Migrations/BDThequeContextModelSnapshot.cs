@@ -19,7 +19,7 @@ namespace BDTheque.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:CollationDefinition:public.french_ci_ai", "fr_fr-u-ks-level1,fr_fr-u-ks-level1,icu,False")
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "metier", new[] { "Scenariste", "Dessinateur", "Coloriste" });
@@ -168,6 +168,9 @@ namespace BDTheque.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasAlternateKey("PersonneId", "Metier");
+
+                    b.HasIndex("PersonneId", "Metier")
+                        .IsUnique();
 
                     b.ToTable("auteurs", (string)null);
                 });
@@ -1254,7 +1257,8 @@ namespace BDTheque.Data.Migrations
 
                     b.HasIndex("NotationId");
 
-                    b.HasIndex("Titre");
+                    b.HasIndex("Titre")
+                        .IsUnique();
 
                     NpgsqlIndexBuilderExtensions.UseCollation(b.HasIndex("Titre"), new[] { "french_ci_ai" });
 
@@ -1334,7 +1338,8 @@ namespace BDTheque.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Nom");
+                    b.HasIndex("Nom")
+                        .IsUnique();
 
                     NpgsqlIndexBuilderExtensions.UseCollation(b.HasIndex("Nom"), new[] { "french_ci_ai" });
 
