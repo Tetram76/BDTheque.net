@@ -1,7 +1,7 @@
 namespace BDTheque.Model.Interfaces;
 
-[InterfaceType]
-public interface IOptionalLabel
+[InterfaceType("IOptionalLabel")]
+public interface IOptionalLabelEntity
 {
     public char? Initiale { get; set; }
 }

@@ -31,10 +31,36 @@ public static class SymbolExtensions
 
     public static bool IsAnnotatedWithAttribute(this ISymbol symbol, string attributeClassFullname, [NotNullWhen(true)] out AttributeData? attributeData)
     {
-        attributeData = symbol
-            .GetAttributes()
-            .FirstOrDefault(attr => attr.AttributeClass?.FullMetadataName() == attributeClassFullname);
+        var symbolsToCheck = new Queue<ISymbol>(
+            new[]
+            {
+                symbol
+            }
+        );
 
-        return attributeData != null;
+        while (symbolsToCheck.Any())
+        {
+            ISymbol? currentSymbol = symbolsToCheck.Dequeue();
+
+            attributeData = currentSymbol
+                .GetAttributes()
+                .FirstOrDefault(attr => attr.AttributeClass?.FullMetadataName() == attributeClassFullname);
+
+            if (attributeData != null)
+                return true;
+
+            if (currentSymbol is not INamedTypeSymbol namedTypeSymbol)
+                continue;
+
+            INamedTypeSymbol? baseType = namedTypeSymbol.BaseType;
+            if (baseType != null)
+                symbolsToCheck.Enqueue(baseType);
+
+            foreach (INamedTypeSymbol implementedInterface in namedTypeSymbol.Interfaces)
+                symbolsToCheck.Enqueue(implementedInterface);
+        }
+
+        attributeData = null;
+        return false;
     }
 }

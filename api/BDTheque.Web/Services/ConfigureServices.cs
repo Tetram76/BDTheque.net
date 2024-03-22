@@ -1,11 +1,14 @@
 namespace BDTheque.Web.Services;
 
 using BDTheque.Data.Context;
+using BDTheque.Data.Repositories;
+using BDTheque.Data.Validators;
 using BDTheque.GraphQL.Filters;
 using BDTheque.GraphQL.Handlers;
 using BDTheque.GraphQL.Listeners;
 using BDTheque.Model.Scalars;
 using DataAnnotatedModelValidations;
+using FluentValidation;
 using HotChocolate.Data.Filters;
 using HotChocolate.Data.Filters.Expressions;
 using HotChocolate.Execution.Configuration;
@@ -33,7 +36,9 @@ public static class ConfigureServices
     public static IServiceCollection SetupApp(this IServiceCollection services, Options options)
     {
         services
-            .SetupDb(options);
+            .SetupDb(options)
+            .AddRepositories()
+            .AddValidators();
 
         IRequestExecutorBuilder requestExecutorBuilder = services
             .SetupGraphQLSchema(options);
@@ -75,6 +80,20 @@ public static class ConfigureServices
             }
         );
 
+    private static IServiceCollection AddValidators(this IServiceCollection services) =>
+        services
+            .AddValidatorsFromAssemblyContaining(typeof(EntityValidator<>));
+
+    private static IServiceCollection AddRepositories(this IServiceCollection services) =>
+        services
+            .AddScoped<IAlbumRepository, AlbumRepository>()
+            .AddScoped<ICollectionRepository, CollectionRepository>()
+            .AddScoped<IEditeurRepository, EditeurRepository>()
+            .AddScoped<IGenreRepository, GenreRepository>()
+            .AddScoped<IPersonneRepository, PersonneRepository>()
+            .AddScoped<ISerieRepository, SerieRepository>()
+            .AddScoped<IUniversRepository, UniversRepository>();
+
     private static IRequestExecutorBuilder SetupGraphQLSchema(this IServiceCollection services, Options appOptions)
         => services
             .AddGraphQLServer()
@@ -87,6 +106,7 @@ public static class ConfigureServices
                     options.UseXmlDocumentation = false;
                     options.ValidatePipelineOrder = true;
                     options.StrictRuntimeTypeValidation = true;
+                    options.RemoveUnreachableTypes = true;
                     options.SortFieldsByName = appOptions.Debug;
                 }
             )
@@ -126,7 +146,6 @@ public static class ConfigureServices
             .AddDataAnnotationsValidator()
             .RegisterDbContext<BDThequeContext>()
             .AddBDThequeGraphQLTypes()
-            // .AddBDThequeGraphQLInputTypes()
             .AddBDThequeGraphQLExtensions()
             .AddRedisSubscriptions(
                 _ => ConnectionMultiplexer.Connect(
@@ -134,7 +153,7 @@ public static class ConfigureServices
                     {
                         EndPoints =
                         {
-                            appOptions.RedisEndpoint ?? "localhost:6379"
+                            appOptions.RedisEndpoint
                         }
                     }
                 )

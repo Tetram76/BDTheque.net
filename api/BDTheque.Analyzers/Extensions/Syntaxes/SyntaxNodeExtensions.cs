@@ -46,6 +46,5 @@ public static class SyntaxNodeExtensions
             attributeSyntaxNode = attributeSyntaxReference.GetSyntax() as AttributeSyntax;
 
         return attributeSyntaxNode != null;
-
     }
 }

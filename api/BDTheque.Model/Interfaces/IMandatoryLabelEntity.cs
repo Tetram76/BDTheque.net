@@ -1,7 +1,7 @@
 namespace BDTheque.Model.Interfaces;
 
-[InterfaceType]
-public interface IMandatoryLabel
+[InterfaceType("IMandatoryLabel")]
+public interface IMandatoryLabelEntity
 {
     public char Initiale { get; set; }
 }

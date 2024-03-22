@@ -13,6 +13,7 @@ public class Univers : MandatoryLabelEntity
 {
     [RequiredName]
     public string Nom { get; set; } = null!;
+
     public string NomRaw { get; set; } = null!;
 
     public string? Description { get; set; }

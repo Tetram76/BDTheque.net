@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation"/>
     <PackageReference Include="HotChocolate.AspNetCore"/>
     <PackageReference Include="HotChocolate.Data.EntityFramework"/>
     <PackageReference Include="HotChocolate.Types.Analyzers" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all"/>

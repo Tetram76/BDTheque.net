@@ -1,8 +1,8 @@
 namespace BDTheque.GraphQL.Mutations;
 
-using BDTheque.Data.Context;
+using BDTheque.Data.Exceptions;
+using BDTheque.Data.Repositories;
 using BDTheque.GraphQL.Attributes;
-using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
@@ -13,51 +13,36 @@ using HotChocolate.Subscriptions;
 [MutationEntity<Collection>]
 public static partial class CollectionMutations
 {
-    [Error<AlreadyExistsException>]
-    [Error<InvalidOperationException>]
-    public static async Task<Collection> CreateCollection(CollectionCreateInput collection, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    public static async Task<Collection> CreateCollection(CollectionCreateInput collection, [Service] ICollectionRepository collectionRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        if (await dbContext.Collections.AnyAsync(g => g.Nom == collection.Nom.Value && g.EditeurId == collection.Editeur.Value!.Id, cancellationToken))
-            throw new AlreadyExistsException($"Collection name \"{collection.Nom.Value}\" is already used");
+        Collection newCollection = await collection.ApplyTo(new Collection(), collectionRepository.DbContext, cancellationToken);
+        await collectionRepository.Add(newCollection, cancellationToken);
 
-        Collection newCollection = await collection.ApplyTo(new Collection(), dbContext, cancellationToken);
-        dbContext.Collections.Add(newCollection);
-
-        await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(CollectionSubscriptions.CollectionCreated), newCollection, cancellationToken);
         return newCollection;
     }
 
-    [Error<AlreadyExistsException>]
-    [Error<NotFoundIdException>]
+    [Error<ValidationException>]
     [Error<InvalidOperationException>]
-    public static async Task<Collection> UpdateCollection(CollectionUpdateInput collection, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    public static async Task<Collection> UpdateCollection(CollectionUpdateInput collection, [Service] ICollectionRepository collectionRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Collection? oldCollection = await dbContext.Collections.Where(p => p.Id == collection.Id).SingleOrDefaultAsync(cancellationToken);
-        if (oldCollection is null)
-            throw new NotFoundIdException(collection.Id);
-        Guid newEditeurId = collection.Editeur.HasValue ? collection.Editeur.Value.Id : oldCollection.EditeurId;
-        if (collection.Nom.HasValue && await dbContext.Collections.AnyAsync(g => g.Id != oldCollection.Id && g.EditeurId == newEditeurId && g.Nom == collection.Nom.Value, cancellationToken))
-            throw new AlreadyExistsException($"Collection name \"{collection.Nom.Value}\" is already used");
+        Collection oldCollection = await collectionRepository.GetById(collection.Id, cancellationToken);
 
-        await collection.ApplyTo(oldCollection, dbContext, cancellationToken);
-        dbContext.Update(oldCollection);
+        await collection.ApplyTo(oldCollection, collectionRepository.DbContext, cancellationToken);
+        await collectionRepository.Update(oldCollection, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(CollectionSubscriptions.CollectionUpdated), oldCollection, cancellationToken);
         return oldCollection;
     }
 
-    [Error<NotFoundIdException>]
-    public static async Task<Collection> DeleteCollection([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<InvalidOperationException>]
+    public static async Task<Collection> DeleteCollection([ID] Guid id, [Service] ICollectionRepository collectionRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Collection? collection = await dbContext.Collections.SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
-        if (collection is null)
-            throw new NotFoundIdException(id);
+        Collection collection = await collectionRepository.GetById(id, cancellationToken);
 
-        dbContext.Collections.Remove(collection);
+        await collectionRepository.Remove(collection, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(CollectionSubscriptions.CollectionDeleted), collection, cancellationToken);
         return collection;
     }

@@ -1,7 +1,7 @@
 namespace BDTheque.Model.Interfaces;
 
-[InterfaceType]
-public interface IAssociable
+[InterfaceType("IAssociable")]
+public interface IAssociableEntity
 {
     public IList<string>? Associations { get; set; }
 }

@@ -6,9 +6,12 @@
     <DevExpressVersion>23.1.7</DevExpressVersion>
     <HotChocolateVersion>13.9.0</HotChocolateVersion>
     <CodeAnalysisVersion>4.9.2</CodeAnalysisVersion>
+    <FluentValidationVersion>11.9.0</FluentValidationVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="DataAnnotatedModelValidations" Version="5.2.0" />
+    <PackageVersion Include="FluentValidation" Version="$(FluentValidationVersion)"/>
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="$(FluentValidationVersion)"/>
     <PackageVersion Include="GraphQL" Version="7.7.2" />
     <PackageVersion Include="HotChocolate" Version="$(HotChocolateVersion)" />
     <PackageVersion Include="HotChocolate.AspNetCore" Version="$(HotChocolateVersion)" />

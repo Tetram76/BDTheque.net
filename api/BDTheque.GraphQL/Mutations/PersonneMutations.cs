@@ -1,8 +1,8 @@
 namespace BDTheque.GraphQL.Mutations;
 
-using BDTheque.Data.Context;
+using BDTheque.Data.Exceptions;
+using BDTheque.Data.Repositories;
 using BDTheque.GraphQL.Attributes;
-using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 using HotChocolate.Subscriptions;
@@ -13,48 +13,36 @@ using HotChocolate.Subscriptions;
 [MutationEntity<Personne>]
 public static partial class PersonneMutations
 {
-    [Error<AlreadyExistsException>]
-    public static async Task<Personne> CreatePersonne(PersonneCreateInput personne, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    public static async Task<Personne> CreatePersonne(PersonneCreateInput personne, [Service] IPersonneRepository personneRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        if (await dbContext.Personnes.AnyAsync(g => g.Nom == personne.Nom.Value, cancellationToken))
-            throw new AlreadyExistsException($"Personne name \"{personne.Nom.Value}\" is already used");
-
         Personne newPersonne = (personne as IPersonneInputType).ApplyTo(new Personne());
-        dbContext.Personnes.Add(newPersonne);
+        await personneRepository.Add(newPersonne, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(PersonneSubscriptions.PersonneCreated), newPersonne, cancellationToken);
         return newPersonne;
     }
 
-    [Error<AlreadyExistsException>]
-    [Error<NotFoundIdException>]
-    public static async Task<Personne> UpdatePersonne(PersonneUpdateInput personne, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    [Error<InvalidOperationException>]
+    public static async Task<Personne> UpdatePersonne(PersonneUpdateInput personne, [Service] IPersonneRepository personneRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Personne? oldPersonne = await dbContext.Personnes.SingleOrDefaultAsync(p => p.Id == personne.Id, cancellationToken);
-        if (oldPersonne is null)
-            throw new NotFoundIdException(personne.Id);
-        if (personne.Nom.HasValue && await dbContext.Personnes.AnyAsync(g => g.Id != oldPersonne.Id && g.Nom == personne.Nom.Value, cancellationToken))
-            throw new AlreadyExistsException($"Personne name \"{personne.Nom.Value}\" is already used");
+        Personne oldPersonne = await personneRepository.GetById(personne.Id, cancellationToken);
 
         (personne as IPersonneInputType).ApplyTo(oldPersonne);
-        dbContext.Update(oldPersonne);
+        await personneRepository.Update(oldPersonne, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(PersonneSubscriptions.PersonneUpdated), oldPersonne, cancellationToken);
         return oldPersonne;
     }
 
-    [Error<NotFoundIdException>]
-    public static async Task<Personne> DeletePersonne([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<InvalidOperationException>]
+    public static async Task<Personne> DeletePersonne([ID] Guid id, [Service] IPersonneRepository personneRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Personne? personne = await dbContext.Personnes.SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
-        if (personne is null)
-            throw new NotFoundIdException(id);
+        Personne personne = await personneRepository.GetById(id, cancellationToken);
 
-        dbContext.Personnes.Remove(personne);
+        await personneRepository.Remove(personne, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(PersonneSubscriptions.PersonneDeleted), personne, cancellationToken);
         return personne;
     }

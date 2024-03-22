@@ -38,7 +38,8 @@ public static class WellKnownDefinitions
 
             public const string GraphQLReadOnlyAttribute = $"{Namespace}.Attributes.GraphQLReadOnlyAttribute";
             public const string PropertyMutationTypeAttribute = $"{Namespace}.Attributes.MutationScalarTypeAttribute`1";
-            public const string VersioningEntity = $"{Namespace}.Entities.Abstract.VersioningEntity";
+            public const string StaticEntityAttribute = $"{Namespace}.Attributes.StaticEntityAttribute";
+            public const string UniqueIdEntity = $"{Namespace}.Entities.Abstract.UniqueIdEntity";
         }
 
         public const string DBContext = $"{Namespace}.Data.Context.BDThequeContext";

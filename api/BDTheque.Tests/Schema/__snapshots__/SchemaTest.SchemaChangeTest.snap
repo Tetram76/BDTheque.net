@@ -93,10 +93,6 @@ type AlbumsEdge {
   node: Album!
 }
 
-type AlreadyExistsError implements Error {
-  message: String!
-}
-
 type Auteur implements IVersioning & IUniqueId {
   albums("Returns the elements in the list that come after the specified cursor." after: String "Returns the elements in the list that come before the specified cursor." before: String "Returns the first _n_ elements from the list." first: Int "Returns the last _n_ elements from the list." last: Int order: [AlbumSortInput!] where: AlbumFilterInput): AlbumsConnection
   createdAt: DateTime!
@@ -1015,51 +1011,55 @@ type UploadImagePicturePayload {
   image: Image
 }
 
-union CreateAlbumError = AlreadyExistsError
+type ValidationError implements Error {
+  message: String!
+}
 
-union CreateCollectionError = AlreadyExistsError | InvalidOperationError
+union CreateAlbumError = ValidationError
 
-union CreateEditeurError = AlreadyExistsError
+union CreateCollectionError = ValidationError
 
-union CreateGenreError = AlreadyExistsError
+union CreateEditeurError = ValidationError
 
-union CreatePersonneError = AlreadyExistsError
+union CreateGenreError = ValidationError
 
-union CreateSerieError = AlreadyExistsError
+union CreatePersonneError = ValidationError
 
-union CreateUniversError = AlreadyExistsError
+union CreateSerieError = ValidationError
 
-union DeleteAlbumError = NotFoundIdError
+union CreateUniversError = ValidationError
 
-union DeleteCollectionError = NotFoundIdError
+union DeleteAlbumError = InvalidOperationError
 
-union DeleteEditeurError = NotFoundIdError
+union DeleteCollectionError = InvalidOperationError
+
+union DeleteEditeurError = InvalidOperationError
 
 union DeleteEditionError = NotFoundIdError
 
-union DeleteGenreError = NotFoundIdError
+union DeleteGenreError = InvalidOperationError
 
 union DeleteImageError = NotFoundIdError
 
-union DeletePersonneError = NotFoundIdError
+union DeletePersonneError = InvalidOperationError
 
-union DeleteSerieError = NotFoundIdError
+union DeleteSerieError = InvalidOperationError
 
-union DeleteUniversError = NotFoundIdError
+union DeleteUniversError = InvalidOperationError
 
-union UpdateAlbumError = AlreadyExistsError | NotFoundIdError
+union UpdateAlbumError = ValidationError | InvalidOperationError
 
-union UpdateCollectionError = AlreadyExistsError | NotFoundIdError | InvalidOperationError
+union UpdateCollectionError = ValidationError | InvalidOperationError
 
-union UpdateEditeurError = AlreadyExistsError | NotFoundIdError
+union UpdateEditeurError = ValidationError | InvalidOperationError
 
-union UpdateGenreError = AlreadyExistsError | NotFoundIdError
+union UpdateGenreError = ValidationError | InvalidOperationError
 
-union UpdatePersonneError = AlreadyExistsError | NotFoundIdError
+union UpdatePersonneError = ValidationError | InvalidOperationError
 
-union UpdateSerieError = AlreadyExistsError | NotFoundIdError
+union UpdateSerieError = ValidationError | InvalidOperationError
 
-union UpdateUniversError = AlreadyExistsError | NotFoundIdError
+union UpdateUniversError = ValidationError | InvalidOperationError
 
 input AlbumCreateInput {
   anneeParution: Year
@@ -1587,21 +1587,21 @@ input OptionCategoryOperationFilterInput {
 input OptionFilterInput {
   and: [OptionFilterInput!]
   or: [OptionFilterInput!]
-  id: IdOperationFilterInput
   category: OptionCategoryOperationFilterInput
   libelle: StringOperationFilterInput
   ordre: ComparableNonNullTypeOfUnsignedShortTypeOperationFilterInput
   defaut: BooleanOperationFilterInput
+  id: IdOperationFilterInput
   createdAt: DateTimeOperationFilterInput
   updatedAt: DateTimeOperationFilterInput
 }
 
 input OptionSortInput {
-  id: SortEnumType
   category: SortEnumType
   libelle: SortEnumType
   ordre: SortEnumType
   defaut: SortEnumType
+  id: SortEnumType
   createdAt: SortEnumType
   updatedAt: SortEnumType
 }
@@ -1907,28 +1907,7 @@ scalar DateTime @specifiedBy(url: "https:\/\/www.graphql-scalars.com\/date-time"
 "The built-in `Decimal` scalar type."
 scalar Decimal
 
-"Integers that will represent a book condition.\nValid values: [100, 103, 105, 108, 110]"
-scalar EditionEtat
-
-"Integers that will represent a book edition format.\nValid values: [501, 503, 504, 505, 506, 510]"
-scalar EditionFormat
-
-"Integers that will represent a book edition orientation.\nValid values: [401, 402]"
-scalar EditionOrientation
-
-"Integers that will represent a book binding.\nValid values: [200, 201]"
-scalar EditionReliure
-
-"Integers that will represent a book reading direction.\nValid values: [801, 802]"
-scalar EditionSensLecture
-
-"Integers that will represent a book edition kind.\nValid values: [301, 302, 303]"
-scalar EditionType
-
 scalar EuroCurrency
-
-"Integers that will represent an image kind.\nValid values: [600, 601, 602, 603, 604]"
-scalar ImageType
 
 "The ISBN scalar type is a ISBN-10 or ISBN-13 number: https:\/\/en.wikipedia.org\/wiki\/International_Standard_Book_Number."
 scalar Isbn

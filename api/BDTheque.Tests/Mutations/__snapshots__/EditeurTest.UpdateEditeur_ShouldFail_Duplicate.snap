@@ -4,7 +4,7 @@
       "editeur": null,
       "errors": [
         {
-          "__typename": "AlreadyExistsError",
+          "__typename": "ValidationError",
           "message": "Editeur name \"test\" is already used"
         }
       ]

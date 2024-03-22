@@ -1,7 +1,6 @@
 namespace BDTheque.Analyzers.Extensions;
 
 using System.CodeDom.Compiler;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -18,6 +17,9 @@ public static class ClassDeclarationSyntaxExtensions
 
     public static bool IsAnnotatedWithMutationType(this ClassDeclarationSyntax classDeclarationSyntax, SyntaxNodeAnalysisContext context) =>
         classDeclarationSyntax.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.MutationEntityAttribute, context);
+
+    public static bool IsAnnotatedWithStaticEntityAttribute(this ClassDeclarationSyntax classDeclarationSyntax, GeneratorSyntaxContext context) =>
+        classDeclarationSyntax.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.Model.StaticEntityAttribute, context);
 
     public static ITypeSymbol GetEntityTypeFromAttribute(this ClassDeclarationSyntax classDeclarationSyntax, GeneratorSyntaxContext context)
     {

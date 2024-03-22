@@ -8,11 +8,8 @@ using BDTheque.Model.Enums;
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 [ObjectType]
-public class Option : VersioningEntity
+public class Option : StaticEntity
 {
-    [ID]
-    public ushort Id { get; set; }
-
     public OptionCategory Category { get; set; }
 
     public string Libelle { get; set; } = null!;

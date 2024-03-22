@@ -1,3 +1,7 @@
 namespace BDTheque.Model.Interfaces;
 
-public interface IEntity;
+public interface IEntity<TKey>
+{
+    [ID]
+    public TKey Id { get; set; }
+}

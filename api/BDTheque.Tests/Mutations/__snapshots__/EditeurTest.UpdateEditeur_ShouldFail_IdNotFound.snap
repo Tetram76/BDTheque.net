@@ -4,8 +4,8 @@
       "editeur": null,
       "errors": [
         {
-          "__typename": "NotFoundIdError",
-          "message": "Id \"00000000-0000-0000-0000-000000000000\" not found"
+          "__typename": "InvalidOperationError",
+          "message": "Sequence contains no elements."
         }
       ]
     }

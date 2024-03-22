@@ -1,12 +1,13 @@
 namespace BDTheque.GraphQL.DataLoaders;
 
 using BDTheque.Data.Context;
+using BDTheque.Data.Repositories;
 
 public static class EditeurLoaders
 {
     [DataLoader]
-    internal static async Task<Editeur?> GetEditeurByIdAsync([ID] Guid id, BDThequeContext context, CancellationToken cancellationToken)
-        => await context.Editeurs.FirstOrDefaultAsync(editeur => editeur.Id == id, cancellationToken);
+    internal static async Task<Editeur> GetEditeurByIdAsync([ID] Guid id, IEditeurRepository editeurRepository, CancellationToken cancellationToken)
+        => await editeurRepository.GetById(id, cancellationToken);
 
     [DataLoader]
     [SuppressMessage("Performance", "CA1862:Utiliser les surcharges de méthode «\u00a0StringComparison\u00a0» pour effectuer des comparaisons de chaînes sans respect de la casse")]

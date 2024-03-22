@@ -14,6 +14,7 @@ public class Genre : MandatoryLabelEntity
 {
     [RequiredName]
     public string Nom { get; set; } = null!;
+
     public string NomRaw { get; set; } = null!;
 
     public virtual ICollection<GenreAlbum> GenresAlbums { get; set; } = new List<GenreAlbum>();

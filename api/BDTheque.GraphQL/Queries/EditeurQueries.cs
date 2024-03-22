@@ -20,6 +20,7 @@ public static class EditeurQueries
     public static IQueryable<Editeur> GetEditeur(BDThequeContext dbContext)
         => dbContext.Editeurs;
 
+    [Error<InvalidOperationException>]
     public static Task<Editeur> GetEditeurByIdAsync([ID] Guid id, IEditeurByIdDataLoader dataLoader, CancellationToken cancellationToken)
         => dataLoader.LoadAsync(id, cancellationToken);
 
