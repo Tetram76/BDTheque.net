@@ -82,7 +82,7 @@ public class MutationImplementationsGenerator : IIncrementalGenerator
             SyntaxFactory.Parameter(inputIdentifier.Identifier).WithType(SyntaxFactory.ParseTypeName("I" + classSymbol.Name + "InputType"))
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.ThisKeyword)),
             SyntaxFactory.Parameter(entityIdentifier.Identifier).WithType(entityTypeSyntax),
-            SyntaxFactory.Parameter(dbContextIdentifier.Identifier).WithType(SyntaxFactory.ParseTypeName($"global::{WellKnownDefinitions.BDTheque.DBContext}"))
+            SyntaxFactory.Parameter(dbContextIdentifier.Identifier).WithType(SyntaxFactory.ParseTypeName($"global::{WellKnownDefinitions.BDTheque.Data.DBContext}"))
         ];
 
         if (classSymbol.MutableProperties(compilation).Any(property => property.Type.IsEntityType(compilation) && !property.Type.IsNullable()))

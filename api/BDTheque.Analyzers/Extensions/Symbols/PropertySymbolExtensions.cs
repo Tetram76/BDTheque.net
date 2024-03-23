@@ -11,7 +11,7 @@ public static class PropertySymbolExtensions
         && !propertySymbol.IsGraphQLReadOnly();
 
     public static bool IsGraphQLReadOnly(this IPropertySymbol propertySymbol) =>
-        propertySymbol.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.Model.GraphQLReadOnlyAttribute);
+        propertySymbol.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.Model.Attributes.GraphQLReadOnlyAttribute);
 
     public static bool IsEntityIdProperty(this IPropertySymbol propertySymbol, Compilation compilation)
     {
@@ -39,7 +39,7 @@ public static class PropertySymbolExtensions
         propertySymbol.GetAttributes()
             .Where(
                 attributeData => attributeData.AttributeClass != null
-                                 && attributeData.AttributeClass.FullMetadataName() == WellKnownDefinitions.BDTheque.Model.PropertyMutationTypeAttribute
+                                 && attributeData.AttributeClass.FullMetadataName() == WellKnownDefinitions.BDTheque.Model.Attributes.PropertyMutationTypeAttribute
             )
             .Select(attributeData => attributeData.AttributeConstructor)
             .FirstOrDefault();

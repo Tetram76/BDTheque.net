@@ -1,4 +1,4 @@
-namespace BDTheque.Data.Repositories;
+namespace BDTheque.Data.Repositories.Interfaces;
 
 using BDTheque.Data.Context;
 using BDTheque.Model.Interfaces;

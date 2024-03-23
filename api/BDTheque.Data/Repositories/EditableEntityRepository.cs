@@ -2,8 +2,8 @@ namespace BDTheque.Data.Repositories;
 
 using System.ComponentModel.DataAnnotations;
 using BDTheque.Data.Context;
+using BDTheque.Data.Repositories.Interfaces;
 using BDTheque.Data.Validators;
-using BDTheque.Model.Entities.Abstract;
 using BDTheque.Model.Interfaces;
 using FluentValidation;
 using FluentValidation.Internal;

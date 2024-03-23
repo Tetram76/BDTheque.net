@@ -4,22 +4,15 @@ using Microsoft.CodeAnalysis;
 
 public static class TypeSymbolExtensions
 {
-    public static IEnumerable<ITypeSymbol> GetHierarchy(this ITypeSymbol namedTypeSymbol, bool includeInterfaces = false)
+    public static IEnumerable<ITypeSymbol> GetHierarchy(this ITypeSymbol typeSymbol, bool includeInterfaces = false)
     {
-        yield return namedTypeSymbol;
+        yield return typeSymbol;
         if (includeInterfaces)
-            foreach (INamedTypeSymbol baseTypeInterface in namedTypeSymbol.Interfaces)
-                yield return baseTypeInterface;
+            foreach (INamedTypeSymbol symbolInterface in typeSymbol.Interfaces)
+                yield return symbolInterface;
 
-        while (namedTypeSymbol.BaseType is { } baseType)
-        {
-            yield return baseType;
-            if (includeInterfaces)
-                foreach (INamedTypeSymbol baseTypeInterface in baseType.Interfaces)
-                    yield return baseTypeInterface;
-
-            namedTypeSymbol = baseType;
-        }
+        foreach (INamedTypeSymbol namedTypeSymbol in typeSymbol.BaseType?.GetHierarchy(includeInterfaces) ?? [])
+            yield return namedTypeSymbol;
     }
 
     public static IEnumerable<ISymbol> GetAllMembers(this ITypeSymbol typeSymbol) =>
@@ -30,7 +23,13 @@ public static class TypeSymbolExtensions
         || typeSymbol.NullableAnnotation == NullableAnnotation.Annotated;
 
     public static bool IsEntityType(this ITypeSymbol typeSymbol, Compilation compilation) =>
-        compilation.GetTypeByMetadataName(WellKnownDefinitions.BDTheque.Model.UniqueIdEntity) is { } entityTypeSymbol
+        typeSymbol.InheritsFrom(WellKnownDefinitions.BDTheque.Model.Entities.UniqueIdEntity, compilation);
+
+    public static bool IsEntityRepositoryType(this ITypeSymbol typeSymbol, Compilation compilation) =>
+        typeSymbol.InheritsFrom(WellKnownDefinitions.BDTheque.Data.Repositories.EntityRepository, compilation);
+
+    public static bool InheritsFrom(this ITypeSymbol typeSymbol, string parentTypeFullName, Compilation compilation) =>
+        compilation.GetTypeByMetadataName(parentTypeFullName) is { } entityTypeSymbol
         && typeSymbol.GetHierarchy().Any(symbol => SymbolEqualityComparer.Default.Equals(symbol, entityTypeSymbol));
 
     public static bool IsCollectionType(this ITypeSymbol typeSymbol)
@@ -48,5 +47,4 @@ public static class TypeSymbolExtensions
         typeSymbol.GetAllMembers()
             .OfType<IPropertySymbol>()
             .Where(property => property.IsMutable(compilation));
-
 }

@@ -1,18 +1,13 @@
 namespace BDTheque.Data.Repositories;
 
-using System.ComponentModel.DataAnnotations;
+using BDTheque.Data.Attributes;
 using BDTheque.Data.Context;
-using BDTheque.Data.Validators;
-using BDTheque.Model.Entities.Abstract;
+using BDTheque.Data.Repositories.Interfaces;
 using BDTheque.Model.Interfaces;
-using FluentValidation;
-using FluentValidation.Internal;
-using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using ValidationException = BDTheque.Data.Exceptions.ValidationException;
-using ValidationResult = System.ComponentModel.DataAnnotations.ValidationResult;
 
+[EntityRepository]
 public abstract class EntityRepository<TEntity, TKey>(IServiceProvider serviceProvider, BDThequeContext dbContext)
     : IEntityRepository<TEntity, TKey>
     where TEntity : class, IEntity<TKey>

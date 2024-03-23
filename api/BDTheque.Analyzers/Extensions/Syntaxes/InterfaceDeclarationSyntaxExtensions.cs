@@ -1,6 +1,7 @@
 namespace BDTheque.Analyzers.Extensions;
 
 using System.CodeDom.Compiler;
+using BDTheque.Analyzers.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -8,23 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 public static class InterfaceDeclarationSyntaxExtensions
 {
     public static InterfaceDeclarationSyntax AddGeneratedAttribute<T>(this InterfaceDeclarationSyntax interfaceDeclarationSyntax) =>
-        interfaceDeclarationSyntax.AddAttributeLists(
-            SyntaxFactory.AttributeList(
-                SyntaxFactory.SingletonSeparatedList(
-                    SyntaxFactory.Attribute(
-                        SyntaxFactory.IdentifierName("global::" + typeof(GeneratedCodeAttribute).FullName),
-                        SyntaxFactory.AttributeArgumentList(
-                            SyntaxFactory.SeparatedList(
-                                [
-                                    SyntaxFactory.AttributeArgument(SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(typeof(T).FullName!))),
-                                    SyntaxFactory.AttributeArgument(SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(typeof(T).Assembly.GetName().Version.ToString())))
-                                ]
-                            )
-                        )
-                    )
-                )
-            )
-        );
+        interfaceDeclarationSyntax.AddAttributeLists(AttributeListSyntaxHelper.GeneratedAttributeList<T>());
 
     public static InterfaceDeclarationSyntax AddApplyToMethod(this InterfaceDeclarationSyntax interfaceDeclarationSyntax, GeneratorSyntaxContext context, ClassDeclarationSyntax classDeclaration)
     {

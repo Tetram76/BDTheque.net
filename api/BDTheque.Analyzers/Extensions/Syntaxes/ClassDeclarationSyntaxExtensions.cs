@@ -1,6 +1,7 @@
 namespace BDTheque.Analyzers.Extensions;
 
 using System.CodeDom.Compiler;
+using BDTheque.Analyzers.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -13,18 +14,21 @@ public static class ClassDeclarationSyntaxExtensions
         classDeclarationSyntax.IsAnnotatedWithAttribute(WellKnownDefinitions.HotChocolate.Types.ObjectTypeAttribute, context);
 
     public static bool IsAnnotatedWithMutationType(this ClassDeclarationSyntax classDeclarationSyntax, GeneratorSyntaxContext context) =>
-        classDeclarationSyntax.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.MutationEntityAttribute, context);
+        classDeclarationSyntax.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.GraphQL.Attributes.MutationEntityAttribute, context);
 
     public static bool IsAnnotatedWithMutationType(this ClassDeclarationSyntax classDeclarationSyntax, SyntaxNodeAnalysisContext context) =>
-        classDeclarationSyntax.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.MutationEntityAttribute, context);
+        classDeclarationSyntax.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.GraphQL.Attributes.MutationEntityAttribute, context);
 
     public static bool IsAnnotatedWithStaticEntityAttribute(this ClassDeclarationSyntax classDeclarationSyntax, GeneratorSyntaxContext context) =>
-        classDeclarationSyntax.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.Model.StaticEntityAttribute, context);
+        classDeclarationSyntax.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.Model.Attributes.StaticEntityAttribute, context);
+
+    public static bool IsAnnotatedWithEntityRepository(this ClassDeclarationSyntax classDeclarationSyntax, GeneratorSyntaxContext context) =>
+        classDeclarationSyntax.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.Data.Attributes.EntityRepositoryAttribute, context);
 
     public static ITypeSymbol GetEntityTypeFromAttribute(this ClassDeclarationSyntax classDeclarationSyntax, GeneratorSyntaxContext context)
     {
-        if (!classDeclarationSyntax.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.MutationEntityAttribute, classDeclarationSyntax.SemanticModel(context), out AttributeSyntax? attributeSyntax))
-            throw new InvalidOperationException($"Expected {classDeclarationSyntax.Identifier} to be annotated with {WellKnownDefinitions.BDTheque.MutationEntityAttribute} attribute but is not.");
+        if (!classDeclarationSyntax.IsAnnotatedWithAttribute(WellKnownDefinitions.BDTheque.GraphQL.Attributes.MutationEntityAttribute, classDeclarationSyntax.SemanticModel(context), out AttributeSyntax? attributeSyntax))
+            throw new InvalidOperationException($"Expected {classDeclarationSyntax.Identifier} to be annotated with {WellKnownDefinitions.BDTheque.GraphQL.Attributes.MutationEntityAttribute} attribute but is not.");
 
         SymbolInfo attributeSymbolInfo = attributeSyntax.SemanticModel(context).GetSymbolInfo(attributeSyntax);
         if (attributeSymbolInfo.Symbol is not IMethodSymbol attributeSymbol)
@@ -63,23 +67,7 @@ public static class ClassDeclarationSyntaxExtensions
             .Where(property => property.IsMutable(context));
 
     public static ClassDeclarationSyntax AddGeneratedAttribute<T>(this ClassDeclarationSyntax classDeclarationSyntax) =>
-        classDeclarationSyntax.AddAttributeLists(
-            SyntaxFactory.AttributeList(
-                SyntaxFactory.SingletonSeparatedList(
-                    SyntaxFactory.Attribute(
-                        SyntaxFactory.IdentifierName("global::" + typeof(GeneratedCodeAttribute).FullName),
-                        SyntaxFactory.AttributeArgumentList(
-                            SyntaxFactory.SeparatedList(
-                                [
-                                    SyntaxFactory.AttributeArgument(SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(typeof(T).FullName!))),
-                                    SyntaxFactory.AttributeArgument(SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(typeof(T).Assembly.GetName().Version.ToString())))
-                                ]
-                            )
-                        )
-                    )
-                )
-            )
-        );
+        classDeclarationSyntax.AddAttributeLists(AttributeListSyntaxHelper.GeneratedAttributeList<T>());
 
     public static ClassDeclarationSyntax AddImplicitConverter(this ClassDeclarationSyntax classDeclarationSyntax, PropertyDeclarationSyntax? idProperty)
     {

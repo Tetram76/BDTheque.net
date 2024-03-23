@@ -1,7 +1,6 @@
 namespace BDTheque.Web.Services;
 
 using BDTheque.Data.Context;
-using BDTheque.Data.Repositories;
 using BDTheque.Data.Validators;
 using BDTheque.GraphQL.Filters;
 using BDTheque.GraphQL.Handlers;
@@ -83,16 +82,6 @@ public static class ConfigureServices
     private static IServiceCollection AddValidators(this IServiceCollection services) =>
         services
             .AddValidatorsFromAssemblyContaining(typeof(EntityValidator<>));
-
-    private static IServiceCollection AddRepositories(this IServiceCollection services) =>
-        services
-            .AddScoped<IAlbumRepository, AlbumRepository>()
-            .AddScoped<ICollectionRepository, CollectionRepository>()
-            .AddScoped<IEditeurRepository, EditeurRepository>()
-            .AddScoped<IGenreRepository, GenreRepository>()
-            .AddScoped<IPersonneRepository, PersonneRepository>()
-            .AddScoped<ISerieRepository, SerieRepository>()
-            .AddScoped<IUniversRepository, UniversRepository>();
 
     private static IRequestExecutorBuilder SetupGraphQLSchema(this IServiceCollection services, Options appOptions)
         => services

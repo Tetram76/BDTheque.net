@@ -1,7 +1,7 @@
 namespace BDTheque.Data.Validators;
 
 using System.Linq.Expressions;
-using BDTheque.Data.Repositories;
+using BDTheque.Data.Repositories.Interfaces;
 using BDTheque.Model.Interfaces;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;

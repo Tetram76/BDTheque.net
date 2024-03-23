@@ -1,7 +1,12 @@
 namespace BDTheque.Model.Inputs;
 
-public class BaseCreateInput;
+[ApplyMutationInputMapping]
+public abstract class BaseInput;
 
-public class BaseUpdateInput;
+public abstract class BaseCreateInput : BaseInput;
 
-public class BaseNestedInput;
+public abstract class BaseUpdateInput : BaseInput;
+
+#pragma warning disable S2094
+public abstract class BaseNestedInput;
+#pragma warning restore S2094

@@ -1,7 +1,7 @@
 namespace BDTheque.GraphQL.Mutations;
 
 using BDTheque.Data.Exceptions;
-using BDTheque.Data.Repositories;
+using BDTheque.Data.Repositories.Interfaces;
 using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;

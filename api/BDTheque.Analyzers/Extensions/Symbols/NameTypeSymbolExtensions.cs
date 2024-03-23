@@ -8,8 +8,8 @@ public static class NameTypeSymbolExtensions
     {
         yield return namedTypeSymbol;
         if (includeInterfaces)
-            foreach (INamedTypeSymbol baseTypeInterface in namedTypeSymbol.Interfaces)
-                yield return baseTypeInterface;
+            foreach (INamedTypeSymbol symbolInterface in namedTypeSymbol.Interfaces)
+                yield return symbolInterface;
 
         while (namedTypeSymbol.BaseType is { } baseType)
         {

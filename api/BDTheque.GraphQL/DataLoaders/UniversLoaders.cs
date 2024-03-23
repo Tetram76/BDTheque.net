@@ -1,7 +1,7 @@
 namespace BDTheque.GraphQL.DataLoaders;
 
 using BDTheque.Data.Context;
-using BDTheque.Data.Repositories;
+using BDTheque.Data.Repositories.Interfaces;
 
 public static class UniversLoaders
 {

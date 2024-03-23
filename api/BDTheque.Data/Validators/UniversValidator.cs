@@ -1,6 +1,6 @@
 namespace BDTheque.Data.Validators;
 
-using BDTheque.Data.Repositories;
+using BDTheque.Data.Repositories.Interfaces;
 using BDTheque.Model.Entities;
 using FluentValidation;
 

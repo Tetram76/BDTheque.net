@@ -1,4 +1,4 @@
-namespace BDTheque.Data.Repositories;
+namespace BDTheque.Data.Repositories.Interfaces;
 
 using BDTheque.Model.Interfaces;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

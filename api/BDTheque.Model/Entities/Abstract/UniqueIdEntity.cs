@@ -1,7 +1,6 @@
 namespace BDTheque.Model.Entities.Abstract;
 
 using BDTheque.Model.Interfaces;
-using HotChocolate.Data.Projections;
 
 public abstract class UniqueIdEntity : BaseEntity, IUniqueIdEntity, IValidatableObject
 {

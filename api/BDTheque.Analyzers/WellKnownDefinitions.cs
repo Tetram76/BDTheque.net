@@ -36,17 +36,56 @@ public static class WellKnownDefinitions
         {
             private const string Namespace = $"{BDTheque.Namespace}.{nameof(Model)}";
 
-            public const string GraphQLReadOnlyAttribute = $"{Namespace}.Attributes.GraphQLReadOnlyAttribute";
-            public const string PropertyMutationTypeAttribute = $"{Namespace}.Attributes.MutationScalarTypeAttribute`1";
-            public const string StaticEntityAttribute = $"{Namespace}.Attributes.StaticEntityAttribute";
-            public const string UniqueIdEntity = $"{Namespace}.Entities.Abstract.UniqueIdEntity";
+            public static class Attributes
+            {
+                private const string Namespace = $"{Model.Namespace}.{nameof(Attributes)}";
+
+                public const string GraphQLReadOnlyAttribute = $"{Namespace}.GraphQLReadOnlyAttribute";
+                public const string PropertyMutationTypeAttribute = $"{Namespace}.MutationScalarTypeAttribute`1";
+                public const string StaticEntityAttribute = $"{Namespace}.StaticEntityAttribute";
+            }
+
+            public static class Entities
+            {
+                private const string Namespace = $"{Model.Namespace}.{nameof(Entities)}";
+
+                public const string UniqueIdEntity = $"{Namespace}.Abstract.UniqueIdEntity";
+            }
         }
 
-        public const string DBContext = $"{Namespace}.Data.Context.BDThequeContext";
+        public static class Data
+        {
+            private const string Namespace = $"{BDTheque.Namespace}.{nameof(Data)}";
 
-        public const string MutationEntityAttribute = $"{Namespace}.GraphQL.Attributes.MutationEntityAttribute`1";
+            public const string DBContext = $"{Namespace}.Context.BDThequeContext";
+
+            public static class Repositories
+            {
+                private const string Namespace = $"{Data.Namespace}.{nameof(Repositories)}";
+
+                public const string EntityRepository = $"{Namespace}.EntityRepository`2";
+            }
+
+            public static class Attributes
+            {
+                private const string Namespace = $"{Data.Namespace}.{nameof(Attributes)}";
+
+                public const string EntityRepositoryAttribute = $"{Namespace}.EntityRepositoryAttribute";
+            }
+        }
+
+        public static class GraphQL
+        {
+            private const string Namespace = $"{BDTheque.Namespace}.{nameof(GraphQL)}";
+
+            public static class Attributes
+            {
+                private const string Namespace = $"{GraphQL.Namespace}.{nameof(Attributes)}";
+
+                public const string MutationEntityAttribute = $"{Namespace}.MutationEntityAttribute`1";
+            }
+        }
     }
-
     public static class System
     {
         private const string Namespace = nameof(System);
@@ -58,6 +97,21 @@ public static class WellKnownDefinitions
             public static class Generic
             {
                 public const string Namespace = $"{Collections.Namespace}.{nameof(Generic)}";
+            }
+        }
+    }
+
+    public static class Microsoft
+    {
+        private const string Namespace = nameof(Microsoft);
+
+        public static class Extensions
+        {
+            private const string Namespace = $"{Microsoft.Namespace}.{nameof(Extensions)}";
+
+            public static class DependencyInjection
+            {
+                public const string Namespace = $"{Extensions.Namespace}.{nameof(DependencyInjection)}";
             }
         }
     }
