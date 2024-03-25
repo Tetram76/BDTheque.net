@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BDTheque.Data.Migrations
 {
     [DbContext(typeof(BDThequeContext))]
-    [Migration("20240229210505_SeedGenres")]
+    [Migration("20240325192158_SeedGenres")]
     partial class SeedGenres
     {
         /// <inheritdoc />

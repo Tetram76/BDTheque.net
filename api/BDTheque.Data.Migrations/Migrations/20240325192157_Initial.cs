@@ -653,15 +653,15 @@ namespace BDTheque.Data.Migrations
                 column: "titre_raw");
 
             migrationBuilder.CreateIndex(
-                name: "IX_auteurs_albums_album_id",
-                table: "auteurs_albums",
-                column: "album_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_auteurs_personne_id_metier",
                 table: "auteurs",
                 columns: new[] { "personne_id", "metier" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_auteurs_albums_album_id",
+                table: "auteurs_albums",
+                column: "album_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_auteurs_series_serie_id",

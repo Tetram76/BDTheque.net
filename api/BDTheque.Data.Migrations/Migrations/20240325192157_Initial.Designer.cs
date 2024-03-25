@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BDTheque.Data.Migrations
 {
     [DbContext(typeof(BDThequeContext))]
-    [Migration("20240229210504_Initial")]
+    [Migration("20240325192157_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
