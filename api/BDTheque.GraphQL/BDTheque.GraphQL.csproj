@@ -13,12 +13,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate.AspNetCore"/>
     <PackageReference Include="HotChocolate.Data.EntityFramework"/>
-    <PackageReference Include="HotChocolate.Subscriptions.Redis"/>
     <PackageReference Include="HotChocolate.Types.Analyzers" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all"/>
     <PackageReference Include="HotChocolate.Types.Scalars"/>
     <PackageReference Include="Serilog"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BDTheque.Analyzers\BDTheque.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all"/>
+    <ProjectReference Include="..\BDTheque.Extensions\BDTheque.Extensions.csproj"/>
   </ItemGroup>
 
 </Project>

@@ -1,13 +1,13 @@
 namespace BDTheque.GraphQL.DataLoaders;
 
 using BDTheque.Data.Context;
-using Microsoft.EntityFrameworkCore;
+using BDTheque.Data.Repositories.Interfaces;
 
 public static class AlbumLoaders
 {
     [DataLoader]
-    internal static async Task<Album?> GetAlbumByIdAsync([ID] Guid id, BDThequeContext context, CancellationToken cancellationToken)
-        => await context.Albums.FirstOrDefaultAsync(album => album.Id == id, cancellationToken);
+    internal static async Task<Album> GetAlbumByIdAsync([ID] Guid id, IAlbumRepository albumRepository, CancellationToken cancellationToken)
+        => await albumRepository.GetById(id, cancellationToken);
 
     [DataLoader]
     [SuppressMessage("Performance", "CA1862:Utiliser les surcharges de méthode «\u00a0StringComparison\u00a0» pour effectuer des comparaisons de chaînes sans respect de la casse")]

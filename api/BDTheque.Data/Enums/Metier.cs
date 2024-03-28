@@ -1,6 +1,7 @@
 namespace BDTheque.Data.Enums;
 
 using BDTheque.Extensions;
+
 using Microsoft.EntityFrameworkCore;
 
 public static class ModelBuilderExtensions

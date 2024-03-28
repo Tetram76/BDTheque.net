@@ -1,14 +1,17 @@
 namespace BDTheque.GraphQL.Mutations;
 
 using BDTheque.Data.Context;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
-using HotChocolate.Subscriptions;
-using Microsoft.EntityFrameworkCore;
 
+using HotChocolate.Subscriptions;
+
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class EditionMutations
+[MutationEntity<Edition>]
+public static partial class EditionMutations
 {
     // createEditionAlbum(data: EditionAlbumCreateInput!): EditionAlbum!
     // updateEditionAlbum(data: EditionAlbumUpdateInput!): EditionAlbum!
@@ -16,9 +19,9 @@ public static class EditionMutations
     [Error<NotFoundIdException>]
     public static async Task<Edition> DeleteEdition([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Edition? edition = await dbContext.Editions.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
+        Edition? edition = await dbContext.Editions.SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
         if (edition is null)
-            throw new NotFoundIdException();
+            throw new NotFoundIdException(id);
 
         dbContext.Editions.Remove(edition);
 

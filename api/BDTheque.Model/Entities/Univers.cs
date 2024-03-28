@@ -1,15 +1,21 @@
 namespace BDTheque.Model.Entities;
 
 using System.Diagnostics.CodeAnalysis;
+
 using BDTheque.Model.Entities.Abstract;
+
+using Microsoft.EntityFrameworkCore;
 
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 [ObjectType]
+[Index(nameof(Nom), IsUnique = true)]
 public class Univers : MandatoryLabelEntity
 {
+    [RequiredName]
     public string Nom { get; set; } = null!;
+
     public string NomRaw { get; set; } = null!;
 
     public string? Description { get; set; }
@@ -21,6 +27,7 @@ public class Univers : MandatoryLabelEntity
     public Guid UniversRacineId { get; set; }
 
     [GraphQLName("racine")]
+    [GraphQLReadOnly]
     public virtual Univers UniversRacine { get; set; } = null!;
 
     public Guid? UniversParentId { get; set; }

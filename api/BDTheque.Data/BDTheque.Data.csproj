@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions"/>
       <PackageReference Include="Humanizer" />
       <PackageReference Include="Newtonsoft.Json"/>
       <PackageReference Include="Serilog"/>
@@ -21,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BDTheque.Analyzers\BDTheque.Analyzers.csproj" PrivateAssets="all"/>
+    <ProjectReference Include="..\BDTheque.Analyzers\BDTheque.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all"/>
     <ProjectReference Include="..\BDTheque.Extensions\BDTheque.Extensions.csproj" />
     <ProjectReference Include="..\BDTheque.Model\BDTheque.Model.csproj"/>
   </ItemGroup>

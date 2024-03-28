@@ -5,11 +5,11 @@ using BDTheque.Data.Enums;
 using BDTheque.Data.Seeders;
 using BDTheque.Extensions;
 using BDTheque.Model.Entities;
-using BDTheque.Model.Entities.Abstract;
+using BDTheque.Model.Interfaces;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Hosting;
 
 public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbContext(options)
 {
@@ -98,13 +98,13 @@ public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbCont
     private void UpdateTimestamps()
     {
         IEnumerable<EntityEntry> entities = ChangeTracker.Entries().Where(
-            x => x is { Entity: VersioningEntity, State: EntityState.Added or EntityState.Modified }
+            x => x is { Entity: IVersioningEntity, State: EntityState.Added or EntityState.Modified }
         );
 
         DateTime now = DateTime.UtcNow;
         foreach (EntityEntry entity in entities)
         {
-            var versioningEntity = (VersioningEntity) entity.Entity;
+            var versioningEntity = (IVersioningEntity) entity.Entity;
             if (entity.State == EntityState.Added)
                 versioningEntity.CreatedAt = now;
 

@@ -1,13 +1,13 @@
 namespace BDTheque.GraphQL.DataLoaders;
 
 using BDTheque.Data.Context;
-using Microsoft.EntityFrameworkCore;
+using BDTheque.Data.Repositories.Interfaces;
 
 public static class UniversLoaders
 {
     [DataLoader]
-    internal static async Task<Univers?> GetUniversByIdAsync([ID] Guid id, BDThequeContext context, CancellationToken cancellationToken)
-        => await context.Univers.FirstOrDefaultAsync(univers => univers.Id == id, cancellationToken);
+    internal static async Task<Univers> GetUniversByIdAsync([ID] Guid id, IUniversRepository universRepository, CancellationToken cancellationToken)
+        => await universRepository.GetById(id, cancellationToken);
 
     [DataLoader]
     [SuppressMessage("Performance", "CA1862:Utiliser les surcharges de méthode «\u00a0StringComparison\u00a0» pour effectuer des comparaisons de chaînes sans respect de la casse")]

@@ -1,13 +1,14 @@
 ﻿namespace BDTheque.Model.Entities;
 
 using System.Diagnostics.CodeAnalysis;
+
 using BDTheque.Model.Entities.Abstract;
 
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 [ObjectType]
-public class UniversSerie : VersioningEntity
+public class UniversSerie : RelationEntity
 {
     public Guid UniversId { get; set; }
     public virtual Univers Univers { get; set; } = null!;

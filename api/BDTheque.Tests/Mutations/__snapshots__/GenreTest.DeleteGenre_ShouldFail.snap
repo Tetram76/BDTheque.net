@@ -1,0 +1,13 @@
+﻿{
+  "data": {
+    "deleteGenre": {
+      "genre": null,
+      "errors": [
+        {
+          "__typename": "InvalidOperationError",
+          "message": "Sequence contains no elements."
+        }
+      ]
+    }
+  }
+}

@@ -1,59 +1,50 @@
 namespace BDTheque.GraphQL.Mutations;
 
-using BDTheque.Data.Context;
-using BDTheque.GraphQL.Exceptions;
+using BDTheque.Data.Exceptions;
+using BDTheque.Data.Repositories.Interfaces;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
-using HotChocolate.Subscriptions;
-using Microsoft.EntityFrameworkCore;
 
+using HotChocolate.Subscriptions;
+
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class PersonneMutations
+[MutationEntity<Personne>]
+public static partial class PersonneMutations
 {
-    [Error<AlreadyExistsException>]
-    public static async Task<Personne> CreatePersonne(PersonneCreateInput personne, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    public static async Task<Personne> CreatePersonne(PersonneCreateInput personne, [Service] IPersonneRepository personneRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        if (await dbContext.Personnes.AnyAsync(g => g.Nom == personne.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+        Personne newPersonne = (personne as IPersonneInputType).ApplyTo(new Personne());
+        await personneRepository.Add(newPersonne, cancellationToken);
 
-        Personne newPersonne = personne.BuildEntity<Personne>();
-        dbContext.Personnes.Add(newPersonne);
-
-        await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(PersonneSubscriptions.PersonneCreated), newPersonne, cancellationToken);
         return newPersonne;
     }
 
-    [Error<AlreadyExistsException>]
-    [Error<NotFoundIdException>]
-    public static async Task<Personne> UpdatePersonne(PersonneUpdateInput personne, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    [Error<InvalidOperationException>]
+    public static async Task<Personne> UpdatePersonne(PersonneUpdateInput personne, [Service] IPersonneRepository personneRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Personne? oldPersonne = await dbContext.Personnes.Where(p => p.Id == personne.Id).SingleOrDefaultAsync(cancellationToken);
-        if (oldPersonne is null)
-            throw new NotFoundIdException();
-        if (personne.Nom.HasValue && await dbContext.Personnes.AnyAsync(g => g.Id != oldPersonne.Id && g.Nom == personne.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+        Personne oldPersonne = await personneRepository.GetById(personne.Id, cancellationToken);
 
-        personne.ApplyUpdate(oldPersonne);
-        dbContext.Update(oldPersonne);
+        (personne as IPersonneInputType).ApplyTo(oldPersonne);
+        await personneRepository.Update(oldPersonne, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(PersonneSubscriptions.PersonneUpdated), oldPersonne, cancellationToken);
         return oldPersonne;
     }
 
-    [Error<NotFoundIdException>]
-    public static async Task<Personne> DeletePersonne([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<InvalidOperationException>]
+    public static async Task<Personne> DeletePersonne([ID] Guid id, [Service] IPersonneRepository personneRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Personne? Personne = await dbContext.Personnes.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
-        if (Personne is null)
-            throw new NotFoundIdException();
+        Personne personne = await personneRepository.GetById(id, cancellationToken);
 
-        dbContext.Personnes.Remove(Personne);
+        await personneRepository.Remove(personne, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
-        await sender.SendAsync(nameof(PersonneSubscriptions.PersonneDeleted), Personne, cancellationToken);
-        return Personne;
+        await sender.SendAsync(nameof(PersonneSubscriptions.PersonneDeleted), personne, cancellationToken);
+        return personne;
     }
 }

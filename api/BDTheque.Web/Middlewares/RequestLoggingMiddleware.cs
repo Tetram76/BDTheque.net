@@ -1,7 +1,9 @@
 namespace BDTheque.Web.Middlewares;
 
 using System.Diagnostics;
+
 using Microsoft.AspNetCore.Http.Extensions;
+
 using Serilog;
 using Serilog.Events;
 

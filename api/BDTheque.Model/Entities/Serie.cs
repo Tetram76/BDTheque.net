@@ -1,13 +1,17 @@
 namespace BDTheque.Model.Entities;
 
 using System.Diagnostics.CodeAnalysis;
+
 using BDTheque.Model.Entities.Abstract;
 using BDTheque.Model.Scalars;
+
+using Microsoft.EntityFrameworkCore;
 
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 [ObjectType]
+[Index(nameof(Titre), IsUnique = true)]
 public class Serie : OptionalLabelEntity
 {
     public string? Titre { get; set; }
@@ -29,6 +33,8 @@ public class Serie : OptionalLabelEntity
     public virtual Collection? Collection { get; set; }
 
     public Guid ModeleEditionId { get; set; }
+
+    [GraphQLReadOnly]
     public virtual Edition ModeleEdition { get; set; } = null!;
 
     public ushort? NbAlbums { get; set; }
@@ -41,7 +47,7 @@ public class Serie : OptionalLabelEntity
 
     public ushort? NotationId { get; set; }
 
-    [MutationType<OptionNotationType>]
+    [MutationScalarType<OptionNotationType>]
     public virtual Option? Notation { get; set; }
 
     public virtual ICollection<Album> Albums { get; set; } = new List<Album>();

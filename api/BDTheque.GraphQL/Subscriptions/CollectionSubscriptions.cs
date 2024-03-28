@@ -1,6 +1,7 @@
 namespace BDTheque.GraphQL.Subscriptions;
 
 using System.Runtime.CompilerServices;
+
 using HotChocolate.Execution;
 using HotChocolate.Subscriptions;
 

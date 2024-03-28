@@ -2,6 +2,7 @@ namespace BDTheque.Model.Mapping;
 
 using System.Linq.Expressions;
 using System.Reflection;
+
 using BDTheque.Extensions;
 using BDTheque.Model.Scalars;
 
@@ -17,14 +18,13 @@ public static class MappingDefinitions
     ];
 
     public static readonly IEnumerable<Func<PropertyInfo, bool>> MutationInputIgnoredProperties =
-        ObjectIgnoredProperties.Concat(
-            [
-                // property => property.Name.Equals("Id", StringComparison.InvariantCultureIgnoreCase),
-                property => property.Name.Equals("CreatedAt", StringComparison.InvariantCultureIgnoreCase),
-                property => property.Name.Equals("UpdatedAt", StringComparison.InvariantCultureIgnoreCase),
-                property => property.Name.Equals("Initiale", StringComparison.InvariantCultureIgnoreCase)
-            ]
-        );
+    [
+        ..ObjectIgnoredProperties,
+        // property => property.Name.Equals("Id", StringComparison.InvariantCultureIgnoreCase),
+        property => property.Name.Equals("CreatedAt", StringComparison.InvariantCultureIgnoreCase),
+        property => property.Name.Equals("UpdatedAt", StringComparison.InvariantCultureIgnoreCase),
+        property => property.Name.Equals("Initiale", StringComparison.InvariantCultureIgnoreCase)
+    ];
 
     public static readonly IEnumerable<(Func<PropertyInfo, bool> check, Type fieldType)> TypeMappings =
     [
@@ -35,10 +35,9 @@ public static class MappingDefinitions
     ];
 
     public static readonly IEnumerable<(Func<PropertyInfo, bool> check, Type fieldType)> MutationTypeMappings =
-        TypeMappings.Concat(
-            [
-            ]
-        );
+    [
+        ..TypeMappings
+    ];
 
     private static bool IsGenericEnumerable(Type type)
         => type != typeof(string)

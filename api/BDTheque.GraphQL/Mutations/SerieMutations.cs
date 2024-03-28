@@ -1,53 +1,49 @@
 namespace BDTheque.GraphQL.Mutations;
 
-using BDTheque.Data.Context;
-using BDTheque.GraphQL.Exceptions;
+using BDTheque.Data.Exceptions;
+using BDTheque.Data.Repositories.Interfaces;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
-using HotChocolate.Subscriptions;
-using Microsoft.EntityFrameworkCore;
 
+using HotChocolate.Subscriptions;
+
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class SerieMutations
+[MutationEntity<Serie>]
+public static partial class SerieMutations
 {
-    [Error<AlreadyExistsException>]
-    public static async Task<Serie> CreateSerie(SerieCreateInput serie, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    public static async Task<Serie> CreateSerie(SerieCreateInput serie, [Service] ISerieRepository serieRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Serie newSerie = serie.BuildEntity<Serie>();
-        dbContext.Series.Add(newSerie);
+        Serie newSerie = await serie.ApplyTo(new Serie(), serieRepository.DbContext);
+        await serieRepository.Add(newSerie, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(SerieSubscriptions.SerieCreated), newSerie, cancellationToken);
         return newSerie;
     }
 
-    [Error<AlreadyExistsException>]
-    [Error<NotFoundIdException>]
-    public static async Task<Serie> UpdateSerie(SerieUpdateInput serie, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    [Error<InvalidOperationException>]
+    public static async Task<Serie> UpdateSerie(SerieUpdateInput serie, [Service] ISerieRepository serieRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Serie? oldSerie = await dbContext.Series.Where(p => p.Id == serie.Id).SingleOrDefaultAsync(cancellationToken);
-        if (oldSerie is null)
-            throw new NotFoundIdException();
+        Serie oldSerie = await serieRepository.GetById(serie.Id, cancellationToken);
 
-        serie.ApplyUpdate(oldSerie);
-        dbContext.Update(oldSerie);
+        await serie.ApplyTo(oldSerie, serieRepository.DbContext);
+        await serieRepository.Update(oldSerie, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(SerieSubscriptions.SerieUpdated), oldSerie, cancellationToken);
         return oldSerie;
     }
 
-    [Error<NotFoundIdException>]
-    public static async Task<Serie> DeleteSerie([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<InvalidOperationException>]
+    public static async Task<Serie> DeleteSerie([ID] Guid id, [Service] ISerieRepository serieRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Serie? serie = await dbContext.Series.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
-        if (serie is null)
-            throw new NotFoundIdException();
+        Serie serie = await serieRepository.GetById(id, cancellationToken);
 
-        dbContext.Series.Remove(serie);
+        await serieRepository.Remove(serie, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(SerieSubscriptions.SerieDeleted), serie, cancellationToken);
         return serie;
     }

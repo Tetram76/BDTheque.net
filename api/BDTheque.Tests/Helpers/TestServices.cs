@@ -1,13 +1,29 @@
 namespace BDTheque.Tests.Helpers;
 
 using System.Runtime.CompilerServices;
+
 using BDTheque.Web.Services;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using Schema = HotChocolate.Schema;
 
 public static class TestServices
 {
+    public static IServiceProvider Services { get; }
+
+    public static RequestExecutorProxy Executor { get; }
+
+    public static bool IsContinuousIntegration
+    {
+        get
+        {
+            string? environmentVariable = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            return environmentVariable != null && environmentVariable.Equals("CI", StringComparison.InvariantCultureIgnoreCase);
+        }
+    }
+
     static TestServices()
     {
         IConfigurationRoot configuration = new ConfigurationManager()
@@ -30,10 +46,6 @@ public static class TestServices
 
         Executor = Services.GetRequiredService<RequestExecutorProxy>();
     }
-
-    public static IServiceProvider Services { get; }
-
-    public static RequestExecutorProxy Executor { get; }
 
     public static async Task<string> ExecuteRequestAsync(
         Action<IQueryRequestBuilder> configureRequest,

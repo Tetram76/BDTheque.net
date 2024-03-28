@@ -1,51 +1,49 @@
 namespace BDTheque.GraphQL.Mutations;
 
-using BDTheque.Data.Context;
-using BDTheque.GraphQL.Exceptions;
+using BDTheque.Data.Exceptions;
+using BDTheque.Data.Repositories.Interfaces;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
-using HotChocolate.Subscriptions;
-using Microsoft.EntityFrameworkCore;
 
+using HotChocolate.Subscriptions;
+
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class AlbumMutations
+[MutationEntity<Album>]
+public static partial class AlbumMutations
 {
-    [Error<AlreadyExistsException>]
-    public static async Task<Album> CreateAlbum(AlbumCreateInput album, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    public static async Task<Album> CreateAlbum(AlbumCreateInput album, [Service] IAlbumRepository albumRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Album newAlbum = album.BuildEntity<Album>();
-        dbContext.Albums.Add(newAlbum);
+        Album newAlbum = await album.ApplyTo(new Album(), albumRepository.DbContext);
+        await albumRepository.Add(newAlbum, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(AlbumSubscriptions.AlbumCreated), newAlbum, cancellationToken);
         return newAlbum;
     }
 
-    [Error<AlreadyExistsException>]
-    [Error<NotFoundIdException>]
-    public static async Task<Album> UpdateAlbum(AlbumUpdateInput album, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    [Error<InvalidOperationException>]
+    public static async Task<Album> UpdateAlbum(AlbumUpdateInput album, [Service] IAlbumRepository albumRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Album? oldAlbum = await dbContext.Albums.Where(p => p.Id == album.Id).SingleOrDefaultAsync(cancellationToken);
-        if (oldAlbum is null)
-            throw new NotFoundIdException();
+        Album oldAlbum = await albumRepository.GetById(album.Id, cancellationToken);
 
-        album.ApplyUpdate(oldAlbum);
-        dbContext.Update(oldAlbum);
+        await album.ApplyTo(oldAlbum, albumRepository.DbContext);
+        await albumRepository.Update(oldAlbum, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
         await sender.SendAsync(nameof(AlbumSubscriptions.AlbumUpdated), oldAlbum, cancellationToken);
         return oldAlbum;
     }
 
-    [Error<NotFoundIdException>]
-    public static async Task<Album> DeleteAlbum([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<InvalidOperationException>]
+    public static async Task<Album> DeleteAlbum([ID] Guid id, [Service] IAlbumRepository albumRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Album? album = await dbContext.Albums.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
-        if (album is null)
-            throw new NotFoundIdException();
-        dbContext.Albums.Remove(album);
-        await dbContext.SaveChangesAsync(cancellationToken);
+        Album album = await albumRepository.GetById(id, cancellationToken);
+
+        await albumRepository.Remove(album, cancellationToken);
+
         await sender.SendAsync(nameof(AlbumSubscriptions.AlbumDeleted), album, cancellationToken);
         return album;
     }

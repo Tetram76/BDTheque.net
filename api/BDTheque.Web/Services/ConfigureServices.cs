@@ -1,18 +1,26 @@
 namespace BDTheque.Web.Services;
 
 using BDTheque.Data.Context;
+using BDTheque.Data.Validators;
 using BDTheque.GraphQL.Filters;
 using BDTheque.GraphQL.Handlers;
 using BDTheque.GraphQL.Listeners;
 using BDTheque.Model.Scalars;
+
 using DataAnnotatedModelValidations;
+
+using FluentValidation;
+
 using HotChocolate.Data.Filters;
 using HotChocolate.Data.Filters.Expressions;
 using HotChocolate.Execution.Configuration;
 using HotChocolate.Types.Pagination;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+
 using StackExchange.Redis;
+
 using Path = System.IO.Path;
 using QueryableStringContainsHandler = BDTheque.GraphQL.Handlers.QueryableStringContainsHandler;
 using QueryableStringNotContainsHandler = BDTheque.GraphQL.Handlers.QueryableStringNotContainsHandler;
@@ -33,7 +41,9 @@ public static class ConfigureServices
     public static IServiceCollection SetupApp(this IServiceCollection services, Options options)
     {
         services
-            .SetupDb(options);
+            .SetupDb(options)
+            .AddRepositories()
+            .AddValidators();
 
         IRequestExecutorBuilder requestExecutorBuilder = services
             .SetupGraphQLSchema(options);
@@ -75,6 +85,10 @@ public static class ConfigureServices
             }
         );
 
+    private static IServiceCollection AddValidators(this IServiceCollection services) =>
+        services
+            .AddValidatorsFromAssemblyContaining(typeof(EntityValidator<>));
+
     private static IRequestExecutorBuilder SetupGraphQLSchema(this IServiceCollection services, Options appOptions)
         => services
             .AddGraphQLServer()
@@ -87,6 +101,7 @@ public static class ConfigureServices
                     options.UseXmlDocumentation = false;
                     options.ValidatePipelineOrder = true;
                     options.StrictRuntimeTypeValidation = true;
+                    options.RemoveUnreachableTypes = true;
                     options.SortFieldsByName = appOptions.Debug;
                 }
             )
@@ -126,7 +141,6 @@ public static class ConfigureServices
             .AddDataAnnotationsValidator()
             .RegisterDbContext<BDThequeContext>()
             .AddBDThequeGraphQLTypes()
-            // .AddBDThequeGraphQLInputTypes()
             .AddBDThequeGraphQLExtensions()
             .AddRedisSubscriptions(
                 _ => ConnectionMultiplexer.Connect(
@@ -134,7 +148,7 @@ public static class ConfigureServices
                     {
                         EndPoints =
                         {
-                            appOptions.RedisEndpoint ?? "localhost:6379"
+                            appOptions.RedisEndpoint
                         }
                     }
                 )
