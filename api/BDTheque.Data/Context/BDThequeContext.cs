@@ -6,6 +6,7 @@ using BDTheque.Data.Seeders;
 using BDTheque.Extensions;
 using BDTheque.Model.Entities;
 using BDTheque.Model.Interfaces;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;

@@ -5,6 +5,7 @@ using BDTheque.Data.Repositories.Interfaces;
 using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
+
 using HotChocolate.Subscriptions;
 
 [SuppressMessage("ReSharper", "UnusedType.Global")]

@@ -4,6 +4,7 @@ using BDTheque.Data.Attributes;
 using BDTheque.Data.Context;
 using BDTheque.Data.Repositories.Interfaces;
 using BDTheque.Model.Interfaces;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 

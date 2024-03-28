@@ -1,6 +1,7 @@
 namespace BDTheque.Data.Repositories.Interfaces;
 
 using BDTheque.Model.Interfaces;
+
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 public interface IEditableEntityRepository<TEntity>

@@ -2,7 +2,9 @@ namespace BDTheque.GraphQL.Listeners;
 
 using HotChocolate.Execution;
 using HotChocolate.Execution.Instrumentation;
+
 using Microsoft.Extensions.Logging;
+
 using Serilog;
 
 public class ExecutionEventListener(ILogger<ExecutionEventListener> logger) : ExecutionDiagnosticEventListener

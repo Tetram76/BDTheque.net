@@ -1,6 +1,7 @@
 namespace BDTheque.Tests.Mutations;
 
 using BDTheque.Tests.Extensions;
+
 using Xunit.Abstractions;
 
 public class EditeurTest(ITestOutputHelper testOutputHelper) : DatabaseTest(testOutputHelper)

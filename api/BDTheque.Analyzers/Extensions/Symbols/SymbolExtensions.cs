@@ -1,6 +1,7 @@
 namespace BDTheque.Analyzers.Extensions;
 
 using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.CodeAnalysis;
 
 public static class SymbolExtensions

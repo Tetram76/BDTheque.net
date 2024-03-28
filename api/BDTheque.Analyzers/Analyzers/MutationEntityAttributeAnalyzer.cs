@@ -1,8 +1,10 @@
 namespace BDTheque.Analyzers.Analyzers;
 
 using System.Collections.Immutable;
+
 using BDTheque.Analyzers.Diagnostics;
 using BDTheque.Analyzers.Extensions;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;

@@ -86,6 +86,7 @@ public static class WellKnownDefinitions
             }
         }
     }
+
     public static class System
     {
         private const string Namespace = nameof(System);

@@ -2,6 +2,7 @@ namespace BDTheque.Data.Validators;
 
 using BDTheque.Data.Repositories.Interfaces;
 using BDTheque.Model.Entities;
+
 using FluentValidation;
 
 public class GenreValidator(IGenreRepository genreRepository) : EntityValidator<Genre>

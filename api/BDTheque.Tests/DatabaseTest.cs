@@ -1,11 +1,14 @@
 namespace BDTheque.Tests;
 
 using BDTheque.Data.Context;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 using Xunit.Abstractions;
 
 [Collection(CollectionName)]

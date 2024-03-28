@@ -4,7 +4,9 @@ using BDTheque.Data.Context;
 using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
+
 using HotChocolate.Subscriptions;
+
 using Path = System.IO.Path;
 
 [SuppressMessage("ReSharper", "UnusedType.Global")]

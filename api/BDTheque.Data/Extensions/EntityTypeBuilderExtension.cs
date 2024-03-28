@@ -1,6 +1,7 @@
 namespace BDTheque.Data.Extensions;
 
 using System.Linq.Expressions;
+
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 public static class EntityTypeBuilderExtension

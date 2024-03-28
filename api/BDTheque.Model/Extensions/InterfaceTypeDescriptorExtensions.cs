@@ -1,7 +1,9 @@
 namespace BDTheque.Model.Extensions;
 
 using System.Reflection;
+
 using BDTheque.Model.Mapping;
+
 using HotChocolate.Types.Descriptors;
 
 public static class InterfaceTypeDescriptorExtensions

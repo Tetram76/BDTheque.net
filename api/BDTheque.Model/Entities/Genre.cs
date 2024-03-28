@@ -1,7 +1,9 @@
 namespace BDTheque.Model.Entities;
 
 using System.Diagnostics.CodeAnalysis;
+
 using BDTheque.Model.Entities.Abstract;
+
 using Microsoft.EntityFrameworkCore;
 
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]

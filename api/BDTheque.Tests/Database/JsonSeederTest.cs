@@ -1,7 +1,9 @@
 namespace BDTheque.Tests.Database;
 
 using System.Reflection;
+
 using BDTheque.Data.Seeders;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;

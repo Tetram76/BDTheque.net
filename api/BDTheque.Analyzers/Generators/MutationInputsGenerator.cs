@@ -1,9 +1,11 @@
 namespace BDTheque.Analyzers.Generators;
 
 using BDTheque.Analyzers.Extensions;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+
 using SyntaxKind = Microsoft.CodeAnalysis.CSharp.SyntaxKind;
 
 [Generator]

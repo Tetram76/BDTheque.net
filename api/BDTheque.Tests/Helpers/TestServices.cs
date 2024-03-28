@@ -1,9 +1,12 @@
 namespace BDTheque.Tests.Helpers;
 
 using System.Runtime.CompilerServices;
+
 using BDTheque.Web.Services;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using Schema = HotChocolate.Schema;
 
 public static class TestServices

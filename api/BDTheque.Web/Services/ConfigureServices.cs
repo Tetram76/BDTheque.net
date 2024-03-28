@@ -6,15 +6,21 @@ using BDTheque.GraphQL.Filters;
 using BDTheque.GraphQL.Handlers;
 using BDTheque.GraphQL.Listeners;
 using BDTheque.Model.Scalars;
+
 using DataAnnotatedModelValidations;
+
 using FluentValidation;
+
 using HotChocolate.Data.Filters;
 using HotChocolate.Data.Filters.Expressions;
 using HotChocolate.Execution.Configuration;
 using HotChocolate.Types.Pagination;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+
 using StackExchange.Redis;
+
 using Path = System.IO.Path;
 using QueryableStringContainsHandler = BDTheque.GraphQL.Handlers.QueryableStringContainsHandler;
 using QueryableStringNotContainsHandler = BDTheque.GraphQL.Handlers.QueryableStringNotContainsHandler;

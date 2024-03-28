@@ -2,12 +2,17 @@ namespace BDTheque.Data.Seeders;
 
 using System.Collections.Immutable;
 using System.Reflection;
+
 using BDTheque.Extensions;
 using BDTheque.Model.Interfaces;
+
 using HotChocolate.Types.Relay;
+
 using Humanizer;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

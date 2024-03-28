@@ -1,11 +1,12 @@
 namespace BDTheque.Analyzers.Extensions;
 
-using System.CodeDom.Compiler;
 using BDTheque.Analyzers.Helpers;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+
 using SyntaxKind = Microsoft.CodeAnalysis.CSharp.SyntaxKind;
 
 public static class ClassDeclarationSyntaxExtensions
