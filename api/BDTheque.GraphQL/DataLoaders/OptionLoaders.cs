@@ -6,9 +6,11 @@ using BDTheque.Model.Enums;
 public static class OptionLoaders
 {
     [DataLoader]
-    internal static async Task<IReadOnlyList<Option>> GetOptionByCategoryAsync(OptionCategory category, BDThequeContext context, CancellationToken cancellationToken)
-        => await context.Options
-            .Where(option => option.Category == category)
-            .OrderBy(option => option.Ordre)
-            .ToListAsync(cancellationToken);
+    internal static Task<IQueryable<Option>> GetOptionListByCategoryAsync(OptionCategory category, BDThequeContext context) =>
+        Task.FromResult(
+            context.Options
+                .Where(option => option.Category == category)
+                .OrderBy(option => option.Ordre)
+                .AsQueryable()
+        );
 }

@@ -2,39 +2,45 @@ namespace BDTheque.GraphQL.Subscriptions;
 
 using System.Runtime.CompilerServices;
 
+using BDTheque.GraphQL.DataLoaders;
+
 using HotChocolate.Execution;
 using HotChocolate.Subscriptions;
 
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SubscriptionType]
 public static class EditionSubscriptions
 {
     [Subscribe(With = nameof(EditionCreatedStream))]
-    public static EditionAlbum EditionCreated([EventMessage] EditionAlbum edition) => edition;
+    public static async Task<Edition> EditionCreated([EventMessage] Guid editionId, [Service] IEditionByIdDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(editionId, cancellationToken);
 
     [Subscribe(With = nameof(EditionUpdatedStream))]
-    public static EditionAlbum EditionUpdated([EventMessage] EditionAlbum edition) => edition;
+    public static async Task<Edition> EditionUpdated([EventMessage] Guid editionId, [Service] IEditionByIdDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(editionId, cancellationToken);
 
     [Subscribe(With = nameof(EditionDeletedStream))]
-    public static EditionAlbum EditionDeleted([EventMessage] EditionAlbum edition) => edition;
+    public static async Task<Edition> EditionDeleted([EventMessage] Guid editionId, [Service] IEditionByIdDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(editionId, cancellationToken);
 
-    private static async IAsyncEnumerable<EditionAlbum> EditionCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    internal static async IAsyncEnumerable<Guid> EditionCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        ISourceStream<EditionAlbum> sourceStream = await eventReceiver.SubscribeAsync<EditionAlbum>(nameof(EditionCreated), cancellationToken);
-        await foreach (EditionAlbum edition in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
-            yield return edition;
+        ISourceStream<Guid> sourceStream = await eventReceiver.SubscribeAsync<Guid>(nameof(EditionCreatedStream), cancellationToken);
+        await foreach (Guid id in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+            yield return id;
     }
 
-    private static async IAsyncEnumerable<EditionAlbum> EditionUpdatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    internal static async IAsyncEnumerable<Guid> EditionUpdatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        ISourceStream<EditionAlbum> sourceStream = await eventReceiver.SubscribeAsync<EditionAlbum>(nameof(EditionUpdated), cancellationToken);
-        await foreach (EditionAlbum edition in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
-            yield return edition;
+        ISourceStream<Guid> sourceStream = await eventReceiver.SubscribeAsync<Guid>(nameof(EditionUpdatedStream), cancellationToken);
+        await foreach (Guid id in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+            yield return id;
     }
 
-    private static async IAsyncEnumerable<EditionAlbum> EditionDeletedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    internal static async IAsyncEnumerable<Guid> EditionDeletedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        ISourceStream<EditionAlbum> sourceStream = await eventReceiver.SubscribeAsync<EditionAlbum>(nameof(EditionDeleted), cancellationToken);
-        await foreach (EditionAlbum edition in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
-            yield return edition;
+        ISourceStream<Guid> sourceStream = await eventReceiver.SubscribeAsync<Guid>(nameof(EditionDeletedStream), cancellationToken);
+        await foreach (Guid id in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+            yield return id;
     }
 }
