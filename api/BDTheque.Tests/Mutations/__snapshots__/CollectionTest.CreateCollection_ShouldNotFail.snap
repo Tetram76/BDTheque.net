@@ -1,0 +1,14 @@
+﻿{
+  "data": {
+    "createCollection": {
+      "collection": {
+        "id": "bf849906b76b4225b2a6d6080c7e5f40",
+        "nom": "test",
+        "editeur": {
+          "nom": "Bb"
+        }
+      },
+      "errors": null
+    }
+  }
+}

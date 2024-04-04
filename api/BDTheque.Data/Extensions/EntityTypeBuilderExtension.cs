@@ -1,8 +1,7 @@
-namespace BDTheque.Data.Extensions;
+// ReSharper disable once CheckNamespace
+namespace Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using System.Linq.Expressions;
-
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 public static class EntityTypeBuilderExtension
 {
