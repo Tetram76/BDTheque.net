@@ -1,7 +1,8 @@
 namespace BDTheque.GraphQL.Mutations;
 
-using BDTheque.Data.Context;
-using BDTheque.GraphQL.Exceptions;
+using BDTheque.Data.Exceptions;
+using BDTheque.Data.Repositories.Interfaces;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 
@@ -9,51 +10,40 @@ using HotChocolate.Subscriptions;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class UniversMutations
+[MutationEntity<Univers>]
+public static partial class UniversMutations
 {
-    [Error<AlreadyExistsException>]
-    public static async Task<Univers> CreateUnivers(UniversCreateInput univers, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    public static async Task<Univers> CreateUnivers(UniversCreateInput univers, [Service] IUniversRepository universRepository, [Service] IServiceProvider serviceProvider, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        if (await dbContext.Univers.AnyAsync(g => g.Nom == univers.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+        Univers newUnivers = await univers.ApplyTo(new Univers(), serviceProvider, cancellationToken);
+        await universRepository.Add(newUnivers, cancellationToken);
 
-        Univers newUnivers = univers.BuildEntity<Univers>();
-        dbContext.Univers.Add(newUnivers);
-
-        await dbContext.SaveChangesAsync(cancellationToken);
-        await sender.SendAsync(nameof(UniversSubscriptions.UniversCreated), newUnivers, cancellationToken);
+        await sender.SendAsync(nameof(UniversSubscriptions.UniversCreatedStream), newUnivers.Id, cancellationToken);
         return newUnivers;
     }
 
-    [Error<AlreadyExistsException>]
-    [Error<NotFoundIdException>]
-    public static async Task<Univers> UpdateUnivers(UniversUpdateInput univers, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    [Error<InvalidOperationException>]
+    public static async Task<Univers> UpdateUnivers(UniversUpdateInput univers, [Service] IUniversRepository universRepository, [Service] IServiceProvider serviceProvider, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Univers? oldUnivers = await dbContext.Univers.Where(p => p.Id == univers.Id).SingleOrDefaultAsync(cancellationToken);
-        if (oldUnivers is null)
-            throw new NotFoundIdException();
-        if (univers.Nom.HasValue && await dbContext.Univers.AnyAsync(g => g.Id != oldUnivers.Id && g.Nom == univers.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+        Univers oldUnivers = await universRepository.GetById(univers.Id, cancellationToken);
 
-        univers.ApplyUpdate(oldUnivers);
-        dbContext.Update(oldUnivers);
+        await univers.ApplyTo(oldUnivers, serviceProvider, cancellationToken);
+        await universRepository.Update(oldUnivers, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
-        await sender.SendAsync(nameof(UniversSubscriptions.UniversUpdated), oldUnivers, cancellationToken);
+        await sender.SendAsync(nameof(UniversSubscriptions.UniversUpdatedStream), oldUnivers.Id, cancellationToken);
         return oldUnivers;
     }
 
-    [Error<NotFoundIdException>]
-    public static async Task<Univers> DeleteUnivers([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<InvalidOperationException>]
+    public static async Task<Univers> DeleteUnivers([ID] Guid id, [Service] IUniversRepository universRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Univers? univers = await dbContext.Univers.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
-        if (univers is null)
-            throw new NotFoundIdException();
+        Univers univers = await universRepository.GetById(id, cancellationToken);
 
-        dbContext.Univers.Remove(univers);
+        await universRepository.Remove(univers, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
-        await sender.SendAsync(nameof(UniversSubscriptions.UniversDeleted), univers, cancellationToken);
+        await sender.SendAsync(nameof(UniversSubscriptions.UniversDeletedStream), univers.Id, cancellationToken);
         return univers;
     }
 }
