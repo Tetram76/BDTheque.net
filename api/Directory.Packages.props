@@ -2,7 +2,7 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <AspNetVersion>8.0.5</AspNetVersion>
-    <EfVersion>8.0.4</EfVersion>
+    <EfVersion>8.0.6</EfVersion>
     <DevExpressVersion>23.1.7</DevExpressVersion>
     <HotChocolateVersion>13.9.0</HotChocolateVersion>
   </PropertyGroup>
