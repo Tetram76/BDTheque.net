@@ -16,6 +16,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="HotChocolate.Types.Scalars"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Serilog"/>
   </ItemGroup>
 
