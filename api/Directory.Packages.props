@@ -6,7 +6,7 @@
     <DevExpressVersion>23.1.7</DevExpressVersion>
     <HotChocolateVersion>13.9.6</HotChocolateVersion>
     <!-- must match sdk compiler (csc) version: 4.9 in dotnet sdk 8  -->
-    <CSharpAnalyzers>4.9.2</CSharpAnalyzers>
+    <CSharpAnalyzers>4.10.0</CSharpAnalyzers>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="DataAnnotatedModelValidations" Version="5.2.0" />
