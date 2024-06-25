@@ -3,8 +3,9 @@ namespace BDTheque.GraphQL.Mutations;
 using BDTheque.Data.Context;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
+
 using HotChocolate.Subscriptions;
-using Microsoft.EntityFrameworkCore;
+
 using Path = System.IO.Path;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]

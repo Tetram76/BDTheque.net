@@ -1,6 +1,7 @@
 namespace BDTheque.GraphQL.Handlers;
 
 using BDTheque.GraphQL.Filters;
+
 using HotChocolate.Configuration;
 using HotChocolate.Data.Filters;
 using HotChocolate.Data.Filters.Expressions;

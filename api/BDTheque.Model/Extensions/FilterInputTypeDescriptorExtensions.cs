@@ -1,7 +1,9 @@
 namespace BDTheque.Model.Extensions;
 
 using System.Reflection;
+
 using BDTheque.Model.Mapping;
+
 using HotChocolate.Data.Filters;
 
 public static class FilterInputTypeDescriptorExtensions

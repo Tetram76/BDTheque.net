@@ -1,6 +1,7 @@
 namespace BDTheque.Model.Inputs;
 
 using System.Reflection;
+
 using BDTheque.Model.Entities.Abstract;
 
 [ApplyMutationInputMapping]

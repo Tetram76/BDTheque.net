@@ -2,6 +2,7 @@
 
 using BDTheque.Data.Context;
 using BDTheque.Model.Entities;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

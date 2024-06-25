@@ -1,6 +1,7 @@
 namespace BDTheque.Model.Extensions;
 
 using System.Reflection;
+
 using BDTheque.Model.Mapping;
 
 public static class ObjectTypeDescriptorExtensions

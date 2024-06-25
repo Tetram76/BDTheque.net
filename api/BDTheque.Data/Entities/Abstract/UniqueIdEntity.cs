@@ -1,6 +1,7 @@
 namespace BDTheque.Data.Entities;
 
 using BDTheque.Model.Entities.Abstract;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

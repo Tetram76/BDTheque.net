@@ -1,6 +1,7 @@
 namespace BDTheque.GraphQL.Filters;
 
 using BDTheque.Model.Scalars;
+
 using HotChocolate.Data.Filters;
 
 public class CharOperationFilterInputType : FilterInputType

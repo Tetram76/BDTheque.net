@@ -2,7 +2,6 @@ namespace BDTheque.GraphQL.DataLoaders;
 
 using BDTheque.Data.Context;
 using BDTheque.Model.Enums;
-using Microsoft.EntityFrameworkCore;
 
 public static class OptionLoaders
 {

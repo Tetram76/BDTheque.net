@@ -1,6 +1,7 @@
 namespace BDTheque.Analyzers.Extensions;
 
 using System.CodeDom.Compiler;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;

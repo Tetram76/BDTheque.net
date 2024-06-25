@@ -1,15 +1,16 @@
 namespace BDTheque.Data.Context;
 
+using System.Text;
+
 using BDTheque.Data.Entities;
 using BDTheque.Data.Enums;
 using BDTheque.Data.Seeders;
-using BDTheque.Extensions;
 using BDTheque.Model.Entities;
 using BDTheque.Model.Entities.Abstract;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Hosting;
 
 public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbContext(options)
 {
