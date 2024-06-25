@@ -5,7 +5,7 @@
     <EfVersion>8.0.6</EfVersion>
     <DevExpressVersion>23.1.7</DevExpressVersion>
     <HotChocolateVersion>13.9.6</HotChocolateVersion>
-    <!-- must match sdk compiler (csc) version -->
+    <!-- must match sdk compiler (csc) version: cf. sdk version in global.json -->
     <CSharpAnalyzers>4.10.0</CSharpAnalyzers>
   </PropertyGroup>
   <ItemGroup>

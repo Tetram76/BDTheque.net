@@ -1,6 +1,7 @@
 namespace BDTheque.GraphQL.Handlers;
 
 using System.Linq.Expressions;
+
 using HotChocolate.Data.Filters;
 using HotChocolate.Data.Filters.Expressions;
 using HotChocolate.Language;
@@ -14,8 +15,6 @@ public class QueryableCharNotInHandler(InputParser inputParser) : QueryableCharO
         Expression property = context.GetInstance();
 
         return
-            FilterExpressionBuilder.Not(
-                FilterExpressionBuilder.In(property, context.RuntimeTypes.Peek().Source, parsedValue)
-            );
+            FilterExpressionBuilder.Not(FilterExpressionBuilder.In(property, context.RuntimeTypes.Peek().Source, parsedValue));
     }
 }

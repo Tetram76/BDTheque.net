@@ -1,7 +1,5 @@
 namespace BDTheque.Tests.Queries;
 
-using BDTheque.Tests.Helpers;
-
 public class GenreTest
 {
     [Fact]

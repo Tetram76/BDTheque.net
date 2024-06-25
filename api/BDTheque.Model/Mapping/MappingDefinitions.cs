@@ -2,7 +2,7 @@ namespace BDTheque.Model.Mapping;
 
 using System.Linq.Expressions;
 using System.Reflection;
-using BDTheque.Extensions;
+
 using BDTheque.Model.Scalars;
 
 public static class MappingDefinitions

@@ -1,15 +1,21 @@
 using System.IO.Compression;
 using System.Text;
+
 using BDTheque.Web;
 using BDTheque.Web.Middlewares;
 using BDTheque.Web.Services;
+
 using HotChocolate.AspNetCore;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.IdentityModel.Tokens;
+
 using Newtonsoft.Json;
+
 using Serilog;
 using Serilog.Events;
+
 using Path = System.IO.Path;
 
 Log.Logger = new LoggerConfiguration()

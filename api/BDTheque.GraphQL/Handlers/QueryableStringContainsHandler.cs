@@ -2,8 +2,9 @@ namespace BDTheque.GraphQL.Handlers;
 
 using System.Linq.Expressions;
 using System.Reflection;
-using BDTheque.Extensions;
+
 using BDTheque.GraphQL.Helpers;
+
 using HotChocolate.Data.Filters;
 using HotChocolate.Data.Filters.Expressions;
 using HotChocolate.Language;

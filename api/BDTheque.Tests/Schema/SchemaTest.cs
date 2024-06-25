@@ -1,7 +1,5 @@
 namespace BDTheque.Tests.Schema;
 
-using BDTheque.Tests.Helpers;
-
 public class SchemaTest
 {
     [Fact]

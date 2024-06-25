@@ -2,6 +2,7 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+
 using BDTheque.Model.Entities.Abstract;
 using BDTheque.Model.Enums;
 

@@ -1,7 +1,9 @@
 namespace BDTheque.Web.Middlewares;
 
 using System.Net;
+
 using BDTheque.Web.Helpers;
+
 using Serilog;
 
 public class ExceptionMiddleware(RequestDelegate next)

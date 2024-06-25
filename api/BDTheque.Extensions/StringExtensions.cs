@@ -1,4 +1,5 @@
-namespace BDTheque.Extensions;
+// ReSharper disable once CheckNamespace
+namespace System;
 
 using System.Text;
 

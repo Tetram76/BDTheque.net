@@ -1,7 +1,5 @@
 namespace BDTheque.GraphQL.Resolvers;
 
-using Microsoft.EntityFrameworkCore;
-
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [ExtendObjectType<Collection>]
 public static class CollectionResolvers
