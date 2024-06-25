@@ -1,0 +1,11 @@
+﻿{
+  "data": {
+    "deleteEditeur": {
+      "editeur": {
+        "id": "23ba869297d74663a246d7d5884c5def",
+        "nom": "Test"
+      },
+      "errors": null
+    }
+  }
+}

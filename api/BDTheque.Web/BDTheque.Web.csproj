@@ -32,15 +32,13 @@
     <PackageReference Include="HotChocolate.AspNetCore"/>
     <PackageReference Include="HotChocolate.Data.EntityFramework"/>
     <PackageReference Include="HotChocolate.Subscriptions.Redis"/>
+    <PackageReference Include="HotChocolate.Subscriptions.Serializers.Newtonsoft"/>
     <PackageReference Include="Humanizer" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer"/>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson"/>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
     <PackageReference Include="Microsoft.EntityFrameworkCore"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" PrivateAssets="all"/>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"/>
     <PackageReference Include="Serilog.AspNetCore"/>
   </ItemGroup>
@@ -61,9 +59,6 @@
     <ProjectReference Include="..\BDTheque.Data.Migrations\BDTheque.Data.Migrations.csproj"/>
     <ProjectReference Include="..\BDTheque.Data\BDTheque.Data.csproj"/>
     <ProjectReference Include="..\BDTheque.GraphQL\BDTheque.GraphQL.csproj"/>
-  </ItemGroup>
-
-  <ItemGroup>
   </ItemGroup>
 
 </Project>

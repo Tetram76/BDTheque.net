@@ -1,0 +1,11 @@
+﻿{
+  "data": {
+    "updateGenre": {
+      "genre": {
+        "id": "27e28e499884420d874ab32f337acd61",
+        "nom": "test"
+      },
+      "errors": null
+    }
+  }
+}
