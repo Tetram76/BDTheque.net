@@ -2,6 +2,7 @@
 
 using System.Reflection;
 
+[AttributeUsage(AttributeTargets.Property)]
 public class NonNegativeAttribute<T>() : RangeAttribute(typeof(T), "0", GetMaxValue().ToString()!)
     where T : IComparable
 {
