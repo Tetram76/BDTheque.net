@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <PackageReference Include="Humanizer" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
       <PackageReference Include="Newtonsoft.Json" />
       <PackageReference Include="Serilog" />
