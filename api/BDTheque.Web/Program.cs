@@ -176,7 +176,7 @@ catch (Exception ex)
 finally
 {
     Log.Information("Shutdown complete");
-    Log.CloseAndFlush();
+    await Log.CloseAndFlushAsync();
 }
 
 return;
