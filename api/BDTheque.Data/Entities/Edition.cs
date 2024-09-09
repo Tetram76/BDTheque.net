@@ -1,5 +1,6 @@
 ﻿namespace BDTheque.Data.Entities;
 
+using BDTheque.Data.Context;
 using BDTheque.Model.Entities;
 
 using Microsoft.EntityFrameworkCore;
@@ -14,15 +15,39 @@ public static partial class ModelBuilderExtensions
         SetupVersioning(entity);
         SetupUniqueIdPrimaryKey(entity);
 
-        entity.Property(e => e.Prix).HasPrecision(8, 3);
-        entity.Property(e => e.Couleur).HasDefaultValue(true);
-        entity.Property(e => e.Vo).HasDefaultValue(false);
+        entity.HasAlternateKey(
+            e => new
+            {
+                e.AlbumId,
+                e.EditionId
+            }
+        );
 
-        entity.HasOne(d => d.Etat).WithMany(p => p.EditionsEtats).HasForeignKey(d => d.EtatId).OnDelete(DeleteBehavior.SetNull);
-        entity.HasOne(d => d.FormatEdition).WithMany(p => p.EditionFormatEditions).HasForeignKey(d => d.FormatEditionId).OnDelete(DeleteBehavior.Restrict);
-        entity.HasOne(d => d.Orientation).WithMany(p => p.EditionOrientations).HasForeignKey(d => d.OrientationId).OnDelete(DeleteBehavior.Restrict);
-        entity.HasOne(d => d.Reliure).WithMany(p => p.EditionReliures).HasForeignKey(d => d.ReliureId).OnDelete(DeleteBehavior.Restrict);
-        entity.HasOne(d => d.SensLecture).WithMany(p => p.EditionSensLectures).HasForeignKey(d => d.SensLectureId).OnDelete(DeleteBehavior.Restrict);
-        entity.HasOne(d => d.TypeEdition).WithMany(p => p.EditionTypeEditions).HasForeignKey(d => d.TypeEditionId).OnDelete(DeleteBehavior.Restrict);
+        entity.Property(e => e.Notes).UseCollation(BDThequeContext.FrenchCollation);
+        entity.Property(e => e.NotesRaw).HasComputedColumnSql($"({entity.GetColumnName(e => e.Notes).ToSnakeCase()} COLLATE \"{BDThequeContext.PredictiveFrenchCollation}\")", true);
+        entity.Property(e => e.Dedicace).HasDefaultValue(false);
+        entity.Property(e => e.Gratuit).HasDefaultValue(false);
+        entity.Property(e => e.Occasion).HasDefaultValue(false);
+        entity.Property(e => e.Offert).HasDefaultValue(false);
+        entity.Property(e => e.Stock).HasDefaultValue(true);
+
+        entity.HasOne(d => d.Album).WithMany(p => p.Editions).HasForeignKey(d => d.AlbumId);
+        entity.HasOne(d => d.Editeur).WithMany(p => p.Editions).HasForeignKey(d => d.EditeurId).OnDelete(DeleteBehavior.Restrict);
+        entity.HasOne(d => d.Detail).WithMany(p => p.Editions).HasForeignKey(d => d.EditionId);
+        entity.HasOne(d => d.Collection).WithMany(p => p.Editions)
+            .HasPrincipalKey(
+                p => new
+                {
+                    p.EditeurId,
+                    p.Id
+                }
+            )
+            .HasForeignKey(
+                d => new
+                {
+                    d.EditeurId,
+                    d.CollectionId
+                }
+            );
     }
 }

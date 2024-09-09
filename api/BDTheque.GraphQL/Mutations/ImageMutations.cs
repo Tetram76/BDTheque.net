@@ -1,6 +1,7 @@
 namespace BDTheque.GraphQL.Mutations;
 
 using BDTheque.Data.Context;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Exceptions;
 using BDTheque.GraphQL.Subscriptions;
 
@@ -10,7 +11,8 @@ using Path = System.IO.Path;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class ImageMutations
+[MutationEntity<Image>]
+public static partial class ImageMutations
 {
     // createImage(data: ImageCreateInput!): Image!
     // updateImage(data: ImageUpdateInput!): Image!
@@ -18,14 +20,14 @@ public static class ImageMutations
     [Error<NotFoundIdException>]
     public static async Task<Image> DeleteImage([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Image? image = await dbContext.Images.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
+        Image? image = await dbContext.Images.SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
         if (image is null)
-            throw new NotFoundIdException();
+            throw new NotFoundIdException(id);
 
         dbContext.Images.Remove(image);
 
         await dbContext.SaveChangesAsync(cancellationToken);
-        await sender.SendAsync(nameof(ImageSubscriptions.ImageDeleted), image, cancellationToken);
+        await sender.SendAsync(nameof(ImageSubscriptions.ImageDeletedStream), image.Id, cancellationToken);
         return image;
     }
 

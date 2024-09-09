@@ -8,7 +8,7 @@ using BDTheque.Model.Entities.Abstract;
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 [ObjectType]
-public class AuteurAlbum : VersioningEntity
+public class AuteurAlbum : RelationEntity
 {
     public Guid AlbumId { get; set; }
     public virtual Album Album { get; set; } = null!;
