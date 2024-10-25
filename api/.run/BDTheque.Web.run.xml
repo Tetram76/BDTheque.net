@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="BDTheque.Web" type="CompoundRunConfigurationType">
+    <toRun name="BDTheque.Web: http" type="LaunchSettings" />
+    <toRun name="Docker (deps)" type="docker-deploy" />
+    <method v="2" />
+  </configuration>
+</component>

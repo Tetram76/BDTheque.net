@@ -1,0 +1,26 @@
+﻿{
+  "data": {
+    "collectionList": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "hasPreviousPage": false
+      },
+      "edges": [
+        {
+          "cursor": "MA==",
+          "node": {
+            "id": "732c33747be64d25a95762f503f37afa",
+            "nom": "Aa"
+          }
+        },
+        {
+          "cursor": "MQ==",
+          "node": {
+            "id": "8497e95245da452993abaee7b8ba7286",
+            "nom": "Cc"
+          }
+        }
+      ]
+    }
+  }
+}

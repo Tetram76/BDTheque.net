@@ -1,34 +1,42 @@
 namespace BDTheque.GraphQL.Resolvers;
 
+using BDTheque.GraphQL.DataLoaders;
+
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [ExtendObjectType<Album>]
 public static class AlbumResolvers
 {
-    [UsePaging]
-    [UseProjection]
-    [UseFiltering]
-    [UseSorting]
-    public static IQueryable<Auteur> GetAuteurs([Parent] Album album)
-        => album.AuteursAlbums.Select(auteurAlbum => auteurAlbum.Auteur).AsQueryable().AsNoTracking();
+    public static async Task<Serie?> GetSerie([Parent] Album album, IAlbumSerieDataLoader loader, CancellationToken cancellationToken) =>
+        album.Serie ??= await loader.LoadAsync(album, cancellationToken);
+
+    public static async Task<Option?> GetNotation([Parent] Album album, IAlbumNotationDataLoader loader, CancellationToken cancellationToken) =>
+        album.Notation ??= await loader.LoadAsync(album, cancellationToken);
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<EditionAlbum> GetEditions([Parent] Album album)
-        => album.EditionsAlbums.AsQueryable().AsNoTracking();
+    public static async Task<IQueryable<Auteur>> GetAuteurs([Parent] Album album, IAlbumAuteursDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(album, cancellationToken);
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<Genre> GetGenres([Parent] Album album)
-        => album.GenresAlbums.Select(genreAlbum => genreAlbum.Genre).AsQueryable().AsNoTracking();
+    public static async Task<IQueryable<Edition>> GetEditions([Parent] Album album, IAlbumEditionsDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(album, cancellationToken);
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<Univers> GetUnivers([Parent] Album album)
-        => album.UniversAlbums.Select(universAlbum => universAlbum.Univers).AsQueryable().AsNoTracking();
+    public static async Task<IQueryable<Genre>> GetGenres([Parent] Album album, IAlbumGenresDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(album, cancellationToken);
+
+    [UsePaging]
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public static async Task<IQueryable<Univers>> GetUnivers([Parent] Album album, IAlbumUniversDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(album, cancellationToken);
 }
