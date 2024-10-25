@@ -4,7 +4,7 @@
     <AspNetVersion>8.0.10</AspNetVersion>
     <EfVersion>8.0.10</EfVersion>
     <DevExpressVersion>23.1.7</DevExpressVersion>
-    <HotChocolateVersion>13.9.12</HotChocolateVersion>
+    <HotChocolateVersion>13.9.14</HotChocolateVersion>
     <!-- must match sdk compiler (csc) version: cf. sdk version in global.json -->
     <CSharpAnalyzers>4.11.0</CSharpAnalyzers>
   </PropertyGroup>
