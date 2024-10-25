@@ -22,6 +22,9 @@ updates:
     commit-message:
       prefix: "NuGet"
       include: "scope"
+    update-types:
+    - "patch"
+    - "minor"      
 
   # npm packages
   - package-ecosystem: "npm" 
@@ -31,4 +34,6 @@ updates:
     commit-message:
       prefix: "NPM-YARN"
       include: "scope"
-
+    update-types:
+    - "patch"
+    - "minor"      
