@@ -22,9 +22,8 @@ updates:
     commit-message:
       prefix: "NuGet"
       include: "scope"
-    update-types:
-    - "patch"
-    - "minor"      
+    ignore:
+      update-types: ["version-update:semver-major"]
 
   # npm packages
   - package-ecosystem: "npm" 
@@ -34,6 +33,5 @@ updates:
     commit-message:
       prefix: "NPM-YARN"
       include: "scope"
-    update-types:
-    - "patch"
-    - "minor"      
+    ignore:
+      update-types: ["version-update:semver-major"]
