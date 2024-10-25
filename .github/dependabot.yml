@@ -13,22 +13,27 @@ updates:
     commit-message:
       prefix: "GitHub-Actions"
       include: "scope"
-      
+
   # dotnet packages
-  - package-ecosystem: "nuget" 
-    directory: "/api" 
+  - package-ecosystem: "nuget"
+    directory: "/api"
     schedule:
       interval: "weekly"
     commit-message:
       prefix: "NuGet"
       include: "scope"
+    ignore:
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-major" ]
 
   # npm packages
-  - package-ecosystem: "npm" 
-    directory: "/front" 
+  - package-ecosystem: "npm"
+    directory: "/front"
     schedule:
       interval: "weekly"
     commit-message:
       prefix: "NPM-YARN"
       include: "scope"
-
+    ignore:
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-major" ]
