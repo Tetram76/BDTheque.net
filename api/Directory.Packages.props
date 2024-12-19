@@ -6,7 +6,7 @@
     <DevExpressVersion>23.1.7</DevExpressVersion>
     <HotChocolateVersion>13.9.14</HotChocolateVersion>
     <!-- must match sdk compiler (csc) version: cf. sdk version in global.json -->
-    <CSharpAnalyzers>4.11.0</CSharpAnalyzers>
+    <CSharpAnalyzers>4.12.0</CSharpAnalyzers>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="DataAnnotatedModelValidations" Version="5.2.0" />
