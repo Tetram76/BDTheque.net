@@ -9,12 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation"/>
     <PackageReference Include="HotChocolate.AspNetCore"/>
     <PackageReference Include="HotChocolate.Data.EntityFramework"/>
-    <PackageReference Include="HotChocolate.Types.Analyzers">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive;</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    <PackageReference Include="HotChocolate.Types.Analyzers" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all"/>
     <PackageReference Include="HotChocolate.Types.Scalars"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Serilog"/>
@@ -22,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BDTheque.Analyzers\BDTheque.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all"/>
-    <ProjectReference Include="..\BDTheque.Extensions\BDTheque.Extensions.csproj" />
+    <ProjectReference Include="..\BDTheque.Extensions\BDTheque.Extensions.csproj"/>
   </ItemGroup>
+
 </Project>

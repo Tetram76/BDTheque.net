@@ -20,8 +20,8 @@
 
   <Property Name="sonar.scanner.scanAll">true</Property>
   <Property Name="sonar.host.url">https://sonarcloud.io</Property>
-  <Property Name="sonar.exclusions">**/*.txt, **/*.xml, **/*.json,**/firebird.*,**/Migrations/**,**/*.g.cs</Property>
+  <Property Name="sonar.exclusions">**/*.txt,**/*.xml,**/*.json,**/firebird.*,**/Migrations/**,**/*.g.cs</Property>
   <Property Name="sonar.dotnet.excludeTestProjects">true</Property>
-  <Property Name="sonar.coverage.exclusions">**/BDTheque.Analyzers/**</Property>
+  <Property Name="sonar.coverage.exclusions">**/BDTheque.Analyzers/**,**/Migrations/**</Property>
 
 </SonarQubeAnalysisProperties>
