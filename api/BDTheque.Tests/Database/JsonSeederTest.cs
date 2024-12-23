@@ -3,7 +3,6 @@ namespace BDTheque.Tests.Database;
 using System.Reflection;
 
 using BDTheque.Data.Seeders;
-using BDTheque.Model.Entities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;

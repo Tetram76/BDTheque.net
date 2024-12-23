@@ -1,4 +1,5 @@
-namespace BDTheque.Model.Extensions;
+// ReSharper disable once CheckNamespace
+namespace HotChocolate.Types;
 
 using System.Reflection;
 

@@ -1,0 +1,13 @@
+﻿{
+  "data": {
+    "createCollection": {
+      "collection": null,
+      "errors": [
+        {
+          "__typename": "ValidationError",
+          "message": "Collection name \"test\" is already used"
+        }
+      ]
+    }
+  }
+}
