@@ -6,7 +6,7 @@
     <DevExpressVersion>23.1.7</DevExpressVersion>
     <HotChocolateVersion>13.9.14</HotChocolateVersion>
     <!-- must match sdk compiler (csc) version: cf. sdk version in global.json -->
-    <CSharpAnalyzers>4.11.0</CSharpAnalyzers>
+    <CSharpAnalyzers>4.12.0</CSharpAnalyzers>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="DataAnnotatedModelValidations" Version="5.2.0" />
@@ -35,7 +35,7 @@
     <PackageVersion Include="Serilog" Version="4.2.0" />
     <PackageVersion Include="Serilog.AspNetCore" Version="8.0.3" />
     <!-- Tests -->
-    <PackageVersion Include="Bogus" Version="35.3.0"/>
+    <PackageVersion Include="Bogus" Version="35.3.0" />
     <PackageVersion Include="FluentAssertions" Version="6.12.2" />
     <PackageVersion Include="JunitXml.TestLogger" Version="3.0.134" />
     <PackageVersion Include="MSTest.TestAdapter" Version="3.1.1" />

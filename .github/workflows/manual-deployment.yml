@@ -19,7 +19,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4.3.0
       with:
-        dotnet-version: ${{ vars.DOTNET_VERSION }} # Votre version de .NET
+        global-json-file: api/global.json
 
     - name: Build project
       run: dotnet build
