@@ -12,9 +12,19 @@ public static class OptionQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<Option> GetOptions(BDThequeContext dbContext)
+    public static IQueryable<Option> GetOptionList(BDThequeContext dbContext)
         => dbContext.Options;
 
-    public static Task<IReadOnlyList<Option>> GetOptionByCategoryAsync(OptionCategory category, IOptionByCategoryDataLoader dataLoader, CancellationToken cancellationToken)
+    [UseSingleOrDefault]
+    [UseProjection]
+    [UseFiltering]
+    public static IQueryable<Option> GetOption(BDThequeContext dbContext)
+        => dbContext.Options;
+
+    [UsePaging]
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public static Task<IQueryable<Option>> GetOptionListByCategoryAsync(OptionCategory category, IOptionListByCategoryDataLoader dataLoader, CancellationToken cancellationToken)
         => dataLoader.LoadAsync(category, cancellationToken);
 }

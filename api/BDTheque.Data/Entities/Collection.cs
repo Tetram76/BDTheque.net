@@ -1,7 +1,6 @@
 ﻿namespace BDTheque.Data.Entities;
 
 using BDTheque.Data.Context;
-using BDTheque.Data.Extensions;
 using BDTheque.Model.Entities;
 
 using Microsoft.EntityFrameworkCore;
