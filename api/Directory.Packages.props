@@ -1,8 +1,8 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <AspNetVersion>8.0.15</AspNetVersion>
-    <EfVersion>8.0.15</EfVersion>
+    <AspNetVersion>8.0.17</AspNetVersion>
+    <EfVersion>8.0.17</EfVersion>
     <DevExpressVersion>23.1.7</DevExpressVersion>
     <HotChocolateVersion>13.9.14</HotChocolateVersion>
     <!-- must match sdk compiler (csc) version: cf. sdk version in global.json -->
@@ -32,7 +32,7 @@
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
     <PackageVersion Include="Quartz" Version="3.8.0" />
     <PackageVersion Include="Quartz.Extensions.Hosting" Version="3.8.0" />
-    <PackageVersion Include="Serilog" Version="4.2.0" />
+    <PackageVersion Include="Serilog" Version="4.3.0" />
     <PackageVersion Include="Serilog.AspNetCore" Version="8.0.3" />
     <!-- Tests -->
     <PackageVersion Include="Bogus" Version="35.3.0" />
@@ -40,7 +40,7 @@
     <PackageVersion Include="JunitXml.TestLogger" Version="3.0.134" />
     <PackageVersion Include="MSTest.TestAdapter" Version="3.1.1" />
     <PackageVersion Include="MSTest.TestFramework" Version="3.1.1" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0"/>
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1"/>
     <PackageVersion Include="Moq" Version="4.20.70"/>
     <PackageVersion Include="NBuilder" Version="6.1.0" />
     <PackageVersion Include="Snapshooter.Xunit" Version="0.15.0" />
