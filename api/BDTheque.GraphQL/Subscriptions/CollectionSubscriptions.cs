@@ -2,39 +2,45 @@ namespace BDTheque.GraphQL.Subscriptions;
 
 using System.Runtime.CompilerServices;
 
+using BDTheque.GraphQL.DataLoaders;
+
 using HotChocolate.Execution;
 using HotChocolate.Subscriptions;
 
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SubscriptionType]
 public static class CollectionSubscriptions
 {
     [Subscribe(With = nameof(CollectionCreatedStream))]
-    public static Collection CollectionCreated([EventMessage] Collection collection) => collection;
+    public static async Task<Collection> CollectionCreated([EventMessage] Guid collectionId, [Service] ICollectionByIdDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(collectionId, cancellationToken);
 
     [Subscribe(With = nameof(CollectionUpdatedStream))]
-    public static Collection CollectionUpdated([EventMessage] Collection collection) => collection;
+    public static async Task<Collection> CollectionUpdated([EventMessage] Guid collectionId, [Service] ICollectionByIdDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(collectionId, cancellationToken);
 
     [Subscribe(With = nameof(CollectionDeletedStream))]
-    public static Collection CollectionDeleted([EventMessage] Collection collection) => collection;
+    public static async Task<Collection> CollectionDeleted([EventMessage] Guid collectionId, [Service] ICollectionByIdDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(collectionId, cancellationToken);
 
-    private static async IAsyncEnumerable<Collection> CollectionCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    internal static async IAsyncEnumerable<Guid> CollectionCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        ISourceStream<Collection> sourceStream = await eventReceiver.SubscribeAsync<Collection>(nameof(CollectionCreated), cancellationToken);
-        await foreach (Collection collection in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
-            yield return collection;
+        ISourceStream<Guid> sourceStream = await eventReceiver.SubscribeAsync<Guid>(nameof(CollectionCreatedStream), cancellationToken);
+        await foreach (Guid id in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+            yield return id;
     }
 
-    private static async IAsyncEnumerable<Collection> CollectionUpdatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    internal static async IAsyncEnumerable<Guid> CollectionUpdatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        ISourceStream<Collection> sourceStream = await eventReceiver.SubscribeAsync<Collection>(nameof(CollectionUpdated), cancellationToken);
-        await foreach (Collection collection in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
-            yield return collection;
+        ISourceStream<Guid> sourceStream = await eventReceiver.SubscribeAsync<Guid>(nameof(CollectionUpdatedStream), cancellationToken);
+        await foreach (Guid id in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+            yield return id;
     }
 
-    private static async IAsyncEnumerable<Collection> CollectionDeletedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    internal static async IAsyncEnumerable<Guid> CollectionDeletedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        ISourceStream<Collection> sourceStream = await eventReceiver.SubscribeAsync<Collection>(nameof(CollectionDeleted), cancellationToken);
-        await foreach (Collection collection in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
-            yield return collection;
+        ISourceStream<Guid> sourceStream = await eventReceiver.SubscribeAsync<Guid>(nameof(CollectionDeletedStream), cancellationToken);
+        await foreach (Guid id in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+            yield return id;
     }
 }

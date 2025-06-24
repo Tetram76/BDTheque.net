@@ -1,4 +1,5 @@
 ﻿// ReSharper disable once CheckNamespace
+
 namespace Microsoft.Extensions.Hosting;
 
 public static class HostEnvironmentEnvExtensions

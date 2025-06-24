@@ -4,13 +4,18 @@ using System.Diagnostics.CodeAnalysis;
 
 using BDTheque.Model.Entities.Abstract;
 
+using Microsoft.EntityFrameworkCore;
+
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
 [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 [ObjectType]
+[Index(nameof(Nom), IsUnique = true)]
 public class Editeur : MandatoryLabelEntity
 {
+    [RequiredName]
     public string Nom { get; set; } = null!;
+
     public string NomRaw { get; set; } = null!;
 
     [Url]
@@ -18,5 +23,5 @@ public class Editeur : MandatoryLabelEntity
 
     public virtual ICollection<Collection> Collections { get; set; } = new List<Collection>();
     public virtual ICollection<Serie> Series { get; set; } = new List<Serie>();
-    public virtual ICollection<EditionAlbum> EditionsAlbums { get; set; } = new List<EditionAlbum>();
+    public virtual ICollection<Edition> Editions { get; set; } = new List<Edition>();
 }

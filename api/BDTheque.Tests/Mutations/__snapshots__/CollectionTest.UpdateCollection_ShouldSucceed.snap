@@ -1,0 +1,20 @@
+﻿{
+  "errors": [
+    {
+      "message": "`editeur` is a required field and cannot be null.",
+      "locations": [
+        {
+          "line": 2,
+          "column": 42
+        }
+      ],
+      "path": [
+        "updateCollection"
+      ],
+      "extensions": {
+        "field": "editeur",
+        "specifiedBy": "http://spec.graphql.org/October2021/#sec-Input-Object-Required-Fields"
+      }
+    }
+  ]
+}

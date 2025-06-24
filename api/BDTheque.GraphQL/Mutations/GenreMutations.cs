@@ -1,7 +1,8 @@
 namespace BDTheque.GraphQL.Mutations;
 
-using BDTheque.Data.Context;
-using BDTheque.GraphQL.Exceptions;
+using BDTheque.Data.Exceptions;
+using BDTheque.Data.Repositories.Interfaces;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 
@@ -9,51 +10,40 @@ using HotChocolate.Subscriptions;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class GenreMutations
+[MutationEntity<Genre>]
+public static partial class GenreMutations
 {
-    [Error<AlreadyExistsException>]
-    public static async Task<Genre> CreateGenre(GenreCreateInput genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    public static async Task<Genre> CreateGenre(GenreCreateInput genre, [Service] IGenreRepository genreRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        if (await dbContext.Genres.AnyAsync(g => g.Nom == genre.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+        Genre newGenre = (genre as IGenreInputType).ApplyTo(new Genre());
+        await genreRepository.Add(newGenre, cancellationToken);
 
-        Genre newGenre = genre.BuildEntity<Genre>();
-        dbContext.Genres.Add(newGenre);
-
-        await dbContext.SaveChangesAsync(cancellationToken);
-        await sender.SendAsync(nameof(GenreSubscriptions.GenreCreated), newGenre, cancellationToken);
+        await sender.SendAsync(nameof(GenreSubscriptions.GenreCreatedStream), newGenre.Id, cancellationToken);
         return newGenre;
     }
 
-    [Error<AlreadyExistsException>]
-    [Error<NotFoundIdException>]
-    public static async Task<Genre> UpdateGenre(GenreUpdateInput genre, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    [Error<InvalidOperationException>]
+    public static async Task<Genre> UpdateGenre(GenreUpdateInput genre, [Service] IGenreRepository genreRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Genre? oldGenre = await dbContext.Genres.Where(p => p.Id == genre.Id).SingleOrDefaultAsync(cancellationToken);
-        if (oldGenre is null)
-            throw new NotFoundIdException();
-        if (genre.Nom.HasValue && await dbContext.Genres.AnyAsync(g => g.Id != oldGenre.Id && g.Nom == genre.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+        Genre oldGenre = await genreRepository.GetById(genre.Id, cancellationToken);
 
-        genre.ApplyUpdate(oldGenre);
-        dbContext.Update(oldGenre);
+        (genre as IGenreInputType).ApplyTo(oldGenre);
+        await genreRepository.Update(oldGenre, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
-        await sender.SendAsync(nameof(GenreSubscriptions.GenreUpdated), oldGenre, cancellationToken);
+        await sender.SendAsync(nameof(GenreSubscriptions.GenreUpdatedStream), oldGenre.Id, cancellationToken);
         return oldGenre;
     }
 
-    [Error<NotFoundIdException>]
-    public static async Task<Genre> DeleteGenre([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<InvalidOperationException>]
+    public static async Task<Genre> DeleteGenre([ID] Guid id, [Service] IGenreRepository genreRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Genre? genre = await dbContext.Genres.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
-        if (genre is null)
-            throw new NotFoundIdException();
+        Genre genre = await genreRepository.GetById(id, cancellationToken);
 
-        dbContext.Genres.Remove(genre);
+        await genreRepository.Remove(genre, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
-        await sender.SendAsync(nameof(GenreSubscriptions.GenreDeleted), genre, cancellationToken);
+        await sender.SendAsync(nameof(GenreSubscriptions.GenreDeletedStream), genre.Id, cancellationToken);
         return genre;
     }
 }

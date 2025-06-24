@@ -1,0 +1,19 @@
+﻿{
+  "data": {
+    "editeurList": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "hasPreviousPage": false
+      },
+      "edges": [
+        {
+          "cursor": "MA==",
+          "node": {
+            "id": "d13d3f5dcb434a6ab187cff4c648339b",
+            "nom": "Aa"
+          }
+        }
+      ]
+    }
+  }
+}

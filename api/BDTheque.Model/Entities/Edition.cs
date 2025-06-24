@@ -3,7 +3,6 @@ namespace BDTheque.Model.Entities;
 using System.Diagnostics.CodeAnalysis;
 
 using BDTheque.Model.Entities.Abstract;
-using BDTheque.Model.Scalars;
 
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.UnlimitedStringLength")]
 [SuppressMessage("ReSharper", "EntityFramework.ModelValidation.CircularDependency")]
@@ -11,43 +10,40 @@ using BDTheque.Model.Scalars;
 [ObjectType]
 public class Edition : UniqueIdEntity
 {
-    [NonNegative<decimal>]
-    public decimal? Prix { get; set; }
+    public Guid EditionId { get; set; }
+    public virtual EditionDetail Detail { get; set; } = null!;
 
-    public bool? Couleur { get; set; } = true;
-    public bool? Vo { get; set; } = false;
+    public Guid AlbumId { get; set; }
+    public virtual Album Album { get; set; } = null!;
 
-    [MutationType<OptionEtatType>]
-    public ushort? EtatId { get; set; }
+    public Guid EditeurId { get; set; }
+    public virtual Editeur Editeur { get; set; } = null!;
 
-    public virtual Option? Etat { get; set; }
+    public Guid? CollectionId { get; set; }
+    public virtual Collection? Collection { get; set; }
 
-    public ushort? ReliureId { get; set; }
+    [Year]
+    public ushort? AnneeEdition { get; set; }
 
-    [MutationType<OptionReliureType>]
-    public virtual Option? Reliure { get; set; }
+    [GraphQLType<IsbnType>]
+    public string? Isbn { get; set; }
 
-    public ushort? FormatEditionId { get; set; }
+    public ushort? NombreDePages { get; set; }
 
-    [MutationType<OptionFormatEditionType>]
-    public virtual Option? FormatEdition { get; set; }
+    public bool Stock { get; set; } = true;
+    public bool? Offert { get; set; } = false;
+    public bool? Occasion { get; set; } = false;
+    public bool? Gratuit { get; set; } = false;
 
-    public ushort? TypeEditionId { get; set; }
+    public DateOnly? DateAchat { get; set; }
 
-    [MutationType<OptionTypeEditionType>]
-    public virtual Option? TypeEdition { get; set; }
+    public bool? Dedicace { get; set; } = false;
 
-    public ushort? OrientationId { get; set; }
+    public string? NumeroPerso { get; set; }
 
-    [MutationType<OptionOrientationType>]
-    public virtual Option? Orientation { get; set; }
+    public string? Notes { get; set; }
+    public string? NotesRaw { get; set; }
 
-    public ushort? SensLectureId { get; set; }
-
-    [MutationType<OptionSensLectureType>]
-    public virtual Option? SensLecture { get; set; }
-
-    public virtual ICollection<EditionAlbum> EditionsAlbums { get; set; } = new List<EditionAlbum>();
-
-    public virtual Serie? Serie { get; set; }
+    public virtual ICollection<Cote> Cotes { get; set; } = new List<Cote>();
+    public virtual ICollection<Image> Images { get; set; } = new List<Image>();
 }

@@ -1,15 +1,23 @@
 namespace BDTheque.GraphQL.Resolvers;
 
+using BDTheque.GraphQL.DataLoaders;
+
 using Path = System.IO.Path;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [ExtendObjectType<Image>]
 public static class ImageResolvers
 {
+    public static async Task<Option> GetType([Parent] Image image, IImageTypeDataLoader loader, CancellationToken cancellationToken) =>
+        image.Type ??= await loader.LoadAsync(image, cancellationToken);
+
+    public static async Task<Edition> GetEdition([Parent] Image image, IImageEditionDataLoader loader, CancellationToken cancellationToken) =>
+        image.Edition ??= await loader.LoadAsync(image, cancellationToken);
+
     public const string ImageDirectory = "./wwwroot/images";
     public const string ImageRoot = "http://localhost:5000/images";
 
     [GraphQLType<UrlType>]
-    public static Uri? GetUrl([Parent] Image image)
-        => File.Exists(Path.Combine(ImageDirectory, $"{image.Id}.png")) ? new Uri($"{ImageRoot}/{image.Id}.png") : null;
+    public static Uri? GetUrl([Parent] Image image) =>
+        File.Exists(Path.Combine(ImageDirectory, $"{image.Id}.png")) ? new Uri($"{ImageRoot}/{image.Id}.png") : null;
 }

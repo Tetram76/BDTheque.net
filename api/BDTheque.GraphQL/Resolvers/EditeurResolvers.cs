@@ -1,5 +1,7 @@
 namespace BDTheque.GraphQL.Resolvers;
 
+using BDTheque.GraphQL.DataLoaders;
+
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [ExtendObjectType<Editeur>]
 public static class EditeurResolvers
@@ -8,27 +10,27 @@ public static class EditeurResolvers
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<Collection> GetCollections([Parent] Editeur editeur)
-        => editeur.Collections.AsQueryable().AsNoTracking();
+    public static async Task<IQueryable<Collection>> GetCollections([Parent] Editeur editeur, IEditeurCollectionsDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(editeur, cancellationToken);
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<Serie> GetSeries([Parent] Editeur editeur)
-        => editeur.Series.AsQueryable().AsNoTracking();
+    public static async Task<IQueryable<Serie>> GetSeries([Parent] Editeur editeur, IEditeurSeriesDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(editeur, cancellationToken);
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<EditionAlbum> GetEditions([Parent] Editeur editeur)
-        => editeur.EditionsAlbums.AsQueryable().AsNoTracking();
+    public static async Task<IQueryable<Edition>> GetEditions([Parent] Editeur editeur, IEditeurEditionsDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(editeur, cancellationToken);
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<Album> GetAlbums([Parent] Editeur editeur)
-        => editeur.EditionsAlbums.Select(edition => edition.Album).Distinct().AsQueryable().AsNoTracking();
+    public static async Task<IQueryable<Album>> GetAlbums([Parent] Editeur editeur, IEditeurAlbumsDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(editeur, cancellationToken);
 }

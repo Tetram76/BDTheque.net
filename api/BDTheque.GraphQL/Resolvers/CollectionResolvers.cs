@@ -1,20 +1,25 @@
 namespace BDTheque.GraphQL.Resolvers;
 
+using BDTheque.GraphQL.DataLoaders;
+
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [ExtendObjectType<Collection>]
 public static class CollectionResolvers
 {
-    [UsePaging]
-    [UseProjection]
-    [UseFiltering]
-    [UseSorting]
-    public static IQueryable<EditionAlbum> GetAlbums([Parent] Collection collection)
-        => collection.EditionsAlbums.AsQueryable().AsNoTracking();
+    public static async Task<Editeur> GetEditeur([Parent] Collection collection, ICollectionEditeurDataLoader loader, CancellationToken cancellationToken) =>
+        collection.Editeur ??= await loader.LoadAsync(collection, cancellationToken);
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<Serie> GetSeries([Parent] Collection collection)
-        => collection.Series.AsQueryable().AsNoTracking();
+    public static async Task<IQueryable<Edition>> GetEditions([Parent] Collection collection, ICollectionEditionsDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(collection, cancellationToken);
+
+    [UsePaging]
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public static async Task<IQueryable<Serie>> GetSeries([Parent] Collection collection, ICollectionSeriesDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(collection, cancellationToken);
 }

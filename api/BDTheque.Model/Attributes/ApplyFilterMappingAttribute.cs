@@ -1,7 +1,5 @@
 namespace BDTheque.Model.Attributes;
 
-using BDTheque.Model.Extensions;
-
 using HotChocolate.Data.Filters;
 using HotChocolate.Types.Descriptors;
 

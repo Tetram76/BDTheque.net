@@ -1,0 +1,13 @@
+﻿{
+  "data": {
+    "createEditeur": {
+      "editeur": null,
+      "errors": [
+        {
+          "__typename": "ValidationError",
+          "message": "Editeur name \"test\" is already used"
+        }
+      ]
+    }
+  }
+}

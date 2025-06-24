@@ -1,0 +1,11 @@
+﻿{
+  "data": {
+    "deleteCollection": {
+      "collection": {
+        "id": "2381e90129cf4370ab36b08e80900643",
+        "nom": "Test"
+      },
+      "errors": null
+    }
+  }
+}

@@ -39,11 +39,17 @@ public class Album : OptionalLabelEntity
 
     public ushort? NotationId { get; set; }
 
-    [MutationType<OptionNotationType>]
+    [MutationScalarType<OptionNotationType>]
     public virtual Option? Notation { get; set; }
 
     public virtual ICollection<AuteurAlbum> AuteursAlbums { get; set; } = new List<AuteurAlbum>();
-    public virtual ICollection<EditionAlbum> EditionsAlbums { get; set; } = new List<EditionAlbum>();
+    public virtual ICollection<Edition> Editions { get; set; } = new List<Edition>();
     public virtual ICollection<GenreAlbum> GenresAlbums { get; set; } = new List<GenreAlbum>();
     public virtual ICollection<UniversAlbum> UniversAlbums { get; set; } = new List<UniversAlbum>();
+
+    public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (Serie is null && string.IsNullOrWhiteSpace(Titre))
+            yield return new ValidationResult("Album title is required when not attached to a Serie");
+    }
 }

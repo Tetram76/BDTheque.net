@@ -1,0 +1,13 @@
+﻿{
+  "data": {
+    "createGenre": {
+      "genre": null,
+      "errors": [
+        {
+          "__typename": "ValidationError",
+          "message": "Genre name \"test\" is already used"
+        }
+      ]
+    }
+  }
+}

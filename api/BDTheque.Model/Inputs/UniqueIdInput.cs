@@ -1,15 +1,15 @@
 namespace BDTheque.Model.Inputs;
 
-public abstract class UniqueIdCreateInput : VersioningCreateInput;
+public abstract class UniqueIdCreateInput : BaseCreateInput;
 
-public abstract class UniqueIdUpdateInput : VersioningUpdateInput
+public abstract class UniqueIdUpdateInput : BaseUpdateInput
 {
     [ID]
     [Required]
     public Guid Id { get; set; } = Guid.Empty;
 }
 
-public abstract class UniqueIdNestedInput : VersioningNestedInput
+public abstract class UniqueIdNestedInput : BaseNestedInput
 {
     [ID]
     [Required]

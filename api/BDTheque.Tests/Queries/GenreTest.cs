@@ -1,6 +1,8 @@
 namespace BDTheque.Tests.Queries;
 
-public class GenreTest
+using Xunit.Abstractions;
+
+public class GenreTest(ITestOutputHelper testOutputHelper) : DatabaseTest(testOutputHelper)
 {
     [Fact]
     public async Task GetGenresTest()

@@ -29,9 +29,10 @@
 
   <ItemGroup>
     <PackageReference Include="DataAnnotatedModelValidations" />
-    <PackageReference Include="HotChocolate.AspNetCore" />
-    <PackageReference Include="HotChocolate.Data.EntityFramework" />
-    <PackageReference Include="HotChocolate.Subscriptions.Redis" />
+    <PackageReference Include="HotChocolate.AspNetCore"/>
+    <PackageReference Include="HotChocolate.Data.EntityFramework"/>
+    <PackageReference Include="HotChocolate.Subscriptions.Redis"/>
+    <PackageReference Include="HotChocolate.Subscriptions.Serializers.Newtonsoft"/>
     <PackageReference Include="Humanizer" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
@@ -62,9 +63,6 @@
     <ProjectReference Include="..\BDTheque.Data.Migrations\BDTheque.Data.Migrations.csproj" />
     <ProjectReference Include="..\BDTheque.Data\BDTheque.Data.csproj" />
     <ProjectReference Include="..\BDTheque.GraphQL\BDTheque.GraphQL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
   </ItemGroup>
 
 </Project>
