@@ -9,7 +9,7 @@ public static partial class ModelBuilderExtensions
 {
     public static void ApplyEntityConfiguration(this EntityTypeBuilder<Cote> entity)
     {
-        entity.ToTable("cotes_editions");
+        entity.ToTable("cotes");
 
         SetupVersioning(entity);
         SetupUniqueIdPrimaryKey(entity);
@@ -17,13 +17,13 @@ public static partial class ModelBuilderExtensions
         entity.HasIndex(
             e => new
             {
-                e.EditionAlbumId,
+                e.EditionId,
                 e.Annee
             }
         ).IsUnique();
 
         entity.Property(e => e.Prix).HasPrecision(8, 3);
 
-        entity.HasOne(d => d.EditionAlbum).WithMany(p => p.Cotes).HasForeignKey(d => d.EditionAlbumId);
+        entity.HasOne(d => d.Edition).WithMany(p => p.Cotes).HasForeignKey(d => d.EditionId);
     }
 }
