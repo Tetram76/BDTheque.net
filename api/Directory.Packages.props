@@ -1,12 +1,12 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <AspNetVersion>8.0.17</AspNetVersion>
-    <EfVersion>8.0.17</EfVersion>
+    <AspNetVersion>8.0.18</AspNetVersion>
+    <EfVersion>8.0.18</EfVersion>
     <DevExpressVersion>23.1.7</DevExpressVersion>
     <HotChocolateVersion>13.9.14</HotChocolateVersion>
     <!-- must match sdk compiler (csc) version: cf. sdk version in global.json -->
-    <CSharpAnalyzers>4.13.0</CSharpAnalyzers>
+    <CSharpAnalyzers>4.14.0</CSharpAnalyzers>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="DataAnnotatedModelValidations" Version="5.2.0" />
