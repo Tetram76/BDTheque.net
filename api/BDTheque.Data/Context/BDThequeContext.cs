@@ -1,12 +1,10 @@
 namespace BDTheque.Data.Context;
 
-using System.Text;
-
 using BDTheque.Data.Entities;
 using BDTheque.Data.Enums;
 using BDTheque.Data.Seeders;
 using BDTheque.Model.Entities;
-using BDTheque.Model.Entities.Abstract;
+using BDTheque.Model.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -24,8 +22,8 @@ public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbCont
     public virtual DbSet<Collection> Collections { get; init; } = null!;
     public virtual DbSet<Cote> CotesAlbums { get; init; } = null!;
     public virtual DbSet<Editeur> Editeurs { get; init; } = null!;
+    public virtual DbSet<EditionDetail> EditionsDetails { get; init; } = null!;
     public virtual DbSet<Edition> Editions { get; init; } = null!;
-    public virtual DbSet<EditionAlbum> EditionsAlbums { get; init; } = null!;
     public virtual DbSet<Genre> Genres { get; init; } = null!;
     public virtual DbSet<GenreAlbum> GenresAlbums { get; init; } = null!;
     public virtual DbSet<GenreSerie> GenresSeries { get; init; } = null!;
@@ -59,8 +57,8 @@ public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbCont
         modelBuilder.Entity<Editeur>().ApplyEntityConfiguration();
         modelBuilder.Entity<Collection>().ApplyEntityConfiguration();
 
+        modelBuilder.Entity<EditionDetail>().ApplyEntityConfiguration();
         modelBuilder.Entity<Edition>().ApplyEntityConfiguration();
-        modelBuilder.Entity<EditionAlbum>().ApplyEntityConfiguration();
 
         modelBuilder.Entity<Genre>().ApplyEntityConfiguration();
         modelBuilder.Entity<GenreAlbum>().ApplyEntityConfiguration();
@@ -99,13 +97,13 @@ public class BDThequeContext(DbContextOptions<BDThequeContext> options) : DbCont
     private void UpdateTimestamps()
     {
         IEnumerable<EntityEntry> entities = ChangeTracker.Entries().Where(
-            x => x is { Entity: VersioningEntity, State: EntityState.Added or EntityState.Modified }
+            x => x is { Entity: IVersioningEntity, State: EntityState.Added or EntityState.Modified }
         );
 
         DateTime now = DateTime.UtcNow;
         foreach (EntityEntry entity in entities)
         {
-            var versioningEntity = (VersioningEntity) entity.Entity;
+            var versioningEntity = (IVersioningEntity) entity.Entity;
             if (entity.State == EntityState.Added)
                 versioningEntity.CreatedAt = now;
 

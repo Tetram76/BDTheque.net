@@ -1,0 +1,13 @@
+﻿{
+  "data": {
+    "deleteCollection": {
+      "collection": null,
+      "errors": [
+        {
+          "__typename": "InvalidOperationError",
+          "message": "Collection id \"8736d8e1-5ee0-4a2c-8a04-44778e556dad\" not found"
+        }
+      ]
+    }
+  }
+}

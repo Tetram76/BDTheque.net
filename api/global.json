@@ -1,7 +1,8 @@
 {
   "sdk": {
     "version": "9.0.200",
-    "rollForward": "latestMajor",
+    "rollForward_comment": "The compiler version may change between patches of the same minor release, but it is strongly linked to the version of CodeAnalysis assemblies. It is therefore imperative to respect the sdk version as closely as possible.",
+    "rollForward": "latestPatch",
     "allowPrerelease": false
   }
 }

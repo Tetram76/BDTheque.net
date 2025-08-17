@@ -1,5 +1,7 @@
 namespace BDTheque.GraphQL.Resolvers;
 
+using BDTheque.GraphQL.DataLoaders;
+
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [ExtendObjectType<Auteur>]
 public static class AuteurResolvers
@@ -8,13 +10,13 @@ public static class AuteurResolvers
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<Album> GetAlbums([Parent] Auteur auteur)
-        => auteur.AuteursAlbums.Select(auteurAlbum => auteurAlbum.Album).AsQueryable().AsNoTracking();
+    public static async Task<IQueryable<Album>> GetAlbums([Parent] Auteur auteur, IAuteurAlbumsDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(auteur, cancellationToken);
 
     [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<Serie> GetSeries([Parent] Auteur auteur)
-        => auteur.AuteursSeries.Select(auteurSerie => auteurSerie.Serie).AsQueryable().AsNoTracking();
+    public static async Task<IQueryable<Serie>> GetSeries([Parent] Auteur auteur, IAuteurSeriesDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(auteur, cancellationToken);
 }

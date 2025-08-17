@@ -2,39 +2,45 @@ namespace BDTheque.GraphQL.Subscriptions;
 
 using System.Runtime.CompilerServices;
 
+using BDTheque.GraphQL.DataLoaders;
+
 using HotChocolate.Execution;
 using HotChocolate.Subscriptions;
 
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SubscriptionType]
 public static class ImageSubscriptions
 {
     [Subscribe(With = nameof(ImageCreatedStream))]
-    public static Image ImageCreated([EventMessage] Image image) => image;
+    public static async Task<Image> ImageCreated([EventMessage] Guid imageId, [Service] IImageByIdDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(imageId, cancellationToken);
 
     [Subscribe(With = nameof(ImageUpdatedStream))]
-    public static Image ImageUpdated([EventMessage] Image image) => image;
+    public static async Task<Image> ImageUpdated([EventMessage] Guid imageId, [Service] IImageByIdDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(imageId, cancellationToken);
 
     [Subscribe(With = nameof(ImageDeletedStream))]
-    public static Image ImageDeleted([EventMessage] Image image) => image;
+    public static async Task<Image> ImageDeleted([EventMessage] Guid imageId, [Service] IImageByIdDataLoader loader, CancellationToken cancellationToken) =>
+        await loader.LoadAsync(imageId, cancellationToken);
 
-    private static async IAsyncEnumerable<Image> ImageCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    internal static async IAsyncEnumerable<Guid> ImageCreatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        ISourceStream<Image> sourceStream = await eventReceiver.SubscribeAsync<Image>(nameof(ImageCreated), cancellationToken);
-        await foreach (Image image in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
-            yield return image;
+        ISourceStream<Guid> sourceStream = await eventReceiver.SubscribeAsync<Guid>(nameof(ImageCreatedStream), cancellationToken);
+        await foreach (Guid id in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+            yield return id;
     }
 
-    private static async IAsyncEnumerable<Image> ImageUpdatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    internal static async IAsyncEnumerable<Guid> ImageUpdatedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        ISourceStream<Image> sourceStream = await eventReceiver.SubscribeAsync<Image>(nameof(ImageUpdated), cancellationToken);
-        await foreach (Image image in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
-            yield return image;
+        ISourceStream<Guid> sourceStream = await eventReceiver.SubscribeAsync<Guid>(nameof(ImageUpdatedStream), cancellationToken);
+        await foreach (Guid id in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+            yield return id;
     }
 
-    private static async IAsyncEnumerable<Image> ImageDeletedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    internal static async IAsyncEnumerable<Guid> ImageDeletedStream([Service] ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        ISourceStream<Image> sourceStream = await eventReceiver.SubscribeAsync<Image>(nameof(ImageDeleted), cancellationToken);
-        await foreach (Image image in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
-            yield return image;
+        ISourceStream<Guid> sourceStream = await eventReceiver.SubscribeAsync<Guid>(nameof(ImageDeletedStream), cancellationToken);
+        await foreach (Guid id in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
+            yield return id;
     }
 }

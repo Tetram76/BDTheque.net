@@ -16,6 +16,9 @@ services:
       - bdtheque-database:/var/lib/postgresql/data
     env_file:
       - ./deploy.env
+    profiles:
+      - deps
+      - delivery
 
   #  data-manager:
   #    image: tetram76/bdtheque-web-data-manager
@@ -41,6 +44,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    profiles:
+      - deps
+      - delivery
 
   api:
     depends_on:
@@ -58,6 +64,8 @@ services:
       - bdtheque-secrets:/etc/bdtheque/secrets # :ro
     env_file:
       - ./deploy.env
+    profiles:
+      - delivery
 
   front:
     image: tetram76/bdtheque-web-front
@@ -72,6 +80,8 @@ services:
       bdtheque-net:
     env_file:
       - ./deploy.env
+    profiles:
+      - delivery
 
 volumes:
   bdtheque-config:

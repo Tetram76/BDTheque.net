@@ -1,0 +1,13 @@
+﻿{
+  "data": {
+    "deleteGenre": {
+      "genre": null,
+      "errors": [
+        {
+          "__typename": "InvalidOperationError",
+          "message": "Genre id \"324a9d5e-c474-46a2-9b26-a77cc4b7ca79\" not found"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+﻿{
+  "data": {
+    "deleteGenre": {
+      "genre": {
+        "id": "25f242856d5b4e32ad201eb53b804fc5",
+        "nom": "Test"
+      },
+      "errors": null
+    }
+  }
+}

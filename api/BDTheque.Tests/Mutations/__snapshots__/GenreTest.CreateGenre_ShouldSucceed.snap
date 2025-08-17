@@ -1,0 +1,11 @@
+﻿{
+  "data": {
+    "createGenre": {
+      "genre": {
+        "id": "c7b9d019387f4e73b4486bf0326659de",
+        "nom": "test"
+      },
+      "errors": null
+    }
+  }
+}

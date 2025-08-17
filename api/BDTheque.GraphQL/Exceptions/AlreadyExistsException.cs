@@ -1,3 +1,3 @@
 namespace BDTheque.GraphQL.Exceptions;
 
-public class AlreadyExistsException : Exception;
+public class AlreadyExistsException(string? message = null) : Exception(message);

@@ -5,16 +5,20 @@
     <EfVersion>8.0.17</EfVersion>
     <DevExpressVersion>23.1.7</DevExpressVersion>
     <HotChocolateVersion>13.9.14</HotChocolateVersion>
+    <FluentValidationVersion>11.9.2</FluentValidationVersion>
     <!-- must match sdk compiler (csc) version: cf. sdk version in global.json -->
     <CSharpAnalyzers>4.13.0</CSharpAnalyzers>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="DataAnnotatedModelValidations" Version="5.2.0" />
+    <PackageVersion Include="FluentValidation" Version="$(FluentValidationVersion)" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="$(FluentValidationVersion)" />
     <PackageVersion Include="GraphQL" Version="7.7.2" />
     <PackageVersion Include="HotChocolate" Version="$(HotChocolateVersion)" />
     <PackageVersion Include="HotChocolate.AspNetCore" Version="$(HotChocolateVersion)" />
     <PackageVersion Include="HotChocolate.Data.EntityFramework" Version="$(HotChocolateVersion)" />
     <PackageVersion Include="HotChocolate.Subscriptions.Redis" Version="$(HotChocolateVersion)" />
+    <PackageVersion Include="HotChocolate.Subscriptions.Serializers.Newtonsoft" Version="$(HotChocolateVersion)" />
     <PackageVersion Include="HotChocolate.Types.Analyzers" Version="$(HotChocolateVersion)" />
     <PackageVersion Include="HotChocolate.Types.Scalars" Version="$(HotChocolateVersion)" />
     <PackageVersion Include="Humanizer" Version="2.14.1" />
@@ -23,12 +27,13 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="$(CSharpAnalyzers)" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(CSharpAnalyzers)" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="$(CSharpAnalyzers)" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="$(CSharpAnalyzers)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(EfVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EfVersion)" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="$(EfVersion)"/>
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="$(EfVersion)" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
-    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
     <PackageVersion Include="Quartz" Version="3.8.0" />
     <PackageVersion Include="Quartz.Extensions.Hosting" Version="3.8.0" />
@@ -40,11 +45,11 @@
     <PackageVersion Include="JunitXml.TestLogger" Version="3.0.134" />
     <PackageVersion Include="MSTest.TestAdapter" Version="3.1.1" />
     <PackageVersion Include="MSTest.TestFramework" Version="3.1.1" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1"/>
-    <PackageVersion Include="Moq" Version="4.20.70"/>
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="Moq" Version="4.20.70" />
     <PackageVersion Include="NBuilder" Version="6.1.0" />
     <PackageVersion Include="Snapshooter.Xunit" Version="0.15.0" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.4"/>
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
   </ItemGroup>

@@ -1,10 +1,9 @@
-namespace BDTheque.Model.Extensions;
+// ReSharper disable once CheckNamespace
+namespace HotChocolate.Data.Filters;
 
 using System.Reflection;
 
 using BDTheque.Model.Mapping;
-
-using HotChocolate.Data.Filters;
 
 public static class FilterInputTypeDescriptorExtensions
 {

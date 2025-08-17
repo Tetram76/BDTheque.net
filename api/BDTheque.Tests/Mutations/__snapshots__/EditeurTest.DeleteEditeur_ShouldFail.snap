@@ -1,0 +1,13 @@
+﻿{
+  "data": {
+    "deleteEditeur": {
+      "editeur": null,
+      "errors": [
+        {
+          "__typename": "InvalidOperationError",
+          "message": "Editeur id \"f5ee4947-9e9a-45a1-b90b-a6d659081a1f\" not found"
+        }
+      ]
+    }
+  }
+}

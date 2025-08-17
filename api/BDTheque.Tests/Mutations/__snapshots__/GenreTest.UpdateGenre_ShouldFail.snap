@@ -1,0 +1,13 @@
+﻿{
+  "data": {
+    "updateGenre": {
+      "genre": null,
+      "errors": [
+        {
+          "__typename": "AlreadyExistsError",
+          "message": "Genre name \"test\" is already used"
+        }
+      ]
+    }
+  }
+}

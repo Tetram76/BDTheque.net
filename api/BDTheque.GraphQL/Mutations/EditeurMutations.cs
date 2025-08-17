@@ -1,7 +1,8 @@
 namespace BDTheque.GraphQL.Mutations;
 
-using BDTheque.Data.Context;
-using BDTheque.GraphQL.Exceptions;
+using BDTheque.Data.Exceptions;
+using BDTheque.Data.Repositories.Interfaces;
+using BDTheque.GraphQL.Attributes;
 using BDTheque.GraphQL.Subscriptions;
 using BDTheque.Model.Inputs;
 
@@ -9,51 +10,40 @@ using HotChocolate.Subscriptions;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [MutationType]
-public static class EditeurMutations
+[MutationEntity<Editeur>]
+public static partial class EditeurMutations
 {
-    [Error<AlreadyExistsException>]
-    public static async Task<Editeur> CreateEditeur(EditeurCreateInput editeur, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    public static async Task<Editeur> CreateEditeur(EditeurCreateInput editeur, [Service] IEditeurRepository editeurRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        if (await dbContext.Editeurs.AnyAsync(g => g.Nom == editeur.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+        Editeur newEditeur = (editeur as IEditeurInputType).ApplyTo(new Editeur());
+        await editeurRepository.Add(newEditeur, cancellationToken);
 
-        Editeur newEditeur = editeur.BuildEntity<Editeur>();
-        dbContext.Editeurs.Add(newEditeur);
-
-        await dbContext.SaveChangesAsync(cancellationToken);
-        await sender.SendAsync(nameof(EditeurSubscriptions.EditeurCreated), newEditeur, cancellationToken);
+        await sender.SendAsync(nameof(EditeurSubscriptions.EditeurCreatedStream), newEditeur.Id, cancellationToken);
         return newEditeur;
     }
 
-    [Error<AlreadyExistsException>]
-    [Error<NotFoundIdException>]
-    public static async Task<Editeur> UpdateEditeur(EditeurUpdateInput editeur, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<ValidationException>]
+    [Error<InvalidOperationException>]
+    public static async Task<Editeur> UpdateEditeur(EditeurUpdateInput editeur, [Service] IEditeurRepository editeurRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Editeur? oldEditeur = await dbContext.Editeurs.Where(p => p.Id == editeur.Id).SingleOrDefaultAsync(cancellationToken);
-        if (oldEditeur is null)
-            throw new NotFoundIdException();
-        if (editeur.Nom.HasValue && await dbContext.Editeurs.AnyAsync(g => g.Id != oldEditeur.Id && g.Nom == editeur.Nom, cancellationToken))
-            throw new AlreadyExistsException();
+        Editeur oldEditeur = await editeurRepository.GetById(editeur.Id, cancellationToken);
 
-        editeur.ApplyUpdate(oldEditeur);
-        dbContext.Update(oldEditeur);
+        (editeur as IEditeurInputType).ApplyTo(oldEditeur);
+        await editeurRepository.Update(oldEditeur, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
-        await sender.SendAsync(nameof(EditeurSubscriptions.EditeurUpdated), oldEditeur, cancellationToken);
+        await sender.SendAsync(nameof(EditeurSubscriptions.EditeurUpdatedStream), oldEditeur.Id, cancellationToken);
         return oldEditeur;
     }
 
-    [Error<NotFoundIdException>]
-    public static async Task<Editeur> DeleteEditeur([ID] Guid id, BDThequeContext dbContext, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
+    [Error<InvalidOperationException>]
+    public static async Task<Editeur> DeleteEditeur([ID] Guid id, [Service] IEditeurRepository editeurRepository, [Service] ITopicEventSender sender, CancellationToken cancellationToken)
     {
-        Editeur? editeur = await dbContext.Editeurs.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken);
-        if (editeur is null)
-            throw new NotFoundIdException();
+        Editeur editeur = await editeurRepository.GetById(id, cancellationToken);
 
-        dbContext.Editeurs.Remove(editeur);
+        await editeurRepository.Remove(editeur, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
-        await sender.SendAsync(nameof(EditeurSubscriptions.EditeurDeleted), editeur, cancellationToken);
+        await sender.SendAsync(nameof(EditeurSubscriptions.EditeurDeletedStream), editeur.Id, cancellationToken);
         return editeur;
     }
 }

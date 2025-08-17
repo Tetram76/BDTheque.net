@@ -2,9 +2,8 @@ namespace BDTheque.Data.Seeders;
 
 using System.Collections.Immutable;
 using System.Reflection;
-using System.Text;
 
-using BDTheque.Model.Entities.Abstract;
+using BDTheque.Model.Interfaces;
 
 using HotChocolate.Types.Relay;
 
@@ -39,7 +38,7 @@ public static class JsonSeeder
 
     #region Seed
 
-    public static void SeedFromJson<T>(this ModelBuilder modelBuilder, string json) where T : VersioningEntity
+    public static void SeedFromJson<T>(this ModelBuilder modelBuilder, string json) where T : class, IVersioningEntity
     {
         IEnumerable<T> entities = LoadDataFromJson<T>(json).ToImmutableList();
 
@@ -53,7 +52,7 @@ public static class JsonSeeder
         modelBuilder.Entity<T>().HasData(entities);
     }
 
-    public static void SeedFromJson<T>(this MigrationBuilder migrationBuilder, string json) where T : VersioningEntity
+    public static void SeedFromJson<T>(this MigrationBuilder migrationBuilder, string json) where T : class, IVersioningEntity
     {
         var dataFromEmbeddedResource = LoadDataFromJson<JObject>(json).ToImmutableList();
         if (dataFromEmbeddedResource.Count == 0)
@@ -96,35 +95,35 @@ public static class JsonSeeder
         );
     }
 
-    private static async Task SeedFromFile<T>(this ModelBuilder modelBuilder) where T : VersioningEntity =>
+    private static async Task SeedFromFile<T>(this ModelBuilder modelBuilder) where T : class, IVersioningEntity =>
         await modelBuilder.SeedFromFile<T>($"{typeof(T).Name}.json");
 
-    private static async Task SeedFromFile<T>(this ModelBuilder modelBuilder, string fileName) where T : VersioningEntity =>
+    private static async Task SeedFromFile<T>(this ModelBuilder modelBuilder, string fileName) where T : class, IVersioningEntity =>
         modelBuilder.SeedFromJson<T>(await LoadJsonFromFile(fileName));
 
-    public static async Task SeedFromFile<T>(this MigrationBuilder migrationBuilder) where T : VersioningEntity =>
+    public static async Task SeedFromFile<T>(this MigrationBuilder migrationBuilder) where T : class, IVersioningEntity =>
         await migrationBuilder.SeedFromFile<T>($"{typeof(T).Name}.json");
 
-    public static async Task SeedFromFile<T>(this MigrationBuilder migrationBuilder, string fileName) where T : VersioningEntity =>
+    public static async Task SeedFromFile<T>(this MigrationBuilder migrationBuilder, string fileName) where T : class, IVersioningEntity =>
         migrationBuilder.SeedFromJson<T>(await LoadJsonFromFile(fileName));
 
-    public static async Task SeedFromResource<T>(this ModelBuilder modelBuilder) where T : VersioningEntity =>
+    public static async Task SeedFromResource<T>(this ModelBuilder modelBuilder) where T : class, IVersioningEntity =>
         await modelBuilder.SeedFromResource<T>($"BDTheque.Data.Seeders.{typeof(T).Name}.json");
 
-    public static async Task SeedFromResource<T>(this ModelBuilder modelBuilder, string resourceName) where T : VersioningEntity =>
+    public static async Task SeedFromResource<T>(this ModelBuilder modelBuilder, string resourceName) where T : class, IVersioningEntity =>
         modelBuilder.SeedFromJson<T>(await LoadJsonFromEmbeddedResource(resourceName));
 
-    public static async Task SeedFromResource<T>(this MigrationBuilder migrationBuilder) where T : VersioningEntity =>
+    public static async Task SeedFromResource<T>(this MigrationBuilder migrationBuilder) where T : class, IVersioningEntity =>
         await migrationBuilder.SeedFromResource<T>($"BDTheque.Data.Seeders.{typeof(T).Name}.json");
 
-    public static async Task SeedFromResource<T>(this MigrationBuilder migrationBuilder, string resourceName) where T : VersioningEntity =>
+    public static async Task SeedFromResource<T>(this MigrationBuilder migrationBuilder, string resourceName) where T : class, IVersioningEntity =>
         migrationBuilder.SeedFromJson<T>(await LoadJsonFromEmbeddedResource(resourceName));
 
     #endregion
 
     #region Unseed
 
-    public static void UnseedFromJson<T>(this MigrationBuilder migrationBuilder, string json) where T : VersioningEntity
+    public static void UnseedFromJson<T>(this MigrationBuilder migrationBuilder, string json)
     {
         var dataFromEmbeddedResource = LoadDataFromJson<JObject>(json).ToImmutableList();
         if (dataFromEmbeddedResource.Count == 0)
@@ -163,10 +162,10 @@ public static class JsonSeeder
         );
     }
 
-    public static async Task UnseedFromResource<T>(this MigrationBuilder migrationBuilder) where T : VersioningEntity =>
+    public static async Task UnseedFromResource<T>(this MigrationBuilder migrationBuilder) =>
         await migrationBuilder.UnseedFromResource<T>($"BDTheque.Data.Seeders.{typeof(T).Name}.json");
 
-    private static async Task UnseedFromResource<T>(this MigrationBuilder migrationBuilder, string resourceName) where T : VersioningEntity =>
+    private static async Task UnseedFromResource<T>(this MigrationBuilder migrationBuilder, string resourceName) =>
         migrationBuilder.UnseedFromJson<T>(await LoadJsonFromEmbeddedResource(resourceName));
 
     #endregion

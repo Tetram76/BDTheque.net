@@ -1,17 +1,35 @@
 namespace BDTheque.GraphQL.DataLoaders;
 
 using BDTheque.Data.Context;
+using BDTheque.Data.Repositories.Interfaces;
 
 public static class GenreLoaders
 {
     [DataLoader]
-    internal static async Task<Genre?> GetGenreByIdAsync([ID] Guid id, BDThequeContext context, CancellationToken cancellationToken)
-        => await context.Genres.FirstOrDefaultAsync(genre => genre.Id == id, cancellationToken);
+    internal static async Task<Genre> GetGenreByIdAsync([ID] Guid id, IGenreRepository genreRepository, CancellationToken cancellationToken) =>
+        await genreRepository.GetById(id, cancellationToken);
 
     [DataLoader]
-    [SuppressMessage("Performance", "CA1862:Utiliser les surcharges de méthode «\u00a0StringComparison\u00a0» pour effectuer des comparaisons de chaînes sans respect de la casse")]
-    internal static async Task<IReadOnlyList<Genre>> GetGenreByNomAsync(string nom, BDThequeContext context, CancellationToken cancellationToken)
-        => await context.Genres
-            .Where(genre => genre.Nom.ToLower().Contains(nom.ToLower()))
-            .ToListAsync(cancellationToken);
+    internal static Task<IQueryable<Genre>> GetGenreByNomAsync(string nom, BDThequeContext context) =>
+        Task.FromResult(
+            context.Genres
+#pragma warning disable CA1862 // cannot use string.Contains as it is not supported for conversion to SQL statements
+                .Where(genre => genre.Nom.ToLower().Contains(nom.ToLower()))
+#pragma warning restore CA1862
+                .AsQueryable()
+        );
+
+    [DataLoader]
+    public static async Task<IQueryable<Album>> GetGenreAlbums(Genre genre, BDThequeContext dbContext, CancellationToken cancellationToken)
+    {
+        await dbContext.Entry(genre).Collection(e => e.GenresAlbums).LoadAsync(cancellationToken);
+        return genre.GenresAlbums.Select(genreAlbum => genreAlbum.Album).AsQueryable();
+    }
+
+    [DataLoader]
+    public static async Task<IQueryable<Serie>> GetGenreSeries(Genre genre, BDThequeContext dbContext, CancellationToken cancellationToken)
+    {
+        await dbContext.Entry(genre).Collection(e => e.GenresSeries).LoadAsync(cancellationToken);
+        return genre.GenresSeries.Select(genreSerie => genreSerie.Serie).AsQueryable();
+    }
 }
