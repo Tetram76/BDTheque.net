@@ -2,7 +2,7 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <AspNetVersion>8.0.17</AspNetVersion>
-    <EfVersion>8.0.19</EfVersion>
+    <EfVersion>8.0.20</EfVersion>
     <DevExpressVersion>23.1.7</DevExpressVersion>
     <HotChocolateVersion>13.9.14</HotChocolateVersion>
     <!-- must match sdk compiler (csc) version: cf. sdk version in global.json -->
