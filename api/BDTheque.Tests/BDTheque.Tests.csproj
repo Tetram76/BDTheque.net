@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" VersionOverride="8.0.21" />
     <Folder Include="Properties\"/>
     <Folder Include="Schema\__snapshots__\__mismatch__\"/>
   </ItemGroup>
