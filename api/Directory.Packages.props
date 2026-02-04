@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <AspNetVersion>8.0.17</AspNetVersion>
+    <AspNetVersion>8.0.23</AspNetVersion>
     <EfVersion>8.0.23</EfVersion>
     <DevExpressVersion>23.1.7</DevExpressVersion>
     <HotChocolateVersion>13.9.15</HotChocolateVersion>
